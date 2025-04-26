@@ -1,0 +1,169 @@
+/* Estilo para el fondo del body */
+body {
+    background-color: #f6f3f0; /* Color de fondo */
+    margin: 0; /* Elimina los márgenes predeterminados */
+    font-family: 'Poppins', sans-serif;
+    color: #333; /* Color de texto suave */
+    line-height: 1.6; /* Espaciado entre líneas */
+}
+
+/* Estilo para centrar el contenido */
+.contenido {
+    text-align: center; /* Alineación del texto al centro */
+    padding: 50px; /* Espacio interno alrededor del contenido */
+}
+
+/* Estilo para el título */
+h1 {
+    font-size: 2.5rem; /* Tamaño del título */
+    color: #555; /* Color del título */
+    margin-bottom: 20px; /* Espacio debajo del título */
+}
+
+/* Estilo para el párrafo */
+p {
+    font-size: 1.2rem; /* Tamaño del texto del párrafo */
+    color: #666; /* Color del texto del párrafo */
+}
+/* Estilo de la barra de navegación */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 20px 30vh /* Aumenta el padding horizontal */
+
+    
+}
+
+/* Logo y nombre de la empresa */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;  
+    
+}
+
+.logo img {
+    height: 50px; /* Ajusta el tamaño del logo según sea necesario */
+    
+    vertical-align: middle;
+}
+
+/* Enlaces de navegación */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 50px; /* Espacio entre los enlaces */
+    margin: 0;
+    padding: 0;
+    
+}
+
+.nav-links li {
+    position: relative;
+}
+
+/* Estilo para el enlace "Inicio" en negrita */
+.bold-link {
+    font-weight: 700; /* Negrita */
+}
+
+/* Estilo para los demás enlaces */
+.nav-links a {
+    text-decoration: none;
+    color: #C39B82;
+    font-weight: 400; /* Fuente más fina */
+    transition: color 0.3s ease;   
+    font-size: large;
+    
+}
+
+
+.nav-links a:hover {
+    color: #4d3a2f;
+}
+
+/* Botón "Ingresa" */
+.btn-ingresa {
+    padding: 8px 16px;
+    background-color:#cfb299; /* Verde oscuro */
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+    
+}
+
+
+.btn-ingresa:hover {
+    background-color: #4d3a2f79;
+    
+}
+
+/* Icono de hamburguesa (para móviles) */
+.menu-icon {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.menu-icon span {
+    width: 25px;
+    height: 3px;
+    background-color: #555;
+    transition: background-color 0.3s ease;
+}
+
+/* * Diseño responsive */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 20px; /* Reduce el padding en pantallas pequeñas */
+    }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color: #ffffff;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width:90%; /* Ajusta el ancho del menú al 100% */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        padding: 20px; /* Agrega espacio interno */
+    }
+
+    .nav-links.active {
+        display: flex;
+        
+    }
+
+    .nav-links li {
+        margin-bottom: 15px; /* Espacio vertical entre los enlaces */
+    }
+
+    .nav-links a {
+        font-size: 1; /* Aumenta el tamaño del texto para pantallas pequeñas */
+        text-align: center; /* Centra los enlaces */
+        white-space: normal; /* Permite que el texto se divida en múltiples líneas si es necesario */
+    }
+
+    .btn-ingresa {
+        width: 100%; /* Hace que el botón ocupe todo el ancho */
+        margin-top: 10px; /* Agrega espacio arriba del botón */
+    }
+
+    .menu-icon {
+        display: flex;
+    }
+   
+}
+
+
+
