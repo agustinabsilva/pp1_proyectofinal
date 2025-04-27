@@ -555,3 +555,61 @@ h2 {
     }
 
 }
+
+@keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: translateY(50px) scale(0.9);
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(-10px) scale(1.05);
+    }
+    80% {
+      transform: translateY(5px) scale(0.95);
+    }
+    100% {
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+  }
+  
+  .scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+ 
+  
+  /* Aplicar animación al botón */
+  .section {
+    
+    
+    /* animación */
+    animation: fadeIn 1.2s ease forwards;
+    opacity: 0; /* empieza invisible */
+  }
+
+  .que-es-ainabi{
+    /* animación */
+    animation: fadeIn 1.2s ease forwards;
+    opacity: 0; /* empieza invisible */
+}
+.sobre-nosotros{
+/* animación */
+animation: fadeIn 1.2s ease forwards;
+opacity: 0; /* empieza invisible */}
+.contact-section{
+    /* animación */
+    animation: fadeIn 1.2s ease forwards;
+    opacity: 0; /* empieza invisible */}
+    .footer{
+        /* animación */
+        animation: fadeIn 1.2s ease forwards;
+        opacity: 0; /* empieza invisible */}
