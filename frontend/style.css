@@ -430,13 +430,12 @@ h2 {
 /*LOGUEO*/
 /* Estilo para la sección de login */
 .login-section {
-    padding: 40px 20px;
-    background-color: #f6f3f0; /* Fondo claro consistente con el resto del sitio */
-    
+    min-height: 75vh; /* Que ocupe al menos el alto de la ventana */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    flex-direction: column;
+    padding: 20px;
     
 }
 
@@ -536,7 +535,7 @@ h2 {
         
         text-align: center;
         border-top: 1px solid #ccc;
-        padding: 8px;
+        padding: 2vh;
        
     }
     
@@ -609,7 +608,12 @@ opacity: 0; /* empieza invisible */}
     /* animación */
     animation: fadeIn 1.2s ease forwards;
     opacity: 0; /* empieza invisible */}
+    .login-section{
+        /* animación */
+        animation: fadeIn 1.2s ease forwards;
+        opacity: 0; /* empieza invisible */}
     .footer{
         /* animación */
+
         animation: fadeIn 1.2s ease forwards;
         opacity: 0; /* empieza invisible */}
