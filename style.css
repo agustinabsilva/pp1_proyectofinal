@@ -6,6 +6,8 @@
 
 
 
+
+
 /* Estilo para el fondo del body */
 body {
     background-color: #f6f3f0; /* Color de fondo */
@@ -13,6 +15,7 @@ body {
     font-family: 'Poppins', sans-serif;
     color: #333; /* Color de texto suave */
     line-height: 1.6; /* Espaciado entre líneas */
+    
 }
 
 /* Estilo para centrar el contenido */
@@ -422,4 +425,133 @@ h2 {
         max-width: 100%; /* Ambas columnas ocupan el 100% del ancho */
         margin-bottom: 20px; /* Agrega espacio entre las columnas */
     }
+}
+
+/*LOGUEO*/
+/* Estilo para la sección de login */
+.login-section {
+    padding: 40px 20px;
+    background-color: #f6f3f0; /* Fondo claro consistente con el resto del sitio */
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    
+}
+
+.login-content {
+    background-color: #ffffff; /* Fondo blanco para el formulario */
+    padding: 40px 60px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    max-width: 400px; /* Ancho máximo del formulario */
+    width: 100%; /* Ocupa todo el ancho disponible */
+    text-align: center; /* Centra el contenido */
+    
+}
+
+.login-form h2 {
+    font-size: 2rem;
+    color: #4d3a2f; /* Color consistente con el diseño */
+    margin-bottom: 20px;
+}
+
+.login-form input {
+    width: 80%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease; /* Transición suave para el borde */
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form input:focus {
+    border-color: #cba580; /* Cambia el color del borde al enfocar */
+    outline: none;
+}
+
+.login-form button {
+    width: 50%;
+    padding: 12px;  
+    background-color: #cba580; /* Color consistente con los botones del sitio */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+    background-color: #b88b66; /* Color más oscuro al pasar el mouse */
+}
+
+.register-link {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.register-link a {
+    color: #cba580; /* Color consistente con los enlaces del sitio */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.register-link a:hover {
+    color: #b88b66; /* Cambia el color al pasar el mouse */
+}
+
+/* Media Query para pantallas muy pequeñas (menos de 480px) */
+@media (max-width: 480px) {
+    .login-content {
+        padding: 20px; /* Reducir aún más el padding interno */
+    }
+
+    .login-form h2 {
+        font-size: 1.3rem; /* Título más pequeño */
+    }
+
+    .login-form input {
+        font-size: 0.8rem; /* Texto más pequeño en los campos de entrada */
+        padding: 8px; /* Padding más ajustado */
+    }
+
+    .login-form button {
+        font-size: 0.8rem; /* Texto más pequeño en el botón */
+        padding: 8px; /* Padding más ajustado */
+    }
+
+    .register-link {
+        font-size: 0.7rem; /* Texto más pequeño en el enlace */
+    } 
+  }
+    .footer {
+        background-color: #ffffff;
+        
+        text-align: center;
+        border-top: 1px solid #ccc;
+        padding: 8px;
+       
+    }
+    
+    .footer-content {
+        
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+/* Media Query para pantallas muy pequeñas (menos de 480px) */
+@media (max-width: 480px) {
+    .footer p {
+        font-size: 0.9rem; /* Reduce el tamaño del texto del párrafo */
+    }
+
 }
