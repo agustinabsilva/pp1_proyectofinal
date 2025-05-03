@@ -4,8 +4,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 import pickle
 
-filepath = 'tu_archivo_con_puntaje.csv'
-modelo_guardado_path = 'modelo_desempeño_futuro.pkl'
+filepath = 'backend-ml/Regresion lineal/tu_archivo_con_puntaje.csv'
+modelo_guardado_path = 'backend-ml/Regresion lineal/modelo_desempeño_futuro.pkl'
 
 try:
     df = pd.read_csv(filepath, encoding="utf-8")

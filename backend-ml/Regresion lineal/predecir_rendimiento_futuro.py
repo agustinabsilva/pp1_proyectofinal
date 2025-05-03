@@ -2,10 +2,10 @@ import pandas as pd
 import pickle
 
 # Define la ruta del archivo donde guardaste el modelo entrenado
-modelo_guardado_path = 'modelo_desempeño_futuro.pkl'
+modelo_guardado_path = 'backend-ml/Regresion lineal/modelo_desempeño_futuro.pkl'
 
 # Define la ruta del nuevo archivo CSV CON la columna 'desempeño'
-nuevo_data_filepath = 'nuevos_empleados_sin_prediccion.csv'
+nuevo_data_filepath = 'backend-ml/Regresion lineal/nuevos_empleados_sin_prediccion.csv'
 
 try:
     # Carga el modelo entrenado desde el archivo
