@@ -34,10 +34,32 @@ Proyecto desarrollado para la materia **Proyecto Profesional 1** en la **Univers
 
 /pp1_proyectofinal
 │
-├── /frontend         # Interfaz web (HTML/CSS/JS)
-├── /backend          # Lógica del sistema e IA (Python)
-├── /documentacion    # PDFs Entregables
-└── README.md         # Este archivo
+├── /frontend               # Interfaz web (HTML, CSS, JavaScript)
+│   ├── /css                # Archivos de estilos
+│   ├── /js                 # Scripts de lógica frontend
+│   ├── /assets             # Imágenes, íconos y otros recursos
+│   └── index.html          # Página principal de la aplicación
+│
+├── /backend                # Lógica del sistema e IA (Python)
+│   ├── /models             # Modelos predictivos (Machine Learning)
+│   ├── /routes             # Rutas API (Endpoints RESTful)
+│   ├── /utils              # Funciones auxiliares y utilidades
+│   ├── app.py              # Archivo principal del backend
+│   └── requirements.txt    # Dependencias del proyecto
+│
+├── /documentacion          # Documentación oficial y entregables
+│   ├── /pdfs               # PDFs de informes y presentaciones
+│   ├── /imagenes           # Capturas de pantalla y diagramas
+│   └── README.md           # Guía interna para la documentación
+│
+├── /tests                  # Pruebas unitarias y de integración
+│   ├── /unit               # Pruebas unitarias
+│   ├── /integration        # Pruebas de integración
+│   └── run_tests.sh        # Script para ejecutar todas las pruebas
+│
+├── .gitignore              # Archivos y carpetas ignorados por Git
+├── README.md               # Este archivo (información general del repositorio)
+└── LICENSE                 # Licencia del proyecto (si aplica)
 
 ---
 
