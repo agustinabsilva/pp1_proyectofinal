@@ -12,11 +12,13 @@ Proyecto desarrollado para la materia **Proyecto Profesional 1** en la **Univers
 
 ## 🛠️ Tecnologías utilizadas
 
-- [Lenguajes: Python, JavaScript]
-- [Base de datos: Firebase]
-- [Herramientas de gestión: Trello, Git]
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Python  
+- **Base de datos**: Firebase
+- **Herramientas**: Trello, GitHub
 
 ---
+
 ## 👥 Integrantes
 
 - **Agustina Silva**  
@@ -28,14 +30,27 @@ Proyecto desarrollado para la materia **Proyecto Profesional 1** en la **Univers
 
 ---
 
-## 📄 Licencia
+## 📂 Estructura del repositorio
 
-Este proyecto fue realizado con fines académicos como parte de la cursada de **Proyecto Profesional 1** en la **Universidad Nacional de General Sarmiento**. No está destinado a uso comercial.
+/pp1_proyectofinal
+│
+├── /frontend # Interfaz web (HTML/CSS/JS)
+├── /backend # Lógica del sistema e IA (Python)
+├── /documentacion # PDFs Entregables
+└── README.md # Este archivo
 
 ---
 
 ## 📎 Documentación adicional
 
 Podés consultar la documentación completa del proyecto en el archivo PDF incluido en la carpeta `/documentacion`.
+
+---
+
+## 📄 Licencia
+
+Este proyecto fue realizado con fines académicos como parte de la cursada de **Proyecto Profesional 1** en la **Universidad Nacional de General Sarmiento**. No está destinado a uso comercial.
+
+---
 
   
