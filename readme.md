@@ -32,12 +32,13 @@ Proyecto desarrollado para la materia **Proyecto Profesional 1** en la **Univers
 
 ## 📂 Estructura del repositorio
 
+```plaintext
 /pp1_proyectofinal
 │
-├── /frontend # Interfaz web (HTML/CSS/JS)
-├── /backend # Lógica del sistema e IA (Python)
-├── /documentacion # PDFs Entregables
-└── README.md # Este archivo
+├── /frontend         # Interfaz web (HTML/CSS/JS)
+├── /backend          # Lógica del sistema e IA (Python)
+├── /documentacion    # PDFs Entregables
+└── README.md         # Este archivo
 
 ---
 
