@@ -29,7 +29,7 @@ Proyecto desarrollado para la materia **Proyecto Profesional 1** en la **Univers
 - **Santiago Gonzalez**  
 
 ---
-
+```
 ##  📂 Estructura del repositorio
 
 /pp1_proyectofinal
@@ -60,7 +60,7 @@ Proyecto desarrollado para la materia **Proyecto Profesional 1** en la **Univers
 ├── .gitignore              # Archivos y carpetas ignorados por Git
 ├── README.md               # Este archivo (información general del repositorio)
 └── LICENSE                 # Licencia del proyecto (si aplica)
-
+```
 ---
 
 ## 📎 Documentación adicional
