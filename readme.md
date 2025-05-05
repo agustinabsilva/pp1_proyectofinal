@@ -17,6 +17,25 @@ Proyecto desarrollado para la materia **Proyecto Profesional 1** en la **Univers
 - [Herramientas de gestión: Trello, Git]
 
 ---
+## 👥 Integrantes
 
+- **Agustina Silva**  
+- **Cecilia Torales**  
+- **Ezequiel Alfaro**  
+- **Maria Jose Ibacache**  
+- **Leandro Gimenez**
+- **Santiago Gonzalez**  
+
+---
+
+## 📄 Licencia
+
+Este proyecto fue realizado con fines académicos como parte de la cursada de **Proyecto Profesional 1** en la **Universidad Nacional de General Sarmiento**. No está destinado a uso comercial.
+
+---
+
+## 📎 Documentación adicional
+
+Podés consultar la documentación completa del proyecto en el archivo PDF incluido en la carpeta `/documentacion`.
 
   
