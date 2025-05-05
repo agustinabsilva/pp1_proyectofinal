@@ -30,7 +30,7 @@ Proyecto desarrollado para la materia **Proyecto Profesional 1** en la **Univers
 
 ---
 
-## 📂 Estructura del repositorio
+##  📂 Estructura del repositorio
 
 /pp1_proyectofinal
 │
