@@ -73,7 +73,7 @@ p {
     gap: 50px; /* Espacio entre los enlaces */
     margin: 0;
     padding: 0;
-    
+    background-color: #ffffff;
 }
 
 .nav-links li {
@@ -161,7 +161,7 @@ p {
     }
 
     .nav-links a {
-        font-size: 1; /* Aumenta el tamaño del texto para pantallas pequeñas */
+        font-size: 1rem; /* Aumenta el tamaño del texto para pantallas pequeñas */
         text-align: center; /* Centra los enlaces */
         white-space: normal; /* Permite que el texto se divida en múltiples líneas si es necesario */
     }
@@ -617,3 +617,111 @@ opacity: 0; /* empieza invisible */}
 
         animation: fadeIn 1.2s ease forwards;
         opacity: 0; /* empieza invisible */}
+
+        .perfil-section {
+  background-color: #f6f3f0;
+  padding: 60px 20px;
+}
+
+.perfil-contenedor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.perfil-foto img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-info {
+  max-width: 500px;
+  text-align: left;
+}
+
+.perfil-info h3 {
+  margin: 0 0 10px;
+  color: #4d3a2f;
+}
+
+.perfil-info p {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.perfil-extra {
+  margin-top: 20px;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@media (max-width: 768px) {
+  .perfil-contenedor {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .perfil-info {
+    text-align: center;
+  }
+}
+
+.perfil-section {
+    background-color: #f6f3f0;
+    padding: 60px 20px;
+  }
+  
+  .perfil-contenedor {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .perfil-foto img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .perfil-info {
+    max-width: 500px;
+    text-align: left;
+  }
+  
+  .perfil-info h3 {
+    margin: 0 0 10px;
+    color: #4d3a2f;
+  }
+  
+  .perfil-info p {
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .perfil-extra {
+    margin-top: 20px;
+    animation: fadeIn 0.8s ease forwards;
+  }
+  
+  @media (max-width: 768px) {
+    .perfil-contenedor {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .perfil-info {
+      text-align: center;
+    }
+  }

@@ -1,12 +1,4 @@
 // Archivo script.js
-document.addEventListener('DOMContentLoaded', function () {
-    const menuIcon = document.querySelector('.menu-icon');
-    const navLinks = document.querySelector('.nav-links');
-
-    menuIcon.addEventListener('click', function () {
-        navLinks.classList.toggle('active');
-    });
-});
 
 document.addEventListener('DOMContentLoaded', function () {
     const menuIcon = document.querySelector('.menu-icon');
@@ -42,3 +34,17 @@ document.addEventListener('DOMContentLoaded', function () {
         handleScrollAnimation();
     });
 });
+
+  document.getElementById('btn-ver-mas').addEventListener('click', function () {
+    const extra = document.getElementById('extra-info');
+    if (extra.style.display === 'none') {
+      extra.style.display = 'block';
+      this.textContent = 'Ver menos';
+    } else {
+      extra.style.display = 'none';
+      this.textContent = 'Ver más';
+    }
+  });
+
+
+  
