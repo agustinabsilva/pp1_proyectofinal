@@ -47,4 +47,11 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
 
-  
+  document.getElementById('form-contacto').addEventListener('submit', function (e) {
+    e.preventDefault(); // evita envío real
+    const toast = new bootstrap.Toast(document.getElementById('toastSuccess'));
+    toast.show();
+
+    // Opcional: limpiar el formulario
+    this.reset();
+  });
