@@ -1,4 +1,4 @@
-// Archivo script.js
+//Menu Responsive
 
 document.addEventListener('DOMContentLoaded', function () {
     const menuIcon = document.querySelector('.menu-icon');
@@ -7,51 +7,57 @@ document.addEventListener('DOMContentLoaded', function () {
     menuIcon.addEventListener('click', function () {
         navLinks.classList.toggle('active');
     });
-
-    // Scroll Reveal Animations
-    const scrollElements = document.querySelectorAll('.scroll-reveal');
-
-    const elementInView = (el, offset = 100) => {
-        const elementTop = el.getBoundingClientRect().top;
-        return (
-            elementTop <= (window.innerHeight || document.documentElement.clientHeight) - offset
-        );
-    };
-
-    const displayScrollElement = (element) => {
-        element.classList.add('visible');
-    };
-
-    const handleScrollAnimation = () => {
-        scrollElements.forEach((el) => {
-            if (elementInView(el)) {
-                displayScrollElement(el);
-            }
-        });
-    };
-
-    window.addEventListener('scroll', () => {
-        handleScrollAnimation();
-    });
 });
 
-  document.getElementById('btn-ver-mas').addEventListener('click', function () {
-    const extra = document.getElementById('extra-info');
-    if (extra.style.display === 'none') {
-      extra.style.display = 'block';
-      this.textContent = 'Ver menos';
-    } else {
-      extra.style.display = 'none';
-      this.textContent = 'Ver más';
+// Verifica si el botón existe antes de añadir el evento
+  document.addEventListener("DOMContentLoaded", function () {
+    const btnEnviado = document.getElementById("btnEnviar");
+
+    if (btnEnviado) {
+        btnEnviado .addEventListener("click", function (e) {
+            e.preventDefault(); // Evita el salto inmediato
+
+            Swal.fire({
+                title: "Enviado!",
+                text: "Muchas gracias por contactarte",
+                imageUrl: "./assets/capiok.png",
+                imageWidth: 400,
+                imageHeight: 400,                
+                imageAlt: "Custom image",
+                confirmButtonText: "Continuar",
+                confirmButtonColor: "#b88b66",
+               
+              });
+               // Limpia el formulario
+            const form = document.getElementById("form-contacto"); // Asegúrate de usar el ID correcto
+            if (form) {
+                form.reset();
+            }
+             
+        });
+        
     }
-  });
+   
+});
+ 
+const animateOnScroll = () => {
+    const elements = document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right');
 
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.animationPlayState = 'running';
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
 
-  document.getElementById('form-contacto').addEventListener('submit', function (e) {
-    e.preventDefault(); // evita envío real
-    const toast = new bootstrap.Toast(document.getElementById('toastSuccess'));
-    toast.show();
+    elements.forEach(el => {
+      el.style.animationPlayState = 'paused'; // para evitar que se animen antes de aparecer
+      observer.observe(el);
+    });
+  };
 
-    // Opcional: limpiar el formulario
-    this.reset();
-  });
+  document.addEventListener('DOMContentLoaded', animateOnScroll);

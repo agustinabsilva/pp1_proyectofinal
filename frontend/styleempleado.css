@@ -1,0 +1,220 @@
+/* Fuente y reset básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f6f3f0;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    background-image: url('./assets/wallpaper.png');
+     background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+   
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30vh;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 50px;
+    vertical-align: middle;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 50px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #C39B82;
+    font-weight: 400;
+    font-size: large;
+    transition: color 0.3s ease;
+}
+
+.bold-link {
+    font-weight: 700;
+}
+
+.nav-links a:hover {
+    color: #4d3a2f;
+}
+
+.btn-ingresa {
+    padding: 8px 16px;
+    background-color: #cfb299;
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+}
+
+.btn-ingresa:hover {
+    background-color: #b88b66;
+}
+
+/* MENÚ HAMBURGUESA (oculto en escritorio) */
+.menu-icon {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.menu-icon span {
+    width: 25px;
+    height: 3px;
+    background-color: #555;
+}
+
+/* SECCIÓN INICIO */
+.section {
+    padding: 60px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.contenido h1 {
+    font-size: 2.5rem;
+    color: #6C705E;
+    margin-bottom: 20px;
+}
+
+.contenido p {
+    font-size: 1.2rem;
+    color: #4d3a2f;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 20px;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 90%;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin-bottom: 15px;
+    }
+
+    .btn-ingresa {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .menu-icon {
+        display: flex;
+    }
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fdfaf3;
+}
+
+.sidebar {
+  width: 250px;
+  background: #e4f4df;
+  min-height: 100vh;
+  border-right: 1px solid #ccc;
+  position: sticky;
+  top: 0;
+}
+
+.logo {
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #527a5a;
+}
+
+.nav-link {
+  font-weight: 500;
+  color: #527a5a;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+  background-color: #d2eac7;
+  color: #365a3b;
+}
+
+.titulo-principal {
+  font-weight: 600;
+  color: #527a5a;
+}
+
+
+.card {
+  border: none;
+  background-color: #fdfdfb;
+  border-radius: 15px;
+}
+
+.progress {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.nav-activa {
+  background: #5ec9a7 !important;
+  color: #fff !important;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px #b7d7c2;
+}
+.btn-ainabi {
+  background-color: #cfb299;
+  color: #fff;
+  border-radius: 12px;
+  font-weight: 700;
+  border: 2px solid #e6e2c3;
+  transition: background-color 0.3s;
+}
+.btn-ainabi:hover {
+  background-color: #b88b66;
+  color:white
+}

@@ -1,0 +1,179 @@
+body, html {
+    height: 100%;
+    margin: 0;
+   /* overflow: hidden; /* evita scroll vertical */
+}
+
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+
+/* Animación de entrada suave para el login */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* LOGIN SECTION */
+
+.login-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* <- de center a flex-start */
+    height: 100vh;
+    background-color: #f6f3f0;
+    padding: 50px; /* arriba */
+    background-image: url('./assets/wallpaper.png');
+}
+
+.login-content {
+    animation: fadeInUp 1s ease-out;
+    background-color: #ffffffce;
+    padding: 40px 35px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.bienvenido-login {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    transition: transform 0.4s ease;
+}
+
+.bienvenido-login:hover {
+    transform: scale(1.05);
+}
+
+/* INPUT CON EFECTO AL FOCO */
+.login-content input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    transition: box-shadow 0.3s ease, border 0.3s ease;
+}
+
+.login-content input:focus {
+    border: 1px solid #cfb299;
+    box-shadow: 0 0 8px #cfb29955;
+    outline: none;
+}
+
+/* BOTÓN CON ELEVACIÓN AL HOVER */
+.login-content button {
+    width: 100%;
+    padding: 12px;
+    background-color: #cfb299;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+.login-content button:hover {
+    background-color: #b88b66;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* MENSAJE DE RESULTADO */
+#resultado {
+    margin-top: 15px;
+    color: #6C705E;
+    font-size: 0.9rem;
+}
+
+
+
+.login-content input,
+.login-content button {
+    width: 100%;
+    max-width: 300px; /* límite de ancho para que no se estiren */
+    box-sizing: border-box; /* esto es crucial para que padding/border no desborden */
+    margin: 10px auto; /* asegura espacio y centrado */
+}
+/*FOOTER*/
+.footer {
+    
+    font-family: 'Poppins', sans-serif;
+    
+    background-color: #ffffff;
+  color:  #b88b66;
+  text-align: center;
+  padding: 13px 8px;
+  font-size: 1rem;
+  border-top: 1px solid #e0dbd4;
+  
+}
+
+.container-footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-logo {
+    width: 40px;
+    height: auto;
+}
+
+.footer-right a {
+    color: #b88b66;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.footer-right a:hover {
+    color: #6C705E;
+}
+
+/* Animaciones básicas */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

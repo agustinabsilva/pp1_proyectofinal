@@ -1,61 +1,534 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    
-    <!-- Enlace al archivo CSS externo -->
-    <link rel="stylesheet" href="style.css">
-   
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Supervisor - AINABI</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="styleempleado.css" />
+  <link rel="stylesheet" href="bienvenida.css" />
+  <link rel="stylesheet" href="stylesupervisor.css" />
+  <!-- Firebase y lógica de app -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
+  <script defer src="app.js"></script>
+  <!-- Fin Firebase -->
 </head>
 <body>
-    <!-- Barra de Navegación -->
-    <nav class="navbar">
-        <!-- Logo y nombre de la empresa -->
-        <div class="logo-container">
-            <a href="./index.html" class="logo">
-                <img src="./assets/icono-logo-final.png" alt="Logo de la empresa">
-            </a>
-        </div>
-        <!-- Enlaces de navegación -->
-        <ul class="nav-links">
-            <li><a href="./index.html" class="bold-link" style="font-weight: bolder;">Inicio</a></li>
-            <li><a href="./index.html">Sobre Nosotros</a></li>
-            <li><a href="./index.html">Contacto</a></li>
-            <li><a href="#ingresa" class="btn-ingresa" style="color:#fcfcfc;">Ingresa</a></li>
-        </ul>
-        <!-- Icono de hamburguesa para móviles -->
-        <div class="menu-icon">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+
+  
+
+  <!-- Contenido principal con sidebar -->
+  <div class="d-flex">
+   <!-- Sidebar -->
+<aside class="sidebar p-4 d-flex flex-column justify-content-between">
+  <div>
+    <h2 class="logo mb-4">🌿 AINABI</h2>
+    <nav class="nav flex-column">
+      <a href="./empleado.html" class="nav-link" id="nav-inicio">
+        <i class="fas fa-home me-2"></i>Inicio
+      </a>
+      <a href="#" class="nav-link" id="nav-feedback">
+        <i class="fas fa-sync-alt me-2"></i>Feedback 360°
+      </a>
+      <a href="./profileempleado.html" class="nav-link" id="nav-perfil">
+        <i class="fas fa-user me-2"></i>Mi Perfil
+      </a>
     </nav>
+  </div>
 
-    <!-- Sección de Login -->
-    <section id="login" class="login-section">
-        <div class="login-content">
-            <div class="login-form">
-                <h2>Iniciar Sesión</h2>
-                <form action="#" method="POST">
-                    <input type="email" name="email" placeholder="Correo Electrónico" required>
-                    <input type="password" name="password" placeholder="Contraseña" required>
-                    <button type="submit" class="btn-submit">Ingresar</button>
-                </form>
-                <p class="register-link">¿No tienes una cuenta? <a href="#registro">Regístrate aquí</a>.</p>
+  <!-- Íconos inferiores -->
+  <div class="mt-4">
+    <a href="./index.html" class="nav-link">
+      <i class="fas fa-house me-2"></i>Inicio General
+    </a>
+    <a href="./index.html" class="nav-link text-danger">
+      <i class="fas fa-sign-out-alt me-2"></i>Salir
+    </a>
+  </div>
+</aside>
+
+
+
+
+    <!-- Sección principal -->
+    <main class="flex-grow-1 p-4">
+      <div id="inicio-section">
+        
+        
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 400px; width: 100%;">
+            <div class="bienvenida-carpincho" style="display: flex; justify-content: center; ">
+              <img src="./assets/profilephoto.png" alt="Carpincho AINABI" style=" border-radius: 50%; object-fit: cover; background: #e6e2c3; margin-bottom: 10px;">
             </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; 2023 AINABI. Todos los derechos reservados.</p>
             
+            <h2 class="bienvenida-titulo text-center" style="color: #4d6a3a; font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;">
+              ¡Bienvenido/a!
+            </h2>
+            <p class="bienvenida-texto text-center" style="color: #4d6a3a;">
+              <span class="bienvenida-emoji">🌿</span> Nos alegra tenerte como parte de nuestro equipo.🌿<br><br>
+              Desde acá podrás realizar feedback sobre tus empleados y gestionar tu perfil.<br><br>
+              <span class="bienvenida-resaltado" style="font-weight:600;">¡El carpincho te acompaña en tu desarrollo profesional!</span><br><br>
+              Utilizá el menú lateral para comenzar a potenciar tu crecimiento.
+            </p>
+            <div class="bienvenida-brillo text-center">
+              <span>✨</span>
+            </div>
+          </div>
         </div>
-    </footer>
-    <script src="script.js"> </script>
+      </div>
+
+      <div id="autoevaluacion-section" style="display:none;">
+       <!-- <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 400px; width: 100%;">
+            <div class="text-center mb-3">
+              <h2 style="color: #4d6a3a; font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;">Autoevaluación</h2>
+              <div style="background: #e6e2c3; border-radius: 50%; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; box-shadow: 0 2px 8px #b7d7c2;">
+                <img src="./assets/profilephoto.png" alt="Carpincho AINABI" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover;">
+              </div>
+            </div>
+            <p class="text-center" style="color: #4d6a3a; margin-bottom: 18px;">
+              Seleccioná tu desempeño general y dejá un comentario sobre tu experiencia reciente.
+            </p>
+            <form style="width:100%; max-width:400px;" id="form-autoevaluacion">
+              <div class="mb-3 text-start">
+                <label for="fecha-autoevaluacion" class="form-label" style="color: #4d6a3a;">Fecha de autoevaluación</label>
+                <input type="date" class="form-control" id="fecha-autoevaluacion" required>
+              </div>
+              <div class="mb-3 text-start">
+                <label for="desempeno" class="form-label" style="color: #4d6a3a;">Nivel de desempeño</label>
+                <select class="form-select" id="desempeno">
+                  <option>Satisfactorio</option>
+                  <option>Bueno</option>
+                  <option>Deficiente</option>
+                </select>
+              </div>
+              <div class="mb-3 text-start">
+                <label for="comentario" class="form-label" style="color: #4d6a3a;">Comentario adicional</label>
+                <textarea class="form-control" id="comentario" rows="3" placeholder="Escribí aquí tus reflexiones o sugerencias..."></textarea>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-light border btn-ainabi" style="border-radius: 12px; border: 2px solid #e6e2c3;">Guardar</button>
+              </div>
+            </form>
+          </div>
+        </div>-->
+      </div>
+
+      <div id="feedback-section" style="display:none;">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 500px; width: 100%;">
+            <div class="d-flex justify-content-center align-items-start" style="min-height: 80vh;">
+              <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 600px; width: 100%;">
+                <h5 class="card-title text-center mb-3" style="color: #4d6a3a; font-weight: 700;">Empleados de tu área</h5>
+                <ul id="lista-empleados-area" class="list-group mb-4"></ul>
+                <div id="form-feedback-container" style="display:none;">
+                  <h5 class="mb-3" style="color: #4d6a3a;">Dejar feedback para <span id="nombre-empleado-feedback"></span></h5>
+                  <form id="form-feedback-empleado">
+                    <div class="mb-3">
+                      <label for="desempeno-empleado" class="form-label">Nivel de desempeño</label>
+                      <select class="form-select" id="desempeno-empleado" required>
+                        <option value="">Seleccionar</option>
+                        <option>Satisfactorio</option>
+                        <option>Bueno</option>
+                        <option>Deficiente</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="comentario-empleado" class="form-label">Comentario</label>
+                      <textarea class="form-control" id="comentario-empleado" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Enviar Feedback</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        // Suponiendo que tienes el área del supervisor en una variable supervisorArea
+        let supervisorArea = ""; // Debes obtener este dato del usuario autenticado
+
+        // Obtener el área del usuario autenticado desde Firestore
+        firebase.auth().onAuthStateChanged(async function(user) {
+          if (user) {
+            const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+            if (userDoc.exists) {
+              supervisorArea = userDoc.data().area || "";
+            }
+          }
+        });
+
+        // Evento para buscar empleados solo al hacer clic en el botón
+        document.getElementById('btn-buscar-empleado').addEventListener('click', async function() {
+          const query = document.getElementById('buscador-empleado').value.trim().toLowerCase();
+          const resultados = document.getElementById('resultados-busqueda');
+          resultados.innerHTML = "";
+
+          // Referencia a la colección de usuarios
+          const empleadosRef = firebase.firestore().collection('users');
+          const snapshot = await empleadosRef
+            .where('role', '==', 'Empleado')
+            .where('area', '==', supervisorArea)
+            .get();
+
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            // Si el buscador está vacío, muestra todos los empleados del área
+            // Si hay texto, filtra por nombre o email
+            if (
+              query === "" ||
+              data.nombre.toLowerCase().includes(query) ||
+              data.email.toLowerCase().includes(query)
+            ) {
+              const li = document.createElement('li');
+              li.className = "list-group-item";
+              li.textContent = data.nombre + " (" + data.email + ")";
+              resultados.appendChild(li);
+            }
+          });
+        });
+      </script>
+
+      <div id="perfil-section" style="display:none;">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 400px; width: 100%;">
+            <div class="text-center mb-3">
+              <h2 style="color: #4d6a3a; font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;">🌿AINABI🌿</h2>
+              <div style="display: flex; justify-content: center;">
+                <div style="background: #e6e2c3; border-radius: 50%; width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; box-shadow: 0 2px 8px #b7d7c2;">
+                  <img src="./assets/profilephoto.png" alt="Foto de perfil" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                </div>
+              </div>
+              <h3 id="user-nombre" style="color: #4d6a3a; font-weight: 600; margin-bottom: 18px; margin-top: 10px;">Nombre Apellido</h3>
+            </div>
+            <div style="font-size: 1.1rem; color: #4d6a3a;">
+              <div class="d-flex justify-content-between mb-2">
+                <span style="font-weight: 500;">Rol:</span>
+                <span id="user-rol" style="font-weight: 400;">Cargando...</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span style="font-weight: 500;">Área:</span>
+                <span id="user-area" style="font-weight: 400;">Cargando...</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span style="font-weight: 500;">Jerarquía:</span>
+                <span id="user-jerarquia" style="font-weight: 400;">Cargando...</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span style="font-weight: 500;">Email:</span>
+                <span id="user-email" style="font-weight: 400;">Cargando...</span>
+              </div>
+              <div class="d-flex justify-content-between mb-3">
+                <span style="font-weight: 500;">Activo:</span>
+                <span>
+                  <span id="user-activo" style="background: #e6f5d0; color: #4d6a3a; border-radius: 16px; padding: 2px 16px; font-weight: 600; font-size: 1rem;">Activo</span>
+                </span>
+              </div>
+            </div>
+            <div class="text-center mt-3">
+              <button id="btn-solicitar-cambio" class="btn btn-light border btn-ainabi" style="border-radius: 12px; border: 2px solid #e6e2c3;">Solicitar cambiar datos</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // Función para mostrar solo la sección seleccionada
+    function mostrarSeccion(seccionId) {
+      document.getElementById('inicio-section').style.display = 'none';
+      document.getElementById('autoevaluacion-section').style.display = 'none';
+      document.getElementById('feedback-section').style.display = 'none';
+      document.getElementById('perfil-section').style.display = 'none';
+      document.getElementById(seccionId).style.display = 'block';
+    }
+
+    // Cambia la clase activa en la barra lateral
+    function setActiveNav(navId) {
+      document.getElementById('nav-inicio').classList.remove('nav-activa');
+      document.getElementById('nav-feedback').classList.remove('nav-activa');
+      document.getElementById('nav-perfil').classList.remove('nav-activa');
+      document.getElementById(navId).classList.add('nav-activa');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('nav-inicio').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarSeccion('inicio-section');
+        setActiveNav('nav-inicio');
+      });
+      document.getElementById('nav-feedback').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarSeccion('feedback-section'); // <-- Cambia aquí a 'feedback-section'
+        setActiveNav('nav-feedback');
+      });
+      document.getElementById('nav-perfil').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarSeccion('perfil-section');
+        setActiveNav('nav-perfil');
+      });
+    });
+  </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', async function() {
+    // Espera a que Firebase esté listo y el usuario esté autenticado
+    firebase.auth().onAuthStateChanged(async function(user) {
+      if (user) {
+        try {
+          // Obtiene el documento del usuario desde la colección 'users'
+          const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+          if (userDoc.exists) {
+            const data = userDoc.data();
+            document.getElementById('user-nombre').textContent = data.nombre || "Sin nombre";
+            document.getElementById('user-rol').textContent = data.role || "Sin rol";
+            document.getElementById('user-area').textContent = data.area || "Sin área";
+            document.getElementById('user-jerarquia').textContent = data.jerarquia || "Sin jerarquía";
+            document.getElementById('user-email').textContent = data.email || user.email || "Sin email";
+            // Estado activo: true/false
+            if (typeof data.activo !== "undefined") {
+              document.getElementById('user-activo').textContent = data.activo ? "Activo" : "Inactivo";
+              document.getElementById('user-activo').style.background = data.activo ? "#e6f5d0" : "#f5e6e6";
+              document.getElementById('user-activo').style.color = data.activo ? "#4d6a3a" : "#a94442";
+            } else {
+              document.getElementById('user-activo').textContent = "Sin dato";
+              document.getElementById('user-activo').style.background = "#f5e6e6";
+              document.getElementById('user-activo').style.color = "#a94442";
+            }
+          }
+        } catch (err) {
+          console.error("Error al obtener datos del perfil:", err);
+        }
+      }
+    });
+  });
+  // Guardar autoevaluación con fecha y nombre
+  const formAuto = document.getElementById('form-autoevaluacion');
+  if (formAuto) {
+    formAuto.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const fecha = document.getElementById('fecha-autoevaluacion').value;
+      const desempeno = document.getElementById('desempeno').value;
+      const comentario = document.getElementById('comentario').value;
+      try {
+        const user = firebase.auth().currentUser;
+        if (user) {
+          // Obtener el nombre del usuario desde la colección users
+          const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+          let nombre = "";
+          if (userDoc.exists) {
+            nombre = userDoc.data().nombre || "";
+          }
+          await firebase.firestore().collection('autoevaluaciones').add({
+            uid: user.uid,
+            nombre: nombre,
+            fecha: fecha,
+            desempeno: desempeno,
+            comentario: comentario,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          // Reemplaza el alert por SweetAlert2
+          Swal.fire({
+            
+            title: "¡Tu feedback fue recibido correctamente!",
+            imageUrl: "./assets/capiok.png",
+            imageHeight: 100,
+            confirmButtonColor: "#b88b66"
+          });
+          formAuto.reset();
+        } else {
+          alert('Debes estar logueado para guardar la autoevaluación.');
+        }
+      } catch (err) {
+        alert('Error al guardar la autoevaluación: ' + err.message);
+      }
+    });
+  }
+  </script>
+
+<!-- Modal para solicitar cambio de datos -->
+<div class="modal fade" id="modalCambioDatos" tabindex="-1" aria-labelledby="modalCambioDatosLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 20px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCambioDatosLabel">Solicitud de cambio de datos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-cambio-datos">
+          <div class="mb-3">
+            <label for="nuevo-nombre" class="form-label">Nuevo nombre</label>
+            <input type="text" class="form-control" id="nuevo-nombre" required>
+          </div>
+          <div class="mb-3">
+            <label for="nuevo-email" class="form-label">Nuevo email</label>
+            <input type="email" class="form-control" id="nuevo-email" required>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-success px-4">Enviar solicitud</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Mostrar el modal al hacer clic en el botón
+document.addEventListener('DOMContentLoaded', function() {
+  const btnCambio = document.getElementById('btn-solicitar-cambio');
+  if (btnCambio) {
+    btnCambio.addEventListener('click', function() {
+      const modal = new bootstrap.Modal(document.getElementById('modalCambioDatos'));
+      modal.show();
+    });
+  }
+
+  // Manejar el envío del formulario de cambio de datos
+  const formCambio = document.getElementById('form-cambio-datos');
+  if (formCambio) {
+    formCambio.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const nuevoNombre = document.getElementById('nuevo-nombre').value;
+      const nuevoEmail = document.getElementById('nuevo-email').value;
+      try {
+        const user = firebase.auth().currentUser;
+        if (user) {
+          await firebase.firestore().collection('solicitudes_cambio_datos').add({
+            uid: user.uid,
+            nombre: nuevoNombre,
+            email: nuevoEmail,
+            estado: "pendiente",
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          // Cerrar el modal
+          bootstrap.Modal.getInstance(document.getElementById('modalCambioDatos')).hide();
+          // Mostrar popup de éxito
+          Swal.fire({
+            title: "¡Solicitud enviada!",
+            text: "Tu solicitud de cambio de datos fue enviada al administrador.",
+            icon: "success",
+            confirmButtonColor: "#b88b66"
+          });
+          formCambio.reset();
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: "Debes estar logueado para enviar la solicitud.",
+            icon: "error",
+            confirmButtonColor: "#b88b66"
+          });
+        }
+      } catch (err) {
+        Swal.fire({
+          title: "Error",
+          text: "No se pudo enviar la solicitud: " + err.message,
+          icon: "error",
+          confirmButtonColor: "#b88b66"
+        });
+      }
+    });
+  }
+});
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
 </body>
 </html>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  firebase.auth().onAuthStateChanged(async function(user) {
+    if (user) {
+      // Obtener el área del supervisor actual
+      const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+      if (userDoc.exists) {
+        const supervisorData = userDoc.data();
+        const areaSupervisor = supervisorData.area;
+
+        // Consultar todos los usuarios del área del supervisor
+        firebase.firestore().collection('users')
+          .where('area', '==', areaSupervisor)
+          .get()
+          .then((querySnapshot) => {
+            const lista = document.getElementById('lista-empleados-area');
+            lista.innerHTML = ""; // Limpiar la lista antes de agregar
+            querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              if (doc.id !== user.uid) {
+                const li = document.createElement('li');
+                li.className = "list-group-item list-group-item-action";
+                li.style.cursor = "pointer";
+                li.textContent = data.nombre + " (" + data.email + ")";
+                li.addEventListener('click', function() {
+                  document.getElementById('form-feedback-container').style.display = "block";
+                  document.getElementById('nombre-empleado-feedback').textContent = data.nombre;
+                  document.getElementById('form-feedback-empleado').setAttribute('data-uid', doc.id);
+                });
+                lista.appendChild(li);
+              }
+            });
+            if (lista.innerHTML === "") {
+              lista.innerHTML = "<li class='list-group-item'>No hay empleados en tu área.</li>";
+            }
+          })
+          .catch((error) => {
+            console.error("Error obteniendo empleados:", error);
+          });
+      }
+    }
+  });
+
+  // Manejar envío del feedback
+  const formFeedback = document.getElementById('form-feedback-empleado');
+  if (formFeedback) {
+    formFeedback.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const uidEmpleado = formFeedback.getAttribute('data-uid');
+      const nombreEmpleado = document.getElementById('nombre-empleado-feedback').textContent;
+      const desempeno = document.getElementById('desempeno-empleado').value;
+      const comentario = document.getElementById('comentario-empleado').value;
+      const supervisor = firebase.auth().currentUser;
+      if (!uidEmpleado || !supervisor) return;
+      try {
+        await firebase.firestore().collection('feedbacks').add({
+          uidEmpleado: uidEmpleado,
+          nombreEmpleado: nombreEmpleado,
+          uidSupervisor: supervisor.uid,
+          desempeno: desempeno,
+          comentario: comentario,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        Swal.fire({
+          title: "¡Feedback enviado!",
+          icon: "success",
+          confirmButtonColor: "#b88b66"
+        });
+        formFeedback.reset();
+        document.getElementById('form-feedback-container').style.display = "none";
+      } catch (err) {
+        Swal.fire({
+          title: "Error",
+          text: "No se pudo enviar el feedback: " + err.message,
+          icon: "error",
+          confirmButtonColor: "#b88b66"
+        });
+      }
+    });
+  }
+});
+</script>

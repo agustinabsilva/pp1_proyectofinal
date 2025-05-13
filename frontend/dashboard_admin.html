@@ -1,25 +1,623 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Panel Administrador</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - AINABI</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="styleempleado.css" />
+  <link rel="stylesheet" href="bienvenida.css" />
+  <!-- Firebase y lógica de app -->
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
-  <script defer src="admin.js"></script>
+  <!-- Fin Firebase -->
+
+  <style>
+    #tabla-container {
+      overflow-x: auto; /* Permite el scroll horizontal si la tabla es muy ancha */
+      max-width: 100%;  /* Asegura que el contenedor no se desborde de su padre (la card) */
+    }
+    #tabla-container table {
+      font-size: 0.875rem; /* Reduce un poco el tamaño de la fuente de la tabla */
+      width: 100%;       /* Hace que la tabla ocupe el ancho disponible en su contenedor (que ahora tiene scroll) */
+    }
+    #tabla-container th,
+    #tabla-container td {
+      padding: 0.5rem 0.75rem; /* Ajusta el padding de las celdas para que sean un poco más compactas */
+      white-space: nowrap;   /* Evita que el texto largo en las celdas se divida en múltiples líneas,
+                                 lo cual funciona bien con el scroll horizontal del contenedor.
+                                 Si prefieres que el texto se divida, puedes comentar o quitar esta línea. */
+    }
+  </style>
 </head>
 <body>
-  <h1>Panel de Administración</h1>
-  <table border="1" id="tablaUsuarios">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Rol</th>
-        <th>Activo</th>
-        <th>Acción</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <aside class="sidebar p-4 d-flex flex-column justify-content-between">
+      <div>
+        <h2 class="logo mb-4">🌿 AINABI</h2>
+        <nav class="nav flex-column">
+          <a href="#" class="nav-link nav-activa" id="nav-dashboard">
+            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+          </a>
+          <a href="#" class="nav-link" id="nav-usuarios">
+            <i class="fas fa-users me-2"></i>Usuarios
+          </a>
+          <a href="#" class="nav-link" id="nav-reportes">
+            <i class="fas fa-chart-bar me-2"></i>Reportes
+          </a>
+          <a href="#" class="nav-link" id="nav-prediccion">
+            <i class="fas fa-chart-line me-2"></i>Predicción de Rendimiento
+          </a>
+          <a href="#" class="nav-link" id="nav-rotacion">
+            <i class="fas fa-random me-2"></i>Probabilidad de Rotación
+          </a>
+          <a href="#" class="nav-link" id="nav-solicitud-cambios">
+            <i class="fas fa-user-edit me-2"></i>Solicitud de Cambios
+          </a>
+        </nav>
+      </div>
+      <div class="mt-4">
+        <a href="./index.html" class="nav-link text-danger">
+          <i class="fas fa-sign-out-alt me-2"></i>Salir
+        </a>
+      </div>
+    </aside>
+
+    <!-- Sección principal -->
+    <main class="flex-grow-1 p-4">
+      <div id="dashboard-section">
+        <!-- Contenido del Dashboard -->
+        <h1 class="mb-4" style="color: #4d6a3a; font-weight: 600;">Dashboard Principal</h1>
+
+        <!-- Alertas Predictivas -->
+        <div class="card mb-4 shadow-sm" style="background-color: #fdfbe8; border-radius: 15px; border: 1px solid #e6e2c3;">
+            <div class="card-body">
+                <h5 class="card-title" style="color: #4d6a3a; font-weight: 700;">
+                    <i class="fas fa-bell me-2"></i>Alertas Predictivas
+                </h5>
+                <div class="alert alert-warning d-flex align-items-center" role="alert" style="background-color: #fff9e6; border-color: #ffeeba;">
+                    <i class="fas fa-exclamation-triangle me-3 fa-2x" style="color: #ffa500;"></i>
+                    <div>
+                        <strong style="color: #856404;">Predicción de rotación: Alta</strong><br>
+                        <small style="color: #856404;">Hay 5 empleados con alta probabilidad de rotación este trimestre. <a href="#" class="alert-link" style="color: #856404; font-weight: bold;">Ver detalles</a></small>
+                    </div>
+                </div>
+                <!-- Puedes añadir más alertas aquí si es necesario -->
+            </div>
+        </div>
+
+        <!-- Resumen de Actividad -->
+        <div class="card mb-4 shadow-sm" style="background-color: #fdfbe8; border-radius: 15px; border: 1px solid #e6e2c3;">
+            <div class="card-body">
+                <h5 class="card-title" style="color: #4d6a3a; font-weight: 700;">
+                    <i class="fas fa-chart-pie me-2"></i>Resumen de Actividad
+                </h5>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card text-center h-100" style="background-color: #eef7e9; border-radius: 10px;">
+                            <div class="card-body">
+                                <i class="fas fa-chart-line fa-2x mb-2" style="color: #5cb85c;"></i>
+                                <h6 class="card-subtitle mb-2 text-muted">Indicador 1</h6>
+                                <p class="card-text fs-4 fw-bold" style="color: #4d6a3a;">75%</p>
+                                <small class="text-muted">Completitud de Perfiles</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card text-center h-100" style="background-color: #eef7e9; border-radius: 10px;">
+                            <div class="card-body">
+                                <i class="fas fa-chart-bar fa-2x mb-2" style="color: #f0ad4e;"></i>
+                                <h6 class="card-subtitle mb-2 text-muted">Indicador 2</h6>
+                                <p class="card-text fs-4 fw-bold" style="color: #4d6a3a;">12</p>
+                                <small class="text-muted">Feedbacks Pendientes</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card text-center h-100" style="background-color: #eef7e9; border-radius: 10px;">
+                            <div class="card-body">
+                                <i class="fas fa-wave-square fa-2x mb-2" style="color: #5bc0de;"></i>
+                                <h6 class="card-subtitle mb-2 text-muted">Indicador 3</h6>
+                                <p class="card-text fs-4 fw-bold" style="color: #4d6a3a;">8.5/10</p>
+                                <small class="text-muted">Satisfacción General</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accesos Rápidos -->
+        <div class="card mb-4 shadow-sm" style="background-color: #fdfbe8; border-radius: 15px; border: 1px solid #e6e2c3;">
+            <div class="card-body">
+                <h5 class="card-title" style="color: #4d6a3a; font-weight: 700;">
+                    <i class="fas fa-bolt me-2"></i>Accesos Rápidos
+                </h5>
+                <div class="card" style="background-color: #fffefa; border-radius: 10px;">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="./assets/profilephoto.png" alt="Usuario" class="rounded-circle me-3" width="60" height="60" style="border: 2px solid #b88b66;">
+                            <div>
+                                <h6 class="mb-0 fw-bold" style="color: #4d6a3a;">Maria Jose Ibacache</h6>
+                                <small class="text-muted">Jefa de Área de Operaciones</small> <!-- Ejemplo de Área -->
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <p class="mb-1"><small class="text-muted">Subordinados Directos:</small></p>
+                                <p class="fw-bold fs-5" style="color: #4d6a3a;">8</p> <!-- Ejemplo de cantidad -->
+                            </div>
+                            <div class="col-6">
+                                <p class="mb-1"><small class="text-muted">Empleados en el Área:</small></p>
+                                <p class="fw-bold fs-5" style="color: #4d6a3a;">25</p> <!-- Ejemplo de cantidad -->
+                            </div>
+                        </div>
+
+                        <p class="mb-1"><small class="text-muted">Feedbacks Enviados (del área este mes):</small></p>
+                        <div class="progress mb-3" style="height: 12px; border-radius: 6px;">
+                            <div class="progress-bar" role="progressbar" style="width: 65%; background-color: #5cb85c;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
+                        </div>
+                        
+                        <ul class="list-unstyled">
+                            <!-- Puedes añadir otros accesos rápidos relevantes aquí si es necesario -->
+                            <li><a href="#" class="text-decoration-none" style="color: #527a5a;"><i class="fas fa-comments text-info me-2"></i>Ver Feedback Reciente</a></li>
+                        </ul>
+                         <!-- Botón "Ver Perfil Completo" eliminado -->
+                    </div>
+                </div>
+                <!-- Puedes añadir más tarjetas de acceso rápido aquí -->
+            </div>
+        </div>
+
+      </div>
+      <div id="usuarios-section" style="display:none;">
+        <div class="container">
+          <h3 class="mb-3" style="color: #4d6a3a;">Gestión de Usuarios</h3>
+          <table class="table table-bordered" id="tablaUsuarios">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Activo</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Usuarios se cargarán aquí dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Reportes -->
+      <div id="reportes-section" style="display:none;">
+        <!-- Aquí iría la gestión de reportes -->
+      </div>
+
+      <!-- Probabilidad de Rotación (K-Means) -->
+      <div id="rotacion-section" style="display:none;">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 600px; width: 100%;">
+            <div class="text-center mb-3">
+              <h4 class="mb-3" style="color: #4d6a3a;">Probabilidad de Rotación (K-Means)</h4>
+              <button id="btn-ejecutar-kmeans-real" class="btn btn-ainabi mb-2">Ejecutar K-Means</button>
+              <div id="kmeans-resultados" class="mt-3" style="white-space: pre-wrap; color: #4d6a3a;"></div>
+              <div id="tabla-container" class="mt-3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Fin Probabilidad de Rotación -->
+      <div id="prediccion-section" style="display:none;">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 600px; width: 100%;">
+            <div class="text-center mb-3">
+              <h4 class="mb-3" style="color: #4d6a3a;">Predicción de Rendimiento (Regresión Lineal)</h4>
+              <!-- Subir CSV de entrenamiento -->
+              <input type="file" id="input-csv-entrenamiento" accept=".csv" class="form-control mb-2" />
+              <button id="btn-entrenar-regresion" class="btn btn-ainabi mb-2">Entrenar modelo</button>
+              <!-- Subir CSV de predicción -->
+              <input type="file" id="input-csv-prediccion" accept=".csv" class="form-control mb-2" />
+              <button id="btn-predecir-regresion" class="btn btn-ainabi mb-2">Predecir</button>
+              <div id="regresion-resultados" class="mt-3" style="white-space: pre-wrap; color: #4d6a3a;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Fin Predicción de Rendimiento -->
+      <!-- Feedback Admin -->
+      <div id="feedback-section" style="display:none;">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 500px; width: 100%;">
+            <div class="text-center mb-3">
+              <h5 class="card-title" style="color: #4d6a3a; font-weight: 700;">Feedback general</h5>
+              <p class="bg-light p-3 rounded" style="background: #fcfaee !important; color: #6c5c4c;">
+                Aquí puedes ver el feedback recibido por los usuarios o dejar comentarios generales sobre el sistema.
+              </p>
+              <form>
+                <div class="mb-3">
+                  <label for="feedback-admin" class="form-label">Dejar un comentario:</label>
+                  <textarea id="feedback-admin" class="form-control" rows="3" placeholder="Escribe tu comentario..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-light border btn-ainabi" style="border-radius: 12px; border: 2px solid #e6e2c3;">Enviar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Fin Feedback Admin -->
+      <div id="reportes-section" style="display:none;">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 600px; width: 100%;">
+            <div class="text-center mb-3">
+              <h2 style="color: #4d6a3a; font-weight: 700;">Reportes</h2>
+              <p style="color: #4d6a3a;">Consulta reportes de desempeño, feedback y más.</p>
+              <!-- Aquí podrías agregar gráficos o tablas de reportes -->
+              <div id="contenedor-reportes">
+                <!-- Contenido generado por JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nueva Sección: Solicitud de Cambios de Datos Personales -->
+      <div id="solicitud-cambios-section" style="display:none;">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 700px; width: 100%;">
+            <div class="text-center mb-3">
+              <h4 class="mb-3" style="color: #4d6a3a; font-weight: 700;">Aprobación de Cambios de Datos Personales</h4>
+            </div>
+            <!-- Ejemplo de una solicitud hardcodeada -->
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Solicitud de: Juan Pérez (ID: JP123)</h5>
+                <p class="card-text"><strong>Campo a modificar:</strong> Dirección</p>
+                <p class="card-text"><strong>Valor actual:</strong> Calle Falsa 123, Springfield</p>
+                <p class="card-text"><strong>Nuevo valor solicitado:</strong> Avenida Siempreviva 742, Springfield</p>
+                <p class="card-text"><small class="text-muted">Fecha de solicitud: 2023-10-27</small></p>
+                <button class="btn btn-success me-2">Aprobar</button>
+                <button class="btn btn-danger">Rechazar</button>
+              </div>
+            </div>
+            <!-- Puedes añadir más solicitudes hardcodeadas o un mensaje si no hay pendientes -->
+            <div class="alert alert-info mt-3" role="alert">
+              No hay más solicitudes pendientes por el momento.
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Fin Nueva Sección -->
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // Función para mostrar solo la sección seleccionada
+    function mostrarSeccionAdmin(seccionId) {
+      document.getElementById('dashboard-section').style.display = 'none';
+      document.getElementById('usuarios-section').style.display = 'none';
+      const reportesSection = document.getElementById('reportes-section');
+      if (reportesSection) reportesSection.style.display = 'none';
+      
+      document.getElementById('prediccion-section').style.display = 'none';
+      document.getElementById('rotacion-section').style.display = 'none';
+      const feedbackSection = document.getElementById('feedback-section');
+      if (feedbackSection) feedbackSection.style.display = 'none';
+      const solicitudCambiosSection = document.getElementById('solicitud-cambios-section');
+      if (solicitudCambiosSection) solicitudCambiosSection.style.display = 'none';
+
+      document.getElementById(seccionId).style.display = 'block';
+    }
+
+    // Cambia la clase activa en la barra lateral
+    function setActiveNavAdmin(navId) {
+      document.getElementById('nav-dashboard').classList.remove('nav-activa');
+      document.getElementById('nav-usuarios').classList.remove('nav-activa');
+      document.getElementById('nav-reportes').classList.remove('nav-activa');
+      document.getElementById('nav-prediccion').classList.remove('nav-activa');
+      document.getElementById('nav-rotacion').classList.remove('nav-activa');
+      const navSolicitudCambios = document.getElementById('nav-solicitud-cambios');
+      if (navSolicitudCambios) navSolicitudCambios.classList.remove('nav-activa');
+      // Si tienes una navegación para feedback, añádela:
+      // const navFeedback = document.getElementById('nav-feedback');
+      // if (navFeedback) navFeedback.classList.remove('nav-activa');
+      document.getElementById(navId).classList.add('nav-activa');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Navegación
+      document.getElementById('nav-dashboard').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarSeccionAdmin('dashboard-section');
+        setActiveNavAdmin('nav-dashboard');
+      });
+      document.getElementById('nav-usuarios').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarSeccionAdmin('usuarios-section');
+        setActiveNavAdmin('nav-usuarios');
+      });
+      document.getElementById('nav-reportes').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarSeccionAdmin('reportes-section'); 
+        setActiveNavAdmin('nav-reportes');
+      });
+      document.getElementById('nav-prediccion').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarSeccionAdmin('prediccion-section');
+        setActiveNavAdmin('nav-prediccion');
+      });
+      document.getElementById('nav-rotacion').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarSeccionAdmin('rotacion-section');
+        setActiveNavAdmin('nav-rotacion');
+      });
+      const navSolicitudCambios = document.getElementById('nav-solicitud-cambios');
+      if (navSolicitudCambios) {
+        navSolicitudCambios.addEventListener('click', function(e) {
+          e.preventDefault();
+          mostrarSeccionAdmin('solicitud-cambios-section');
+          setActiveNavAdmin('nav-solicitud-cambios');
+        });
+      }
+
+      // K-Means (Probabilidad de Rotación)
+      const btnKMeansReal = document.getElementById('btn-ejecutar-kmeans-real');
+      if (btnKMeansReal) {
+        btnKMeansReal.addEventListener('click', async () => {
+          const resultadosDiv = document.getElementById('kmeans-resultados');
+          const tablaContainerDiv = document.getElementById('tabla-container');
+
+          resultadosDiv.textContent = "Ejecutando K-Means...";
+          tablaContainerDiv.innerHTML = ""; // Limpiar tabla anterior
+
+          try {
+            // URL corregida (sin espacios ni acentos graves extra)
+            const response = await fetch('https://testkmeans.onrender.com/kmeans', { method: 'POST' });
+            const data = await response.json();
+
+            if (response.ok) {
+              if (data.data && Array.isArray(data.data) && data.data.length > 0) {
+                resultadosDiv.textContent = "K-Means ejecutado correctamente.";
+                mostrarResultadosKMeans(data.data);
+              } else {
+                resultadosDiv.textContent = "K-Means ejecutado, pero no se recibieron datos válidos para la tabla.";
+                // Opcional: mostrar la respuesta cruda si es útil para depurar
+                // tablaContainerDiv.textContent = JSON.stringify(data, null, 2); 
+              }
+            } else {
+              // Manejar errores HTTP (ej. 405, 500)
+              let errorMessage = `Error HTTP ${response.status}: ${response.statusText}`;
+              if (data && data.error) {
+                errorMessage += ` - Mensaje del servidor: ${data.error}`;
+              } else if (response.status === 405) {
+                errorMessage += ` (El servidor no permite el método POST para esta URL)`;
+              }
+              resultadosDiv.textContent = errorMessage;
+              console.error("Error del servidor K-Means:", errorMessage, data);
+            }
+          } catch (error) {
+            console.error("Error en la solicitud K-Means:", error);
+            resultadosDiv.textContent = "Error al realizar la solicitud K-Means. Revisa la consola del navegador para más detalles.";
+          }
+        });
+      }
+
+      function mostrarResultadosKMeans(data) {
+        let tablaHTML = '<table class="table table-bordered"><thead><tr>';
+        // Asegurarse de que hay datos y el primer elemento es un objeto para obtener las cabeceras
+        if (data.length > 0 && typeof data[0] === 'object' && data[0] !== null) {
+          for (const key in data[0]) {
+            tablaHTML += `<th>${key}</th>`;
+          }
+        }
+        tablaHTML += '</tr></thead><tbody>';
+
+        data.forEach(row => {
+          tablaHTML += '<tr>';
+          // Asegurarse de que la fila es un objeto antes de iterar
+          if (typeof row === 'object' && row !== null) {
+            for (const key in row) {
+              tablaHTML += `<td>${row[key]}</td>`;
+            }
+          }
+          tablaHTML += '</tr>';
+        });
+
+        tablaHTML += '</tbody></table>';
+        document.getElementById('tabla-container').innerHTML = tablaHTML;
+      }
+
+      // Regresión Lineal (código existente)
+      let csvDataEntrenamiento = null;
+      let csvDataPrediccion = null;
+      let modeloEntrenado = false;
+
+      const inputCsvEntrenamiento = document.getElementById("input-csv-entrenamiento");
+      if (inputCsvEntrenamiento) {
+        inputCsvEntrenamiento.addEventListener("change", function(e) {
+          csvDataEntrenamiento = e.target.files[0];
+        });
+      }
+
+      const inputCsvPrediccion = document.getElementById("input-csv-prediccion");
+      if (inputCsvPrediccion) {
+        inputCsvPrediccion.addEventListener("change", function(e) {
+          csvDataPrediccion = e.target.files[0];
+        });
+      }
+
+      const btnEntrenar = document.getElementById("btn-entrenar-regresion");
+      if (btnEntrenar) {
+        btnEntrenar.addEventListener("click", async () => {
+          const resultadosDiv = document.getElementById("regresion-resultados");
+          resultadosDiv.textContent = "Entrenando modelo...";
+          btnEntrenar.disabled = true;
+          if (!csvDataEntrenamiento) {
+            resultadosDiv.textContent = "Por favor, selecciona un archivo CSV de entrenamiento.";
+            btnEntrenar.disabled = false;
+            return;
+          }
+          const formData = new FormData();
+          formData.append("file", csvDataEntrenamiento);
+          try {
+            const res = await fetch("https://azurepy.onrender.com/api/predict/performance_train", {
+              method: "POST",
+              body: formData
+            });
+            if (!res.ok) throw new Error("Error en la petición: " + res.statusText);
+            const data = await res.json();
+            resultadosDiv.textContent = "Modelo entrenado con éxito. Precisión: " + (data.r2_score || "N/A");
+            modeloEntrenado = true;
+          } catch (error) {
+            console.error("Error al entrenar modelo:", error);
+            resultadosDiv.textContent = "Error al entrenar el modelo. " + error.message;
+          }
+          btnEntrenar.disabled = false;
+        });
+      }
+
+      const btnPredecir = document.getElementById("btn-predecir-regresion");
+      if (btnPredecir) {
+        btnPredecir.addEventListener("click", async () => {
+          const resultadosDiv = document.getElementById("regresion-resultados");
+          resultadosDiv.textContent = "Realizando predicción...";
+          btnPredecir.disabled = true;
+          if (!csvDataPrediccion) {
+            resultadosDiv.textContent = "Por favor, selecciona un archivo CSV de predicción.";
+            btnPredecir.disabled = false;
+            return;
+          }
+          if (!modeloEntrenado) {
+            resultadosDiv.textContent = "Primero debes entrenar el modelo.";
+            btnPredecir.disabled = false;
+            return;
+          }
+          const formData = new FormData();
+          formData.append("file", csvDataPrediccion);
+          try {
+            const res = await fetch("https://azurepy.onrender.com/api/predict/future_performance", {
+              method: "POST",
+              body: formData
+            });
+            if (!res.ok) throw new Error("Error en la petición: " + res.statusText);
+            const data = await res.json();
+            resultadosDiv.textContent = JSON.stringify(data, null, 2);
+          } catch (error) {
+            console.error("Error al realizar predicción:", error);
+            resultadosDiv.textContent = "Error al realizar la predicción. " + error.message;
+          }
+          btnPredecir.disabled = false;
+        });
+      }
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- El script de Firebase y lógica de usuarios va aquí, como lo tenías -->
+  <script>
+    // Firebase config y lógica de usuarios
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8hM7BCiuvqvHvBXbKXmjJnVjMGMbwN7M", // Considera usar variables de entorno para las claves de API
+      authDomain: "ainabi-dev.firebaseapp.com",
+      projectId: "ainabi-dev",
+      storageBucket: "ainabi-dev.firebasestorage.app",
+      messagingSenderId: "555009125594",
+      appId: "1:555009125594:web:133bfe3a2bd6fc498749e3"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // Verificar que el usuario esté logueado y sea admin
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        // alert("Debés estar logueado."); // Considera usar SweetAlert para consistencia
+        Swal.fire({
+            title: 'Acceso Requerido',
+            text: "Debés estar logueado para acceder a esta página.",
+            icon: 'warning',
+            confirmButtonText: 'Ir a Login'
+        }).then(() => {
+            window.location.href = "index.html";
+        });
+        return;
+      }
+
+      try {
+        const doc = await db.collection("users").doc(user.uid).get();
+        if (!doc.exists || (doc.data().role || "").toLowerCase() !== "admin") {
+          // alert("Acceso no autorizado.");
+          Swal.fire({
+            title: 'Acceso Denegado',
+            text: "No tienes permisos de administrador.",
+            icon: 'error',
+            confirmButtonText: 'Ir a Inicio'
+          }).then(() => {
+            window.location.href = "index.html";
+          });
+          return;
+        }
+        cargarUsuarios();
+      } catch (error) {
+        console.error("Error verificando rol de usuario:", error);
+        Swal.fire('Error', 'Ocurrió un error al verificar tu rol.', 'error');
+        window.location.href = "index.html";
+      }
+    });
+
+    async function cargarUsuarios() {
+      const tabla = document.querySelector("#tablaUsuarios tbody");
+      if (!tabla) {
+          console.error("Elemento #tablaUsuarios tbody no encontrado");
+          return;
+      }
+      tabla.innerHTML = ""; // Limpiar antes de cargar
+      try {
+        const snap = await db.collection("users").get();
+        snap.forEach((doc) => {
+          const u = doc.data();
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+            <td>${u.nombre || "N/A"}</td>
+            <td>${u.email || "N/A"}</td>
+            <td>${u.role || "N/A"}</td>
+            <td>${u.activo ? "Sí" : "No"}</td>
+            <td><button class="btn btn-sm btn-${u.activo ? "danger" : "success"}" onclick="toggleActivo('${doc.id}', ${u.activo})">
+              ${u.activo ? "Desactivar" : "Activar"}</button></td>
+          `;
+          tabla.appendChild(tr);
+        });
+      } catch (error) {
+          console.error("Error cargando usuarios:", error);
+          // Podrías mostrar un mensaje al usuario aquí
+      }
+    }
+
+    async function toggleActivo(uid, actual) {
+      try {
+        await db.collection("users").doc(uid).update({ activo: !actual });
+        cargarUsuarios(); // Recargar la tabla
+      } catch (error) {
+          console.error("Error al cambiar estado de usuario:", error);
+          // Podrías mostrar un mensaje al usuario aquí
+      }
+    }
+  </script>
 </body>
 </html>

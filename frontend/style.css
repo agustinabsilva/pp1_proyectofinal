@@ -4,9 +4,9 @@
 /* Importar la fuente Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 
-
-
-
+html {
+  scroll-behavior: smooth;
+}
 
 /* Estilo para el fondo del body */
 body {
@@ -14,28 +14,10 @@ body {
     margin: 0; /* Elimina los márgenes predeterminados */
     font-family: 'Poppins', sans-serif;
     color: #333; /* Color de texto suave */
-    line-height: 1.6; /* Espaciado entre líneas */
-    
+    line-height: 1.6; /* Espaciado entre líneas */   
 }
 
-/* Estilo para centrar el contenido */
-.contenido {
-    text-align: center; /* Alineación del texto al centro */
-    padding: 20px; /* Espacio interno alrededor del contenido */
-}
 
-/* Estilo para el título */
-h1 {
-    font-size: 2.5rem; /* Tamaño del título */
-    color: #555; /* Color del título */
-    margin-bottom: 20px; /* Espacio debajo del título */
-}
-
-/* Estilo para el párrafo */
-p {
-    font-size: 1.2rem; /* Tamaño del texto del párrafo */
-    color: #666; /* Color del texto del párrafo */
-}
 /* Estilo de la barra de navegación */
 .navbar {
     display: flex;
@@ -57,6 +39,7 @@ p {
     display: flex;
     align-items: center;
     gap: 10px;  
+    
     
 }
 
@@ -174,34 +157,160 @@ p {
     .menu-icon {
         display: flex;
     }
-   
+    
+}
+    
+
+/*HERO*/
+/* Hero Section */
+.hero {
+    background-image: url('./assets/wallpaper.png'); /* Cambiá este nombre según tu imagen */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-align: center;
 }
 
+/* Fondo semitransparente si querés que el texto o imagen se lea mejor */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.4); /* Cambialo o sacalo si no lo necesitás */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 20px;
+}
+
+.bienvenido-img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive adicional si querés controlar tamaños en pantallas chicas */
+@media (max-width: 768px) {
+    .hero {
+        height: 70vh;
+    }
+
+    .bienvenido-img {
+        max-width: 90%;
+    }
+}
+
+
+
+/*Seccion que es ainabi*/
+
+
+.que-es-ainabi {
+    background-color: #f6f3f0;
+    padding: 60px 20px;
+}
+
+.contenedor-ainabi {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+    gap: 50px;
+    flex-wrap: wrap; /* Para hacerlo responsive */
+}
+
+.texto-ainabi {
+    flex: 1;
+    min-width: 300px;
+    color: #6C705E;
+}
+
+.titulo-img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.titulo-img-sobrenosotros {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 30px;
+    padding: 0 20px;
+}
+
+.texto-ainabi p {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: #333;
+    text-align: center; /* Centra tanto el h2 como el p */
+}
+
+.imagen-ainabi {
+    flex: 1;
+    min-width: 280px;
+    text-align: center;
+}
+
+.imagen-ainabi img {
+    max-width: 80%;
+    height: auto;
+    
+}
+
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .contenedor-ainabi {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .texto-ainabi h2 {
+        font-size: 1.8rem;
+    }
+}
+
+
+
+
+
+
+
+/* Seccion Sobre Nosotros */
 
 
 .section {
     padding: 50px 20px;
-    /*background-color: #ede8e3;*/
-    /*background-color:  #EDE9E3 ;*/
+}
+
+.sobre-nosotros {
     background-color: #ffffff;
     
 }
 
-.sobre-nosotros {
-    /*background-color: #E7D7C9;*/
-    background-color: #ffffff;
-}
-
-.contacto {
-    background-color: #D88FAC;
-}
 
 h2 {
-    font-size: 2rem;
+    font-size: 3rem;
     color: #6C705E;
     margin-bottom: 20px;
-}
+ }   
 
+p{
+ font-size: 1.2rem;
+ color: #6C705E;
+}
 .miembros {
     display: flex;
     justify-content: center;
@@ -215,110 +324,36 @@ h2 {
 }
 
 .miembro img {
-    width: 150px;
-    height: 150px;
-    border-radius: 60%;
+    width: 175px;
+    height: 175px;
+    border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
-}
-
-/* Sección Qué es AINABI */
-.que-es-ainabi {
-    background-color: #f6f3f0; /* Fondo claro para mantener consistencia */
-    padding: 60px 20px;
     
 }
 
-.contenedor-ainabi {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 50px;
-    max-width: 1200px;
-    margin: auto;
-    flex-wrap: wrap;
-}
-
-.texto-ainabi {
-    flex: 1;
-    min-width: 300px;
-}
-
-.texto-ainabi h2 {
-    font-size: 2rem;
-    color: #4d3a2f;
-    margin-bottom: 20px;
-}
-
-.texto-ainabi p {
-    font-size: 1.2rem;
-    color: #666;
-    line-height: 1.6;
-}
-
-.logo-ainabi {
-    flex: 1;
-    min-width: 250px;
-    display: flex;
-    justify-content: center;
-}
-
-.logo-ainabi img {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Responsive: apilar en pantallas chicas */
-@media (max-width: 768px) {
-    .contenedor-ainabi {
-        flex-direction: column;
-        text-align: center;
-    }
-}
-.btn-conoce-mas {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 24px;
-    background-color: #cba580; /* mismo tono que el botón de "Ingresa" */
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-conoce-mas:hover {
-    background-color: #b88b66; /* un poquito más oscuro al pasar el mouse */
-  }
-
-  /* Animación para que el botón aparezca suave */
-@keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Aplicar animación al botón */
-  .btn-conoce-mas {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 24px;
-    background-color: #cba580;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
+/* Estilo para centrar el contenido */
+.contenido {
+    text-align: center; /* Alineación del texto al centro */
+    padding: 20px; /* Espacio interno alrededor del contenido */
     
-    /* animación */
-    animation: fadeIn 1.2s ease forwards;
-    opacity: 0; /* empieza invisible */
-  }
+    
+}
+
+
+/*Responsive seccion sobre nosotros*/
+@media (max-width: 600px) {
+    .miembro img {
+        width: 120px;
+        height: 120px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+
 /* Sección de Contacto */
 .contact-section {
     padding: 50px 30vh; /* Espacio interno */
@@ -413,7 +448,7 @@ h2 {
 /* Diseño Responsive para la sección de contacto */
 @media (max-width: 768px) {
     .contact-section {
-        padding: 50px 20px; /* Cambia el padding para pantallas pequeñas */
+        padding: 50px 20px; /* Cambia el padding para pantallas pequeñas*/ 
     }
 
     .contact-content {
@@ -426,302 +461,151 @@ h2 {
         margin-bottom: 20px; /* Agrega espacio entre las columnas */
     }
 }
-
-/*LOGUEO*/
-/* Estilo para la sección de login */
-.login-section {
-    min-height: 75vh; /* Que ocupe al menos el alto de la ventana */
+.info-card {
+    background-color: #ffffff8e;
+    border-radius: 15px;
+    padding: 25px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.171);
+    text-align: center;
+    transition: transform 0.3s ease;
     display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
     flex-direction: column;
-    padding: 20px;
+    align-items: center; /* Centra íconos y texto horizontalmente */
+    
     
 }
 
-.login-content {
-    background-color: #ffffff; /* Fondo blanco para el formulario */
-    padding: 40px 60px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    max-width: 400px; /* Ancho máximo del formulario */
-    width: 100%; /* Ocupa todo el ancho disponible */
-    text-align: center; /* Centra el contenido */
+
+
+.contact-info li {
+    font-size: 1.3rem;
+    color: #6C705E;
+    margin: 15px 0;
     
 }
 
-.login-form h2 {
-    font-size: 2rem;
-    color: #4d3a2f; /* Color consistente con el diseño */
-    margin-bottom: 20px;
+.contact-info i {
+    color: #964B00;
 }
 
-.login-form input {
-    width: 80%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease; /* Transición suave para el borde */
-    align-items: center;
-    justify-content: center;
+.contact-info a, .contact-info span {
+    color: #4d3a2f;
+    font-weight: 500;
 }
 
-.login-form input:focus {
-    border-color: #cba580; /* Cambia el color del borde al enfocar */
-    outline: none;
+.contact-info a:hover {
+    color: #964B00;
 }
 
-.login-form button {
-    width: 50%;
-    padding: 12px;  
-    background-color: #cba580; /* Color consistente con los botones del sitio */
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.login-form button:hover {
-    background-color: #b88b66; /* Color más oscuro al pasar el mouse */
-}
-
-.register-link {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.register-link a {
-    color: #cba580; /* Color consistente con los enlaces del sitio */
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-.register-link a:hover {
-    color: #b88b66; /* Cambia el color al pasar el mouse */
-}
-
-/* Media Query para pantallas muy pequeñas (menos de 480px) */
-@media (max-width: 480px) {
-    .login-content {
-        padding: 20px; /* Reducir aún más el padding interno */
-    }
-
-    .login-form h2 {
-        font-size: 1.3rem; /* Título más pequeño */
-    }
-
-    .login-form input {
-        font-size: 0.8rem; /* Texto más pequeño en los campos de entrada */
-        padding: 8px; /* Padding más ajustado */
-    }
-
-    .login-form button {
-        font-size: 0.8rem; /* Texto más pequeño en el botón */
-        padding: 8px; /* Padding más ajustado */
-    }
-
-    .register-link {
-        font-size: 0.7rem; /* Texto más pequeño en el enlace */
-    } 
-  }
-    .footer {
-        background-color: #ffffff;
-        
-        text-align: center;
-        border-top: 1px solid #ccc;
-        padding: 2vh;
-       
-    }
+.carpincho-img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 40px;
     
-    .footer-content {
-        
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    
-/* Media Query para pantallas muy pequeñas (menos de 480px) */
-@media (max-width: 480px) {
-    .footer p {
-        font-size: 0.9rem; /* Reduce el tamaño del texto del párrafo */
-    }
-
 }
 
-@keyframes bounceIn {
-    0% {
-      opacity: 0;
-      transform: translateY(50px) scale(0.9);
-    }
-    60% {
-      opacity: 1;
-      transform: translateY(-10px) scale(1.05);
-    }
-    80% {
-      transform: translateY(5px) scale(0.95);
-    }
-    100% {
-      transform: translateY(0) scale(1);
-    }
-  }
-  
+footer {
+  background-color: #ffffff;
+  color: #6C705E;
+  text-align: center;
+  padding: 25px 20px;
+  font-size: 1rem;
+  border-top: 1px solid #e0dbd4;
+}
 
-  .scroll-reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease-out;
-  }
-  
-  .scroll-reveal.visible {
+.footer-content p {
+  margin: 0 0 10px;
+}
+
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer-social a {
+  color: #964B00;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #6C705E;
+}
+
+.hero-content .bienvenido-img {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeSlideIn 1s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeSlideIn {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
+}
 
- 
-  
-  /* Aplicar animación al botón */
-  .section {
-    
-    
-    /* animación */
-    animation: fadeIn 1.2s ease forwards;
-    opacity: 0; /* empieza invisible */
+/* Animaciones básicas */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-
-  .que-es-ainabi{
-    /* animación */
-    animation: fadeIn 1.2s ease forwards;
-    opacity: 0; /* empieza invisible */
-}
-.sobre-nosotros{
-/* animación */
-animation: fadeIn 1.2s ease forwards;
-opacity: 0; /* empieza invisible */}
-.contact-section{
-    /* animación */
-    animation: fadeIn 1.2s ease forwards;
-    opacity: 0; /* empieza invisible */}
-    .login-section{
-        /* animación */
-        animation: fadeIn 1.2s ease forwards;
-        opacity: 0; /* empieza invisible */}
-    .footer{
-        /* animación */
-
-        animation: fadeIn 1.2s ease forwards;
-        opacity: 0; /* empieza invisible */}
-
-        .perfil-section {
-  background-color: #f6f3f0;
-  padding: 60px 20px;
-}
-
-.perfil-contenedor {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-  justify-content: center;
-  align-items: center;
-  max-width: 1200px;
-  margin: auto;
-}
-
-.perfil-foto img {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.perfil-info {
-  max-width: 500px;
-  text-align: left;
-}
-
-.perfil-info h3 {
-  margin: 0 0 10px;
-  color: #4d3a2f;
-}
-
-.perfil-info p {
-  color: #666;
-  margin-bottom: 10px;
-}
-
-.perfil-extra {
-  margin-top: 20px;
-  animation: fadeIn 0.8s ease forwards;
-}
-
-@media (max-width: 768px) {
-  .perfil-contenedor {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .perfil-info {
-    text-align: center;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.perfil-section {
-    background-color: #f6f3f0;
-    padding: 60px 20px;
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
   }
-  
-  .perfil-contenedor {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    justify-content: center;
-    align-items: center;
-    max-width: 1200px;
-    margin: auto;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  .perfil-foto img {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
   }
-  
-  .perfil-info {
-    max-width: 500px;
-    text-align: left;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
-  .perfil-info h3 {
-    margin: 0 0 10px;
-    color: #4d3a2f;
-  }
-  
-  .perfil-info p {
-    color: #666;
-    margin-bottom: 10px;
-  }
-  
-  .perfil-extra {
-    margin-top: 20px;
-    animation: fadeIn 0.8s ease forwards;
-  }
-  
-  @media (max-width: 768px) {
-    .perfil-contenedor {
-      flex-direction: column;
-      text-align: center;
-    }
-  
-    .perfil-info {
-      text-align: center;
-    }
-  }
+}
+
+.fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards;
+}
+
+.fade-in-left {
+  opacity: 0;
+  animation: fadeInLeft 2s ease forwards;
+}
+
+.fade-in-right {
+  opacity: 0;
+  animation: fadeInRight 2s ease forwards;
+}
+
+/* Delay helper classes */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+
+.sobre-nosotros .miembro img {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.sobre-nosotros .miembro img:hover {
+  transform: scale(1.05); /* Aumenta suavemente el tamaño */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3); /* Da profundidad */
+}
