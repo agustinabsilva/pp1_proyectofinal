@@ -9,35 +9,53 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// Verifica si el botón existe antes de añadir el evento
-  document.addEventListener("DOMContentLoaded", function () {
-    const btnEnviado = document.getElementById("btnEnviar");
 
-    if (btnEnviado) {
-        btnEnviado .addEventListener("click", function (e) {
-            e.preventDefault(); // Evita el salto inmediato
+//Verifica el mail
 
-            Swal.fire({
-                title: "Enviado!",
-                text: "Muchas gracias por contactarte",
-                imageUrl: "./assets/capiok.png",
-                imageWidth: 400,
-                imageHeight: 400,                
-                imageAlt: "Custom image",
-                confirmButtonText: "Continuar",
-                confirmButtonColor: "#b88b66",
-               
-              });
-               // Limpia el formulario
-            const form = document.getElementById("form-contacto"); // Asegúrate de usar el ID correcto
-            if (form) {
-                form.reset();
-            }
-             
+
+document.addEventListener("DOMContentLoaded", function () {
+  const btnEnviado = document.getElementById("btnEnviar");
+
+  if (btnEnviado) {
+    btnEnviado.addEventListener("click", function (e) {
+      e.preventDefault(); // Evita el envío inmediato
+
+      const form = document.getElementById("form-contacto");
+      const emailInput = form.elements["email"];
+      const email = emailInput.value.trim();
+
+      // Expresión regular simple para validar email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      // Verificar email antes de continuar
+      if (!emailRegex.test(email)) {
+        Swal.fire({
+          icon: "error",
+          title: "Correo inválido",
+          text: "Por favor ingresa un correo electrónico válido.",
+          confirmButtonColor: "#b88b66",
         });
-        
-    }
-   
+        return; // Detener ejecución si el email es inválido
+      }
+
+      // Si es válido, mostrar mensaje de éxito
+      Swal.fire({
+        title: "Enviado!",
+        text: "Muchas gracias por contactarte",
+        imageUrl: "./assets/capiok.png",
+        imageWidth: 400,
+        imageHeight: 400,
+        imageAlt: "Custom image",
+        confirmButtonText: "Continuar",
+        confirmButtonColor: "#b88b66",
+      });
+
+      // Limpiar el formulario
+      if (form) {
+        form.reset();
+      }
+    });
+  }
 });
  
 const animateOnScroll = () => {
