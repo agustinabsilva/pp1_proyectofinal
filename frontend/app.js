@@ -1,13 +1,4 @@
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD8hM7BCiuvqvHvBXbKXmjJnVjMGMbwN7M",
-  authDomain: "ainabi-dev.firebaseapp.com",
-  projectId: "ainabi-dev",
-  storageBucket: "ainabi-dev.firebasestorage.app",
-  messagingSenderId: "555009125594",
-  appId: "1:555009125594:web:133bfe3a2bd6fc498749e3"
-};
-
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
