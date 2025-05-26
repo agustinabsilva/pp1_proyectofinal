@@ -332,8 +332,26 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     // Global variables for reports and user data
-    let currentKMeansResults = null;
-    let allUsersData = [];
+    // let currentKMeansResults = null; // Defined with hardcoded data below
+    // let allUsersData = []; // Defined with hardcoded data below
+
+    // --- INICIO DE DATOS HARCODEADOS PARA PRUEBA ---
+    let allUsersData = [
+        { id: 'user1', nombre: 'Ana López (Test)', email: 'ana.lopez@example.com', area: 'Desarrollo', role: 'Empleado', jerarquia: 'Senior', activo: true },
+        { id: 'user2', nombre: 'Carlos Ruiz (Test)', email: 'carlos.ruiz@example.com', area: 'Ventas', role: 'Supervisor', jerarquia: 'Junior', activo: true },
+        { id: 'user3', nombre: 'Beatriz Soler (Test)', email: 'beatriz.soler@example.com', area: 'Desarrollo', role: 'Empleado', jerarquia: 'Trainee', activo: false },
+        { id: 'user4', nombre: 'David Pons (Test)', email: 'david.pons@example.com', area: 'Marketing', role: 'Admin', jerarquia: 'Senior', activo: true },
+        { id: 'user5', nombre: 'Elena Vera (Test)', email: 'elena.vera@example.com', area: 'Ventas', role: 'Empleado', jerarquia: 'Junior', activo: true }
+    ];
+
+    let currentKMeansResults = [
+        { Nombre: 'Ana López (Test)', "Probabilidad de Rotacion": "BAJA", "Ausencias Injustificadas": 1, "Llegadas tarde": 2, "Rendimiento Alto": 1, "Rendimiento Bajo": 0, "Rendimiento Medio": 0, "Salidas tempranas": 0, Cluster: 0, DESDE: 202401, HASTA: 202401 },
+        { Nombre: 'Carlos Ruiz (Test)', "Probabilidad de Rotacion": "MEDIA", "Ausencias Injustificadas": 3, "Llegadas tarde": 4, "Rendimiento Alto": 0, "Rendimiento Bajo": 0, "Rendimiento Medio": 1, "Salidas tempranas": 1, Cluster: 1, DESDE: 202401, HASTA: 202401 },
+        { Nombre: 'Beatriz Soler (Test)', "Probabilidad de Rotacion": "ALTA", "Ausencias Injustificadas": 5, "Llegadas tarde": 6, "Rendimiento Alto": 0, "Rendimiento Bajo": 1, "Rendimiento Medio": 0, "Salidas tempranas": 3, Cluster: 2, DESDE: 202401, HASTA: 202401 }
+        // Empleados David Pons y Elena Vera no están en K-Means para probar ese caso en reportes.
+    ];
+    // --- FIN DE DATOS HARCODEADOS PARA PRUEBA ---
+
 
     // Función para mostrar solo la sección seleccionada
     function mostrarSeccionAdmin(seccionId) {
@@ -368,6 +386,35 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+      // --- INICIO DE LLAMADAS DIRECTAS CON DATOS HARCODEADOS ---
+            // Simular carga de usuarios para la tabla y gráficos principales
+            // (La tabla de usuarios no se llenará con este código simple, pero los gráficos sí)
+            if (typeof populateEmployeeSelector === 'function') populateEmployeeSelector(allUsersData);
+            if (typeof generateEmployeeAreaChart === 'function') generateEmployeeAreaChart(allUsersData);
+            if (typeof generateUserRolesChart === 'function') generateUserRolesChart(allUsersData);
+            if (typeof generateRotationRiskChart === 'function' && currentKMeansResults) { // Initial call for rotation risk chart if data exists
+                 generateRotationRiskChart(currentKMeansResults);
+            }
+
+
+            // Configurar listener para el selector de empleados (esto ya debería estar en DOMContentLoaded)
+            // const employeeSelector = document.getElementById('employee-selector'); // Ya está definido abajo
+            // if (employeeSelector && typeof displayEmployeeReport === 'function') { // Asegurarse que displayEmployeeReport existe
+            //     employeeSelector.addEventListener('change', function() {
+            //         const selectedUserId = this.value;
+            //         if (selectedUserId) {
+            //             displayEmployeeReport(selectedUserId);
+            //         } else {
+            //             const reportContent = document.getElementById('employee-report-content');
+            //             const downloadButton = document.getElementById('download-pdf-button');
+            //             if (reportContent) reportContent.style.display = 'none';
+            //             if (downloadButton) downloadButton.style.display = 'none';
+            //         }
+            //     });
+            // }
+            // (El resto de los listeners de DOMContentLoaded como el de K-Means y Regresión se modificarán abajo)
+        // --- FIN DE LLAMADAS DIRECTAS CON DATOS HARCODEADOS ---
+
       // Navegación
       document.getElementById('nav-dashboard').addEventListener('click', function(e) {
         e.preventDefault();
@@ -410,46 +457,66 @@
           const resultadosDiv = document.getElementById('kmeans-resultados');
           const tablaContainerDiv = document.getElementById('tabla-container');
 
-          resultadosDiv.textContent = "Ejecutando K-Means...";
-          tablaContainerDiv.innerHTML = ""; // Limpiar tabla anterior
+          // resultadosDiv.textContent = "Ejecutando K-Means..."; // Comentado
+          // tablaContainerDiv.innerHTML = ""; // Limpiar tabla anterior // Comentado
 
-          try {
-            // URL corregida (sin espacios ni acentos graves extra)
-            const response = await fetch('https://testkmeans.onrender.com/kmeans', { method: 'POST' });
-            const data = await response.json();
+          // try { // Comentado
+            // URL corregida (sin espacios ni acentos graves extra) // Comentado
+            // const response = await fetch('https://testkmeans.onrender.com/kmeans', { method: 'POST' }); // Comentado
+            // const data = await response.json(); // Comentado
 
-            if (response.ok) {
-              if (data.data && Array.isArray(data.data) && data.data.length > 0) {
-                resultadosDiv.textContent = "K-Means ejecutado correctamente.";
-                mostrarResultadosKMeans(data.data);
-                if (data.data) { // Ensure data.data exists
-                    currentKMeansResults = data.data; // Almacenar resultados
-                    generateRotationRiskChart(data.data);
-                } else {
-                    currentKMeansResults = null;
-                }
-              } else {
-                currentKMeansResults = null; // Clear results if data is not valid
-                resultadosDiv.textContent = "K-Means ejecutado, pero no se recibieron datos válidos para la tabla.";
-                // Opcional: mostrar la respuesta cruda si es útil para depurar
-                // tablaContainerDiv.textContent = JSON.stringify(data, null, 2); 
-              }
+            // if (response.ok) { // Comentado
+            //   if (data.data && Array.isArray(data.data) && data.data.length > 0) { // Comentado
+            //     resultadosDiv.textContent = "K-Means ejecutado correctamente."; // Comentado
+            //     mostrarResultadosKMeans(data.data); // Comentado
+            //     if (data.data) { // Ensure data.data exists // Comentado
+            //         currentKMeansResults = data.data; // Almacenar resultados // Comentado
+            //         generateRotationRiskChart(data.data); // Comentado
+            //     } else { // Comentado
+            //         currentKMeansResults = null; // Comentado
+            //     } // Comentado
+            //   } else { // Comentado
+            //     currentKMeansResults = null; // Clear results if data is not valid // Comentado
+            //     resultadosDiv.textContent = "K-Means ejecutado, pero no se recibieron datos válidos para la tabla."; // Comentado
+            //     // Opcional: mostrar la respuesta cruda si es útil para depurar // Comentado
+            //     // tablaContainerDiv.textContent = JSON.stringify(data, null, 2);  // Comentado
+            //   } // Comentado
+            // } else { // Comentado
+            //   // Manejar errores HTTP (ej. 405, 500) // Comentado
+            //   let errorMessage = `Error HTTP ${response.status}: ${response.statusText}`; // Comentado
+            //   if (data && data.error) { // Comentado
+            //     errorMessage += ` - Mensaje del servidor: ${data.error}`; // Comentado
+            //   } else if (response.status === 405) { // Comentado
+            //     errorMessage += ` (El servidor no permite el método POST para esta URL)`; // Comentado
+            //   } // Comentado
+            //   resultadosDiv.textContent = errorMessage; // Comentado
+            //   console.error("Error del servidor K-Means:", errorMessage, data); // Comentado
+            // } // Comentado
+          // } catch (error) { // Comentado
+          //   console.error("Error en la solicitud K-Means:", error); // Comentado
+          //   resultadosDiv.textContent = "Error al realizar la solicitud K-Means. Revisa la consola del navegador para más detalles."; // Comentado
+          //   currentKMeansResults = null; // Clear results on error // Comentado
+          // } // Comentado
+          // --- INICIO SIMULACIÓN K-MEANS ---
+            resultadosDiv.textContent = "Mostrando resultados de K-Means (datos de prueba)...";
+            tablaContainerDiv.innerHTML = ""; // Limpiar tabla anterior
+
+            if (currentKMeansResults && typeof mostrarResultadosKMeans === 'function') {
+                mostrarResultadosKMeans(currentKMeansResults); 
             } else {
-              // Manejar errores HTTP (ej. 405, 500)
-              let errorMessage = `Error HTTP ${response.status}: ${response.statusText}`;
-              if (data && data.error) {
-                errorMessage += ` - Mensaje del servidor: ${data.error}`;
-              } else if (response.status === 405) {
-                errorMessage += ` (El servidor no permite el método POST para esta URL)`;
-              }
-              resultadosDiv.textContent = errorMessage;
-              console.error("Error del servidor K-Means:", errorMessage, data);
+                tablaContainerDiv.textContent = "No hay datos de prueba de K-Means para mostrar en la tabla.";
             }
-          } catch (error) {
-            console.error("Error en la solicitud K-Means:", error);
-            resultadosDiv.textContent = "Error al realizar la solicitud K-Means. Revisa la consola del navegador para más detalles.";
-            currentKMeansResults = null; // Clear results on error
-          }
+
+            if (currentKMeansResults && typeof generateRotationRiskChart === 'function') {
+                generateRotationRiskChart(currentKMeansResults);
+            }
+            
+            const highRiskCountElement = document.getElementById('highRiskCount');
+            if (highRiskCountElement && currentKMeansResults) {
+                const highRiskEmployees = currentKMeansResults.filter(emp => emp['Probabilidad de Rotacion'] === 'ALTA').length;
+                highRiskCountElement.textContent = highRiskEmployees;
+            }
+            // --- FIN SIMULACIÓN K-MEANS ---
         });
       }
 
@@ -508,22 +575,25 @@
             btnEntrenar.disabled = false;
             return;
           }
-          const formData = new FormData();
-          formData.append("file", csvDataEntrenamiento);
-          try {
-            const res = await fetch("http://localhost:5001/api/ml/regression/train", {
-              method: "POST",
-              body: formData
-            });
-            if (!res.ok) throw new Error("Error en la petición: " + res.statusText);
-            const data = await res.json();
-            resultadosDiv.textContent = "Modelo entrenado con éxito. Precisión: " + (data.r2_score || "N/A");
-            modeloEntrenado = true;
-          } catch (error) {
-            console.error("Error al entrenar modelo:", error);
-            resultadosDiv.textContent = "Error al entrenar el modelo. " + error.message;
-          }
-          btnEntrenar.disabled = false;
+          // const formData = new FormData(); //Comentado
+          // formData.append("file", csvDataEntrenamiento); //Comentado
+          // try { //Comentado
+            // const res = await fetch("http://localhost:5001/api/ml/regression/train", { //Comentado
+            //   method: "POST", //Comentado
+            //   body: formData //Comentado
+            // }); //Comentado
+            // if (!res.ok) throw new Error("Error en la petición: " + res.statusText); //Comentado
+            // const data = await res.json(); //Comentado
+            // resultadosDiv.textContent = "Modelo entrenado con éxito. Precisión: " + (data.r2_score || "N/A"); //Comentado
+            // modeloEntrenado = true; //Comentado
+          // } catch (error) { //Comentado
+          //   console.error("Error al entrenar modelo:", error); //Comentado
+          //   resultadosDiv.textContent = "Error al entrenar el modelo. " + error.message; //Comentado
+          // } //Comentado
+          // btnEntrenar.disabled = false; //Comentado
+          Swal.fire('Modo de Prueba', 'La funcionalidad de ENTRENAR Regresión Lineal está deshabilitada en esta vista de prueba.', 'info');
+            document.getElementById("regresion-resultados").textContent = "Entrenamiento deshabilitado en modo de prueba.";
+            btnEntrenar.disabled = false; 
         });
       }
 
@@ -543,21 +613,24 @@
             btnPredecir.disabled = false;
             return;
           }
-          const formData = new FormData();
-          formData.append("file", csvDataPrediccion);
-          try {
-            const res = await fetch("http://localhost:5001/api/ml/regression/predict", {
-              method: "POST",
-              body: formData
-            });
-            if (!res.ok) throw new Error("Error en la petición: " + res.statusText);
-            const data = await res.json();
-            resultadosDiv.textContent = JSON.stringify(data, null, 2);
-          } catch (error) {
-            console.error("Error al realizar predicción:", error);
-            resultadosDiv.textContent = "Error al realizar la predicción. " + error.message;
-          }
-          btnPredecir.disabled = false;
+          // const formData = new FormData(); //Comentado
+          // formData.append("file", csvDataPrediccion); //Comentado
+          // try { //Comentado
+            // const res = await fetch("http://localhost:5001/api/ml/regression/predict", { //Comentado
+            //   method: "POST", //Comentado
+            //   body: formData //Comentado
+            // }); //Comentado
+            // if (!res.ok) throw new Error("Error en la petición: " + res.statusText); //Comentado
+            // const data = await res.json(); //Comentado
+            // resultadosDiv.textContent = JSON.stringify(data, null, 2); //Comentado
+          // } catch (error) { //Comentado
+          //   console.error("Error al realizar predicción:", error); //Comentado
+          //   resultadosDiv.textContent = "Error al realizar la predicción. " + error.message; //Comentado
+          // } //Comentado
+          // btnPredecir.disabled = false; //Comentado
+          Swal.fire('Modo de Prueba', 'La funcionalidad de PREDECIR con Regresión Lineal está deshabilitada en esta vista de prueba.', 'info');
+            document.getElementById("regresion-resultados").textContent = "Predicción deshabilitada en modo de prueba.";
+            btnPredecir.disabled = false;
         });
       }
 
@@ -654,6 +727,7 @@
   <!-- El script de Firebase y lógica de usuarios va aquí, como lo tenías -->
   <script>
     // Firebase config y lógica de usuarios
+    /*
     const firebaseConfig = {
       apiKey: "AIzaSyD8hM7BCiuvqvHvBXbKXmjJnVjMGMbwN7M", // Considera usar variables de entorno para las claves de API
       authDomain: "ainabi-dev.firebaseapp.com",
@@ -666,8 +740,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const auth = firebase.auth();
+    */
 
     // Verificar que el usuario esté logueado y sea admin
+    /*
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
         // alert("Debés estar logueado."); // Considera usar SweetAlert para consistencia
@@ -696,58 +772,58 @@
           });
           return;
         }
-        cargarUsuarios();
+        // cargarUsuarios(); // Se llama desde el bloque de datos hardcodeados
       } catch (error) {
         console.error("Error verificando rol de usuario:", error);
         Swal.fire('Error', 'Ocurrió un error al verificar tu rol.', 'error');
         window.location.href = "index.html";
       }
     });
+    */
 
     async function cargarUsuarios() {
-      const tabla = document.querySelector("#tablaUsuarios tbody");
-      if (!tabla) {
-          console.error("Elemento #tablaUsuarios tbody no encontrado");
-          return;
-      }
-      allUsersData = []; // Limpiar datos de usuarios antes de cargar
-      tabla.innerHTML = ""; // Limpiar antes de cargar
-      try {
-        const snap = await db.collection("users").get();
-        snap.forEach((doc) => {
-          const u = doc.data();
-          allUsersData.push({ id: doc.id, ...u }); // Almacenar datos del usuario
-          const tr = document.createElement("tr");
+      // const tabla = document.querySelector("#tablaUsuarios tbody");
+      // if (!tabla) {
+      //     console.error("Elemento #tablaUsuarios tbody no encontrado");
+      //     return;
+      // }
+      // // allUsersData = []; // Limpiar datos de usuarios antes de cargar - Ya está global
+      // tabla.innerHTML = ""; // Limpiar antes de cargar
+      // try {
+      //   // const snap = await db.collection("users").get(); // Comentado
+      //   // snap.forEach((doc) => { // Comentado
+      //   //   const u = doc.data(); // Comentado
+      //   //   allUsersData.push({ id: doc.id, ...u }); // Almacenar datos del usuario - Ya está global
+      //   //   const tr = document.createElement("tr"); // Comentado
 
-          tr.innerHTML = `
-            <td>${u.nombre || "N/A"}</td>
-            <td>${u.email || "N/A"}</td>
-            <td>${u.role || "N/A"}</td>
-            <td>${u.activo ? "Sí" : "No"}</td>
-            <td><button class="btn btn-sm btn-${u.activo ? "danger" : "success"}" onclick="toggleActivo('${doc.id}', ${u.activo})">
-              ${u.activo ? "Desactivar" : "Activar"}</button></td>
-          `;
-          tabla.appendChild(tr);
-        });
-      } catch (error) {
-          console.error("Error cargando usuarios:", error);
-          // Podrías mostrar un mensaje al usuario aquí
-      }
-      // After loop, call chart functions and populate selector
-      // const allUsers = snap.docs.map(doc => ({ id: doc.id, ...doc.data() })); // This line is redundant now
-      populateEmployeeSelector(allUsersData);
-      generateEmployeeAreaChart(allUsersData);
-      generateUserRolesChart(allUsersData);
+      //   //   tr.innerHTML = `
+      //   //     <td>${u.nombre || "N/A"}</td>
+      //   //     <td>${u.email || "N/A"}</td>
+      //   //     <td>${u.role || "N/A"}</td>
+      //   //     <td>${u.activo ? "Sí" : "No"}</td>
+      //   //     <td><button class="btn btn-sm btn-${u.activo ? "danger" : "success"}" onclick="toggleActivo('${doc.id}', ${u.activo})">
+      //   //       ${u.activo ? "Desactivar" : "Activar"}</button></td>
+      //   //   `;
+      //   //   tabla.appendChild(tr); // Comentado
+      //   // }); // Comentado
+      // } catch (error) {
+      //     console.error("Error cargando usuarios:", error);
+      //     // Podrías mostrar un mensaje al usuario aquí
+      // }
+      // // After loop, call chart functions and populate selector
+      // // populateEmployeeSelector(allUsersData); // Se llama en DOMContentLoaded
+      // // generateEmployeeAreaChart(allUsersData); // Se llama en DOMContentLoaded
+      // // generateUserRolesChart(allUsersData); // Se llama en DOMContentLoaded
     }
 
     async function toggleActivo(uid, actual) {
-      try {
-        await db.collection("users").doc(uid).update({ activo: !actual });
-        cargarUsuarios(); // Recargar la tabla
-      } catch (error) {
-          console.error("Error al cambiar estado de usuario:", error);
-          // Podrías mostrar un mensaje al usuario aquí
-      }
+      // try {
+      //   // await db.collection("users").doc(uid).update({ activo: !actual }); // Comentado
+      //   // cargarUsuarios(); // Recargar la tabla - No necesario
+      //   console.log("toggleActivo llamado en modo test (sin acción real): ", uid, actual);
+      // } catch (error) {
+      //     console.error("Error al cambiar estado de usuario:", error);
+      // }
     }
 
     // Chart generation functions
