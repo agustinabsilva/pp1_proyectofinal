@@ -6,15 +6,16 @@ desde = 202401
 hasta = 202412
 
 # Nombre del archivo
-archivo = "dataset_empleados_kmeans.xlsx"
-ruta_guardado = os.path.join(os.getcwd(), "dataset_empleados_filtrado.xlsx")
+script_dir = os.path.dirname(__file__)
+archivo_path = os.path.join(script_dir, "dataset_empleados_kmeans.xlsx")
+ruta_guardado = os.path.join(script_dir, "dataset_empleados_filtrado.xlsx")
 
 # Verificar si el archivo existe
-if not os.path.exists(archivo):
-    print(f"⚠️ Archivo no encontrado: {archivo}")
+if not os.path.exists(archivo_path):
+    print(f"⚠️ Archivo no encontrado: {archivo_path}")
 else:
     # Leer el dataset
-    df = pd.read_excel(archivo)
+    df = pd.read_excel(archivo_path)
 
     # Verificar si la columna Ciclo existe
     if "Ciclo" not in df.columns:

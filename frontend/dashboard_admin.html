@@ -17,6 +17,8 @@
   <!-- Estilos personalizados -->
   <link rel="stylesheet" href="styleempleado.css" />
   <link rel="stylesheet" href="bienvenida.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Firebase y lógica de app -->
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
@@ -91,7 +93,7 @@
                     <i class="fas fa-exclamation-triangle me-3 fa-2x" style="color: #ffa500;"></i>
                     <div>
                         <strong style="color: #856404;">Predicción de rotación: Alta</strong><br>
-                        <small style="color: #856404;">Hay 5 empleados con alta probabilidad de rotación este trimestre. <a href="#" class="alert-link" style="color: #856404; font-weight: bold;">Ver detalles</a></small>
+                        <small style="color: #856404;">Hay <strong id="highRiskCount">5</strong> empleados con alta probabilidad de rotación este trimestre. <a href="#" class="alert-link" style="color: #856404; font-weight: bold;">Ver detalles</a></small>
                     </div>
                 </div>
                 <!-- Puedes añadir más alertas aquí si es necesario -->
@@ -106,34 +108,16 @@
                 </h5>
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <div class="card text-center h-100" style="background-color: #eef7e9; border-radius: 10px;">
-                            <div class="card-body">
-                                <i class="fas fa-chart-line fa-2x mb-2" style="color: #5cb85c;"></i>
-                                <h6 class="card-subtitle mb-2 text-muted">Indicador 1</h6>
-                                <p class="card-text fs-4 fw-bold" style="color: #4d6a3a;">75%</p>
-                                <small class="text-muted">Completitud de Perfiles</small>
-                            </div>
-                        </div>
+                        <h5 class="text-center" style="color: #4d6a3a;">Distribución por Área</h5>
+                        <canvas id="employeeAreaChart"></canvas>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <div class="card text-center h-100" style="background-color: #eef7e9; border-radius: 10px;">
-                            <div class="card-body">
-                                <i class="fas fa-chart-bar fa-2x mb-2" style="color: #f0ad4e;"></i>
-                                <h6 class="card-subtitle mb-2 text-muted">Indicador 2</h6>
-                                <p class="card-text fs-4 fw-bold" style="color: #4d6a3a;">12</p>
-                                <small class="text-muted">Feedbacks Pendientes</small>
-                            </div>
-                        </div>
+                        <h5 class="text-center" style="color: #4d6a3a;">Distribución por Rol</h5>
+                        <canvas id="userRolesChart"></canvas>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <div class="card text-center h-100" style="background-color: #eef7e9; border-radius: 10px;">
-                            <div class="card-body">
-                                <i class="fas fa-wave-square fa-2x mb-2" style="color: #5bc0de;"></i>
-                                <h6 class="card-subtitle mb-2 text-muted">Indicador 3</h6>
-                                <p class="card-text fs-4 fw-bold" style="color: #4d6a3a;">8.5/10</p>
-                                <small class="text-muted">Satisfacción General</small>
-                            </div>
-                        </div>
+                        <h5 class="text-center" style="color: #4d6a3a;">Riesgo de Rotación</h5>
+                        <canvas id="rotationRiskChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -393,6 +377,9 @@
               if (data.data && Array.isArray(data.data) && data.data.length > 0) {
                 resultadosDiv.textContent = "K-Means ejecutado correctamente.";
                 mostrarResultadosKMeans(data.data);
+                if (data.data) { // Ensure data.data exists
+                    generateRotationRiskChart(data.data);
+                }
               } else {
                 resultadosDiv.textContent = "K-Means ejecutado, pero no se recibieron datos válidos para la tabla.";
                 // Opcional: mostrar la respuesta cruda si es útil para depurar
@@ -474,7 +461,7 @@
           const formData = new FormData();
           formData.append("file", csvDataEntrenamiento);
           try {
-            const res = await fetch("https://azurepy.onrender.com/api/predict/performance_train", {
+            const res = await fetch("http://localhost:5001/api/ml/regression/train", {
               method: "POST",
               body: formData
             });
@@ -509,7 +496,7 @@
           const formData = new FormData();
           formData.append("file", csvDataPrediccion);
           try {
-            const res = await fetch("https://azurepy.onrender.com/api/predict/future_performance", {
+            const res = await fetch("http://localhost:5001/api/ml/regression/predict", {
               method: "POST",
               body: formData
             });
@@ -607,6 +594,10 @@
           console.error("Error cargando usuarios:", error);
           // Podrías mostrar un mensaje al usuario aquí
       }
+      // After loop, call chart functions
+      const allUsers = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      generateEmployeeAreaChart(allUsers);
+      generateUserRolesChart(allUsers);
     }
 
     async function toggleActivo(uid, actual) {
@@ -616,6 +607,184 @@
       } catch (error) {
           console.error("Error al cambiar estado de usuario:", error);
           // Podrías mostrar un mensaje al usuario aquí
+      }
+    }
+
+    // Chart generation functions
+    function generateEmployeeAreaChart(usersData) {
+      try {
+        const canvasId = 'employeeAreaChart';
+        Chart.getChart(canvasId)?.destroy();
+
+        const areaCounts = usersData.reduce((acc, user) => {
+          const area = user.area || 'N/A';
+          acc[area] = (acc[area] || 0) + 1;
+          return acc;
+        }, {});
+
+        const labels = Object.keys(areaCounts);
+        const data = Object.values(areaCounts);
+
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Empleados por Área',
+              data: data,
+              backgroundColor: [
+                'rgba(54, 162, 235, 0.6)', 
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(153, 102, 255, 0.6)',
+                'rgba(255, 159, 64, 0.6)',
+                'rgba(201, 203, 207, 0.6)'
+              ],
+              borderColor: [
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(201, 203, 207, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              title: { display: false }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1 // Ensure y-axis only shows whole numbers
+                }
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.error("Error generating employee area chart:", error);
+      }
+    }
+
+    function generateUserRolesChart(usersData) {
+      try {
+        const canvasId = 'userRolesChart';
+        Chart.getChart(canvasId)?.destroy();
+
+        const roleCounts = usersData.reduce((acc, user) => {
+          const role = user.role || 'N/A';
+          acc[role] = (acc[role] || 0) + 1;
+          return acc;
+        }, {});
+
+        const labels = Object.keys(roleCounts);
+        const data = Object.values(roleCounts);
+
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Distribución por Rol',
+              data: data,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 206, 86, 0.7)',
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(153, 102, 255, 0.7)'
+              ],
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'top' },
+              title: { display: false }
+            }
+          }
+        });
+      } catch (error) {
+        console.error("Error generating user roles chart:", error);
+      }
+    }
+
+    function generateRotationRiskChart(kmeansData) {
+      try {
+        const canvasId = 'rotationRiskChart';
+        Chart.getChart(canvasId)?.destroy();
+
+        const riskCounts = { 'ALTA': 0, 'MEDIA': 0, 'BAJA': 0 };
+        kmeansData.forEach(item => {
+          const riskLevel = item['Probabilidad de Rotacion'] ? item['Probabilidad de Rotacion'].toUpperCase() : 'N/A';
+          if (riskCounts.hasOwnProperty(riskLevel)) {
+            riskCounts[riskLevel]++;
+          } else if (riskLevel !== 'N/A') {
+             // Optionally handle unexpected risk levels if necessary
+            console.warn("Unexpected risk level in K-Means data:", riskLevel);
+          }
+        });
+
+        const labels = Object.keys(riskCounts);
+        const data = Object.values(riskCounts);
+        
+        const highRiskCountElement = document.getElementById('highRiskCount');
+        if (highRiskCountElement) {
+          highRiskCountElement.textContent = riskCounts['ALTA'] || 0;
+        } else {
+          console.error("Element with id 'highRiskCount' not found.");
+        }
+
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Riesgo de Rotación',
+              data: data,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.7)', // ALTA - Red
+                'rgba(255, 206, 86, 0.7)', // MEDIA - Yellow
+                'rgba(75, 192, 192, 0.7)'  // BAJA - Green
+              ],
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'top' },
+              title: { display: false }
+            }
+          }
+        });
+      } catch (error) {
+        console.error("Error generating rotation risk chart:", error);
       }
     }
   </script>
