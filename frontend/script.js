@@ -79,3 +79,6 @@ const animateOnScroll = () => {
   };
 
   document.addEventListener('DOMContentLoaded', animateOnScroll);
+
+
+  

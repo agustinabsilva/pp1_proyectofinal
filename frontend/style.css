@@ -609,3 +609,9 @@ footer {
   transform: scale(1.05); /* Aumenta suavemente el tamaño */
   box-shadow: 0 6px 20px rgba(0,0,0,0.3); /* Da profundidad */
 }
+
+iframe {
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    background: white; /* o el color más cercano al del iframe */
+}

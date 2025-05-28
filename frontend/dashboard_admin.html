@@ -42,6 +42,9 @@
   </style>
 </head>
 <body>
+  <canvas id="dashboardChart" width="400" height="200"></canvas>
+  
+
   <div class="d-flex">
     <!-- Sidebar -->
     <aside class="sidebar p-4 d-flex flex-column justify-content-between">
@@ -77,7 +80,10 @@
 
     <!-- Sección principal -->
     <main class="flex-grow-1 p-4">
+      
+
       <div id="dashboard-section">
+    
         <!-- Contenido del Dashboard -->
         <h1 class="mb-4" style="color: #4d6a3a; font-weight: 600;">Dashboard Principal</h1>
 
@@ -205,12 +211,24 @@
 
       <!-- Reportes -->
       <div id="reportes-section" style="display:none;">
-        <!-- Aquí iría la gestión de reportes -->
-      </div>
 
-      <!-- Probabilidad de Rotación (K-Means) -->
-      <div id="rotacion-section" style="display:none;">
-        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <section id="exportar" style="text-align: right;">          
+          <div class="botones">
+              <button id="btn-exportar-pdf">Exportar Dashboard a PDF</button>
+              <button id="btn-exportar-excel">Exportar Dashboard a Excel</button>
+          </div>
+        </section>
+
+        <iframe    src="http://54.172.128.185:3000/public/dashboard/2b2b50bf-33dc-40db-895f-13c263adb0c6"    frameborder="0"    width="100%"    height="900px"    allowtransparency></iframe>  
+        <iframe    src="http://54.172.128.185:3000/public/dashboard/4e83018c-4912-49f4-b3da-3635c3f3eec8"    frameborder="0"    width="100%"    height="900px"    allowtransparency></iframe>
+      </div>
+      
+        <!-- Probabilidad de Rotación (K-Means) -->
+      
+      
+      
+      <div id="rotacion-section" style="display:none;">  
+      <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
           <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 600px; width: 100%;">
             <div class="text-center mb-3">
               <h4 class="mb-3" style="color: #4d6a3a;">Probabilidad de Rotación (K-Means)</h4>
@@ -219,8 +237,10 @@
               <div id="tabla-container" class="mt-3"></div>
             </div>
           </div>
+          
         </div>
       </div>
+      
       <!-- Fin Probabilidad de Rotación -->
       <div id="prediccion-section" style="display:none;">
         <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
@@ -260,7 +280,10 @@
         </div>
       </div>
       <!-- Fin Feedback Admin -->
+
+      <!-- Reportes -->
       <div id="reportes-section" style="display:none;">
+        
         <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
           <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 600px; width: 100%;">
             <div class="text-center mb-3">
@@ -274,6 +297,7 @@
           </div>
         </div>
       </div>
+
 
       <!-- Nueva Sección: Solicitud de Cambios de Datos Personales -->
       <div id="solicitud-cambios-section" style="display:none;">
@@ -304,8 +328,17 @@
       <!-- Fin Nueva Sección -->
     </main>
   </div>
+  <script src="metabase.js"> </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+  <script src="admin.js">
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+
+
     // Función para mostrar solo la sección seleccionada
     function mostrarSeccionAdmin(seccionId) {
       document.getElementById('dashboard-section').style.display = 'none';
