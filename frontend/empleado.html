@@ -22,18 +22,19 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
   <script defer src="app.js"></script>
+  
   <!-- Fin Firebase -->
 </head>
-
-
 <body>
+
+  
+
   <!-- Contenido principal con sidebar -->
   <div class="d-flex">
-
    <!-- Sidebar -->
 <aside class="sidebar p-4 d-flex flex-column justify-content-between">
   <div>
-    <h2 class="logo mb-4" >🌿 AINABI 🌿</h2>
+    <h2 class="logo mb-4">🌿 AINABI</h2>
     <nav class="nav flex-column">
       <a href="./empleado.html" class="nav-link" id="nav-inicio">
         <i class="fas fa-home me-2"></i>Inicio
@@ -58,30 +59,29 @@
   </div>
 </aside>
 
+
+
+
     <!-- Sección principal -->
     <main class="flex-grow-1 p-4">
       <div id="inicio-section">
-                
+        
+        
         <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-          <div class="card shadow-sm p-4"  style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 600px; width: 100%; min-height: 320px;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 400px; width: 100%;">
             <div class="bienvenida-carpincho" style="display: flex; justify-content: center; ">
               <img src="./assets/profilephoto.png" alt="Carpincho AINABI" style=" border-radius: 50%; object-fit: cover; background: #e6e2c3; margin-bottom: 10px;">
             </div>
             
             <h2 class="bienvenida-titulo text-center" style="color: #4d6a3a; font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;">
-              ¡Hola, <span id="bienvenida-nombre"></span>!
+              ¡Bienvenido/a!
             </h2>
             <p class="bienvenida-texto text-center" style="color: #4d6a3a;">
               <span class="bienvenida-emoji">🌿</span> Nos alegra tenerte como parte de nuestro equipo.🌿<br><br>
-              Este es <b> tu espacio personal </b> dentro de la plataforma.<br>
-              Aquí podrás realizar tu autoevaluación y gestionar tu perfil.<br><br>
+              Desde acá podrás acceder, realizar feedback y gestionar tu perfil.<br><br>
               <span class="bienvenida-resaltado" style="font-weight:600;">¡El carpincho te acompaña en tu desarrollo profesional!</span><br><br>
               Utilizá el menú lateral para comenzar a potenciar tu crecimiento.
             </p>
-
-           
-
-
             <div class="bienvenida-brillo text-center">
               <span>✨</span>
             </div>
@@ -89,35 +89,19 @@
         </div>
       </div>
 
-
-
-
-      <!-- Tarjeta motivadora abajo a la derecha -->
-      <div class="card shadow-sm p-3" id="motivacional-card" style="background: #e6f5d0; border-radius: 18px; border: 2px solid #b7d7c2; max-width: 400px; width: 100%; position: fixed; bottom: 30px; right: 30px; z-index: 999; box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
-        <p class="text-center mb-0" style="color: #4d6a3a; font-size: 1.15rem; font-style: italic;">
-          "Recuerda: hasta los carpinchos más tranquilos avanzan paso a paso."🦫
-        </p>
-      </div>
-
-
-
-
-
-
-      
       <div id="autoevaluacion-section" style="display:none;">
         <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 700px; width: 100%; min-height: 320px;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 400px; width: 100%;">
             <div class="text-center mb-3">
-              <h2 style="color: #4d6a3a; font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;">Tu Autoevaluación</h2>
+              <h2 style="color: #4d6a3a; font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;">Autoevaluación</h2>
               <div style="background: #e6e2c3; border-radius: 50%; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; box-shadow: 0 2px 8px #b7d7c2;">
                 <img src="./assets/profilephoto.png" alt="Carpincho AINABI" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover;">
               </div>
             </div>
             <p class="text-center" style="color: #4d6a3a; margin-bottom: 18px;">
-              Este espacio es <b>solo para vos</b> <br>
-              Compartí tu mirada sobre tu desempeño, tus logros, y lo que te gustaría seguir mejorando.</p>
-            <form style="width:100%; max-width:500px;" id="form-autoevaluacion" class="mx-auto">
+              Seleccioná tu desempeño general y dejá un comentario sobre tu experiencia reciente.
+            </p>
+            <form style="width:100%; max-width:400px;" id="form-autoevaluacion">
               <div class="mb-3 text-start">
                 <label for="fecha-autoevaluacion" class="form-label" style="color: #4d6a3a;">Fecha de autoevaluación</label>
                 <input type="date" class="form-control" id="fecha-autoevaluacion" required>
@@ -138,24 +122,13 @@
                 <button type="submit" class="btn btn-light border btn-ainabi" style="border-radius: 12px; border: 2px solid #e6e2c3;">Guardar</button>
               </div>
             </form>
-            
           </div>
-          <div class="d-flex justify-content-center align-items-center" style="min-height: 40vh;">
-           
-        </div>
-        
-        
-      </div>
-      <div class="card shadow-sm p-4" id="gracias-card" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 500px; width: 100%; position: fixed; bottom: 30px; right: 30px; z-index: 999; box-shadow: 0 4px 16px rgba(0,0,0,0.08);">
-        <div class="text-center" style="color: #4d6a3a; font-size: 1.2rem; font-weight: 500;">
-          ✨¡Gracias por tu tiempo!✨ <br>
-          No olvides que tu reflexión importa.
         </div>
       </div>
-    </div>
+
       <div id="feedback-section" style="display:none;">
         <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 800px; width: 100%;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 400px; width: 100%;">
             <div class="text-center mb-3">
               <h5 class="card-title" style="color: #4d6a3a; font-weight: 700;">Feedback del Supervisor</h5>
               <div class="d-flex flex-column align-items-center mb-2">
@@ -173,8 +146,8 @@
       </div>
 
       <div id="perfil-section" style="display:none;">
-♠        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 800px; width: 100%; min-height: 420px;">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 400px; width: 100%;">
             <div class="text-center mb-3">
               <h2 style="color: #4d6a3a; font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;">🌿AINABI🌿</h2>
               <div style="display: flex; justify-content: center;">
@@ -216,22 +189,11 @@
       </div>
     </main>
   </div>
-  
-  <script src="env.js"></script> 
+  <script src="env.js"></script>
+  <script src="eapp.js"></script>
+  <script src="env.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-  var fechaInput = document.getElementById('fecha-autoevaluacion');
-  if (fechaInput) {
-    var today = new Date();
-    var yyyy = today.getFullYear();
-    var mm = String(today.getMonth() + 1).padStart(2, '0');
-    var dd = String(today.getDate()).padStart(2, '0');
-    var minDate = yyyy + '-' + mm + '-' + dd;
-    fechaInput.setAttribute('min', minDate);
-  }
-});
-    
     // Función para mostrar solo la sección seleccionada
     function mostrarSeccion(seccionId) {
       document.getElementById('inicio-section').style.display = 'none';
@@ -239,13 +201,6 @@
       document.getElementById('feedback-section').style.display = 'none';
       document.getElementById('perfil-section').style.display = 'none';
       document.getElementById(seccionId).style.display = 'block';
-      // Mostrar u ocultar la tarjeta motivacional
-      var motivacionalCard = document.getElementById('motivacional-card');
-      if (seccionId === 'inicio-section') {
-        motivacionalCard.style.display = 'block';
-      } else {
-        motivacionalCard.style.display = 'none';
-      }
     }
 
     // Cambia la clase activa en la barra lateral
@@ -285,7 +240,6 @@
           if (userDoc.exists) {
             const data = userDoc.data();
             document.getElementById('user-nombre').textContent = data.nombre || "Sin nombre";
-            document.getElementById('bienvenida-nombre').textContent = data.nombre || "";
             document.getElementById('user-rol').textContent = data.role || "Sin rol";
             document.getElementById('user-area').textContent = data.area || "Sin área";
             document.getElementById('user-jerarquia').textContent = data.jerarquia || "Sin jerarquía";
@@ -307,7 +261,6 @@
       }
     });
   });
-  
   // Guardar autoevaluación con fecha y nombre
   const formAuto = document.getElementById('form-autoevaluacion');
   if (formAuto) {
@@ -432,10 +385,21 @@ document.addEventListener('DOMContentLoaded', function() {
       try {
         const user = firebase.auth().currentUser;
         if (user) {
+          // Obtener datos actuales del usuario desde la colección users
+          const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+          let nombreActual = '';
+          let emailActual = '';
+          if (userDoc.exists) {
+            const data = userDoc.data();
+            nombreActual = data.nombre || '';
+            emailActual = data.email || user.email || '';
+          }
           await firebase.firestore().collection('solicitudes_cambio_datos').add({
             uid: user.uid,
-            nombre: nuevoNombre,
-            email: nuevoEmail,
+            nombre_actual: nombreActual,
+            email_actual: emailActual,
+            nombre_nuevo: nuevoNombre,
+            email_nuevo: nuevoEmail,
             estado: "pendiente",
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
           });
@@ -468,9 +432,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
-
   </script>
 </body>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

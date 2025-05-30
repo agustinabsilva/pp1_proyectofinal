@@ -42,9 +42,6 @@
   </style>
 </head>
 <body>
-  <canvas id="dashboardChart" width="400" height="200"></canvas>
-  
-
   <div class="d-flex">
     <!-- Sidebar -->
     <aside class="sidebar p-4 d-flex flex-column justify-content-between">
@@ -191,26 +188,31 @@
       </div>
       <div id="usuarios-section" style="display:none;">
         <div class="container">
-          <h3 class="mb-3" style="color: #4d6a3a;">Gestión de Usuarios</h3>
-          <table class="table table-bordered" id="tablaUsuarios">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Activo</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Usuarios se cargarán aquí dinámicamente -->
-            </tbody>
-          </table>
+          <h3 class="mb-3" style="color: #4d6a3a; font-weight:700;">Gestión de Usuarios</h3>
+          <div class="card shadow-sm mb-4" style="background:#eef7e9; border-radius:18px; border:2px solid #b88b66;">
+            <div class="card-body">
+              <table class="table table-bordered align-middle mb-0" id="tablaUsuarios" style="background:#fffefa; border-radius:12px; overflow:hidden;">
+                <thead style="background:#fdfbe8; color:#4d6a3a; font-weight:600;">
+                  <tr>
+                    <th style="border:none;">Nombre</th>
+                    <th style="border:none;">Email</th>
+                    <th style="border:none;">Rol</th>
+                    <th style="border:none;">Activo</th>
+                    <th style="border:none;">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Usuarios se cargarán aquí dinámicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Reportes -->
       <div id="reportes-section" style="display:none;">
+        <!-- Aquí iría la gestión de reportes -->
 
         <section id="exportar" style="text-align: right;">          
           <div class="botones">
@@ -306,21 +308,10 @@
             <div class="text-center mb-3">
               <h4 class="mb-3" style="color: #4d6a3a; font-weight: 700;">Aprobación de Cambios de Datos Personales</h4>
             </div>
-            <!-- Ejemplo de una solicitud hardcodeada -->
-            <div class="card mb-3">
-              <div class="card-body">
-                <h5 class="card-title">Solicitud de: Juan Pérez (ID: JP123)</h5>
-                <p class="card-text"><strong>Campo a modificar:</strong> Dirección</p>
-                <p class="card-text"><strong>Valor actual:</strong> Calle Falsa 123, Springfield</p>
-                <p class="card-text"><strong>Nuevo valor solicitado:</strong> Avenida Siempreviva 742, Springfield</p>
-                <p class="card-text"><small class="text-muted">Fecha de solicitud: 2023-10-27</small></p>
-                <button class="btn btn-success me-2">Aprobar</button>
-                <button class="btn btn-danger">Rechazar</button>
-              </div>
-            </div>
-            <!-- Puedes añadir más solicitudes hardcodeadas o un mensaje si no hay pendientes -->
-            <div class="alert alert-info mt-3" role="alert">
-              No hay más solicitudes pendientes por el momento.
+                        <!-- Contenedor dinámico para solicitudes -->
+            <div id="contenedor-solicitudes-cambios"></div>
+            <div id="mensaje-sin-solicitudes" class="alert alert-info mt-3" role="alert" style="display:none;">
+              No hay solicitudes pendientes por el momento.
             </div>
           </div>
         </div>
@@ -404,6 +395,7 @@
           e.preventDefault();
           mostrarSeccionAdmin('solicitud-cambios-section');
           setActiveNavAdmin('nav-solicitud-cambios');
+          cargarSolicitudesCambios(); // Llama a la función al entrar a la sección
         });
       }
 
@@ -557,6 +549,98 @@
         });
       }
     });
+       // --- FUNCIONALIDAD PARA SOLICITUDES DE CAMBIO DE DATOS ---
+    async function cargarSolicitudesCambios() {
+      const contenedor = document.getElementById('contenedor-solicitudes-cambios');
+      const mensajeSinSolicitudes = document.getElementById('mensaje-sin-solicitudes');
+      contenedor.innerHTML = '';
+      let haySolicitudes = false;
+      try {
+        const snap = await db.collection('solicitudes_cambio_datos').orderBy('timestamp', 'desc').get();
+        snap.forEach(doc => {
+          const s = doc.data();
+          // Mostrar solo solicitudes pendientes
+          if (s.estado && s.estado !== 'pendiente') return;
+          haySolicitudes = true;
+          // Puedes personalizar los campos según tu estructura
+          const card = document.createElement('div');
+          card.className = 'card mb-4 shadow-sm';
+          card.style.background = '#eef7e9';
+          card.style.borderRadius = '18px';
+          card.style.border = '2px solid #b88b66';
+          card.innerHTML = `
+            <div class="card-body">
+              <h5 class="card-title mb-3" style="color: #4d6a3a; font-weight: 700; letter-spacing: 1px;">Solicitud de: <span style='color:#b88b66;'>${s.nombre_actual || 'N/A'}</span> <span class='text-muted' style='font-size:0.95em;'>(${s.uid || 'Sin UID'})</span></h5>
+              <div class="row mb-2">
+                <div class="col-6">
+                  <div class="p-2" style="background:#fdfbe8; border-radius:10px;">
+                    <strong style="color:#4d6a3a;">Nombre actual:</strong><br><span style="color:#6c5c4c;">${s.nombre_actual || 'N/A'}</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="p-2" style="background:#fffefa; border-radius:10px;">
+                    <strong style="color:#4d6a3a;">Nuevo nombre:</strong><br><span style="color:#b88b66;">${s.nombre_nuevo || 'N/A'}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-6">
+                  <div class="p-2" style="background:#fdfbe8; border-radius:10px;">
+                    <strong style="color:#4d6a3a;">Email actual:</strong><br><span style="color:#6c5c4c;">${s.email_actual || 'N/A'}</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="p-2" style="background:#fffefa; border-radius:10px;">
+                    <strong style="color:#4d6a3a;">Nuevo email:</strong><br><span style="color:#b88b66;">${s.email_nuevo || 'N/A'}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-2 mt-3">
+                <span class="badge" style="background:#b88b66; color:#fff; font-size:1em; border-radius:8px; padding:6px 16px;">${s.estado || 'pendiente'}</span>
+                <span class="text-muted ms-2" style="font-size:0.95em;">${s.timestamp && s.timestamp.toDate ? s.timestamp.toDate().toLocaleString() : 'N/A'}</span>
+              </div>
+              <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-success me-2" style="border-radius:12px; background:#4d6a3a; border:none; font-weight:600;" onclick="aprobarSolicitudCambio('${doc.id}', '${s.uid}', '${s.nombre_nuevo}', '${s.email_nuevo}')"><i class="fas fa-check me-1"></i>Aprobar</button>
+                <button class="btn btn-danger" style="border-radius:12px; background:#b88b66; border:none; font-weight:600;" onclick="rechazarSolicitudCambio('${doc.id}')"><i class="fas fa-times me-1"></i>Rechazar</button>
+              </div>
+            </div>
+          `;
+          contenedor.appendChild(card);
+        });
+      } catch (error) {
+        contenedor.innerHTML = '<div class="alert alert-danger">Error al cargar solicitudes: ' + error.message + '</div>';
+        return;
+      }
+      mensajeSinSolicitudes.style.display = haySolicitudes ? 'none' : 'block';
+    }
+
+    // Funciones para aprobar/rechazar solicitudes
+    async function aprobarSolicitudCambio(id, uid, nuevoNombre, nuevoEmail) {
+      try {
+        // Actualizar datos en la colección users
+        const updates = {};
+        if (nuevoNombre && nuevoNombre !== 'N/A') updates.nombre = nuevoNombre;
+        if (nuevoEmail && nuevoEmail !== 'N/A') updates.email = nuevoEmail;
+        if (Object.keys(updates).length > 0) {
+          await db.collection('users').doc(uid).update(updates);
+        }
+        // Cambiar estado de la solicitud
+        await db.collection('solicitudes_cambio_datos').doc(id).update({ estado: 'aprobada' });
+        Swal.fire('Solicitud aprobada y datos actualizados', '', 'success');
+        cargarSolicitudesCambios();
+      } catch (error) {
+        Swal.fire('Error', 'No se pudo aprobar la solicitud: ' + error.message, 'error');
+      }
+    }
+    async function rechazarSolicitudCambio(id) {
+      try {
+        await db.collection('solicitudes_cambio_datos').doc(id).update({ estado: 'rechazada' });
+        Swal.fire('Solicitud rechazada', '', 'info');
+        cargarSolicitudesCambios();
+      } catch (error) {
+        Swal.fire('Error', 'No se pudo rechazar la solicitud: ' + error.message, 'error');
+      }
+    }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   
@@ -627,12 +711,17 @@
           const tr = document.createElement("tr");
 
           tr.innerHTML = `
-            <td>${u.nombre || "N/A"}</td>
-            <td>${u.email || "N/A"}</td>
-            <td>${u.role || "N/A"}</td>
-            <td>${u.activo ? "Sí" : "No"}</td>
-            <td><button class="btn btn-sm btn-${u.activo ? "danger" : "success"}" onclick="toggleActivo('${doc.id}', ${u.activo})">
-              ${u.activo ? "Desactivar" : "Activar"}</button></td>
+            <td style='color:#4d6a3a; font-weight:600;'>${u.nombre || "N/A"}</td>
+            <td style='color:#6c5c4c;'>${u.email || "N/A"}</td>
+            <td><span class='badge' style='background:#b88b66; color:#fff; border-radius:8px; font-size:1em;'>${u.role || "N/A"}</span></td>
+            <td>
+              <span class='badge' style='background:${u.activo ? "#5cb85c" : "#d9534f"}; color:#fff; border-radius:8px; font-size:1em;'>${u.activo ? "Sí" : "No"}</span>
+            </td>
+            <td>
+              <button class="btn btn-sm" style="border-radius:10px; font-weight:600; background:${u.activo ? '#d9534f' : '#4d6a3a'}; color:#fff; border:none;" onclick="toggleActivo('${doc.id}', ${u.activo})">
+                ${u.activo ? "Desactivar" : "Activar"}
+              </button>
+            </td>
           `;
           tabla.appendChild(tr);
         });
