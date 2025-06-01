@@ -1,0 +1,27 @@
+import firebase_admin
+from firebase_admin import credentials, auth
+import json
+
+# Ruta a tu archivo de clave de cuenta de servicio
+cred = credentials.Certificate("firebase-service.json")
+firebase_admin.initialize_app(cred)
+
+# Cargar los usuarios desde el archivo JSON
+with open("usuarios.json", "r", encoding="utf-8") as f:
+    usuarios = json.load(f)
+
+# Contraseña por defecto
+password_defecto = "ainabi123"
+
+# Crear usuarios en Authentication
+for usuario in usuarios:
+    try:
+        user_record = auth.create_user(
+            email=usuario["email"],
+            password=password_defecto,
+            display_name=usuario["nombre"],
+            disabled=not usuario["activo"]
+        )
+        print(f"✅ Usuario creado: {usuario['email']} (UID: {user_record.uid})")
+    except Exception as e:
+        print(f"❌ Error al crear {usuario['email']}: {str(e)}")

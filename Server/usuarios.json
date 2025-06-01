@@ -1,0 +1,402 @@
+[
+  {
+    "nombre": "Camila Torres",
+    "email": "camila.torres@gmail.com",
+    "activo": true,
+    "area": "Caja",
+    "jerarquia": "Junior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Matias Fernandez",
+    "email": "matias.fernandez@hotmail.com",
+    "activo": false,
+    "area": "Ventas",
+    "jerarquia": "Senior",
+    "role": "Supervisor"
+  },
+  {
+    "nombre": "Lucia Ramirez",
+    "email": "lucia.ramirez@yahoo.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Junior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Juan Pablo Garcia",
+    "email": "juan.garcia@gmail.com",
+    "activo": false,
+    "area": "Logistica",
+    "jerarquia": "Senior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Florencia Martinez",
+    "email": "florencia.martinez@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Rodrigo Perez",
+    "email": "rodrigo.perez@gmail.com",
+    "activo": false,
+    "area": "Atencion al Cliente",
+    "jerarquia": "Junior",
+    "role": "Administración"
+  },
+  {
+    "nombre": "Sofia Delgado",
+    "email": "sofia.delgado@hotmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Junior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Diego Sosa",
+    "email": "diego.sosa@yahoo.com",
+    "activo": false,
+    "area": "Deposito",
+    "jerarquia": "Senior",
+    "role": "Supervisor"
+  },
+  {
+    "nombre": "Martina Rios",
+    "email": "martina.rios@gmail.com",
+    "activo": true,
+    "area": "Caja",
+    "jerarquia": "Junior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Tomas Herrera",
+    "email": "tomas.herrera@hotmail.com",
+    "activo": false,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Milagros Acosta",
+    "email": "milagros.acosta@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Junior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Ignacio Acosta",
+    "email": "ignacio.acosta@gmail.com",
+    "activo": false,
+    "area": "Atencion al Cliente",
+    "jerarquia": "Senior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Federico Castro",
+    "email": "federico.castro@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Administración"
+  },
+  {
+    "nombre": "Martina Rios",
+    "email": "martina.rios@gmail.com",
+    "activo": false,
+    "area": "Ventas",
+    "jerarquia": "Senior",
+    "role": "Supervisor"
+  },
+  {
+    "nombre": "Juan Castro",
+    "email": "juan.castro@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Junior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Gonzalo Sosa",
+    "email": "gonzalo.sosa@gmail.com",
+    "activo": false,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Administración"
+  },
+  {
+    "nombre": "Valentina Perez",
+    "email": "valentina.perez@gmail.com",
+    "activo": true,
+    "area": "Ventas",
+    "jerarquia": "Senior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Carla Delgado",
+    "email": "carla.delgado@gmail.com",
+    "activo": false,
+    "area": "Administracion",
+    "jerarquia": "Junior",
+    "role": "Administración"
+  },
+  {
+    "nombre": "Rodrigo Perez",
+    "email": "rodrigo.perez@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Martina Herrera",
+    "email": "martina.herrera@gmail.com",
+    "activo": false,
+    "area": "Logistica",
+    "jerarquia": "Senior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Matias Mendoza",
+    "email": "matias.mendoza@gmail.com",
+    "activo": true,
+    "area": "Logistica",
+    "jerarquia": "Senior",
+    "role": "Supervisor"
+  },
+  {
+    "nombre": "Florencia Acosta",
+    "email": "florencia.acosta@gmail.com",
+    "activo": false,
+    "area": "Ventas",
+    "jerarquia": "Junior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Bruno Rios",
+    "email": "bruno.rios@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Diego Perez",
+    "email": "diego.perez@gmail.com",
+    "activo": false,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Administración"
+  },
+  {
+    "nombre": "Camila Mendoza",
+    "email": "camila.mendoza@gmail.com",
+    "activo": true,
+    "area": "Logistica",
+    "jerarquia": "Junior",
+    "role": "Supervisor"
+  },
+  {
+    "nombre": "Mariana Morales",
+    "email": "mariana.morales@gmail.com",
+    "activo": false,
+    "area": "Caja",
+    "jerarquia": "Junior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Leandro Castro",
+    "email": "leandro.castro@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Sofia Herrera",
+    "email": "sofia.herrera@gmail.com",
+    "activo": false,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Administración"
+  },
+  {
+    "nombre": "Sofia Acosta",
+    "email": "sofia.acosta@gmail.com",
+    "activo": true,
+    "area": "Atencion al Cliente",
+    "jerarquia": "Junior",
+    "role": "Supervisor"
+  },
+  {
+    "nombre": "Rodrigo Mendoza",
+    "email": "rodrigo.mendoza@gmail.com",
+    "activo": false,
+    "area": "Atencion al Cliente",
+    "jerarquia": "Junior",
+    "role": "Supervisor"
+  },
+  {
+    "nombre": "Abril Fernandez",
+    "email": "abril.fernandez@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Junior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Ignacio Sosa",
+    "email": "ignacio.sosa@gmail.com",
+    "activo": false,
+    "area": "Logistica",
+    "jerarquia": "Senior",
+    "role": "Supervisor"
+  },
+  {
+    "nombre": "Martina Fernandez",
+    "email": "martina.fernandez@gmail.com",
+    "activo": true,
+    "area": "Atencion al Cliente",
+    "jerarquia": "Senior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Ignacio Torres",
+    "email": "ignacio.torres@gmail.com",
+    "activo": false,
+    "area": "Administracion",
+    "jerarquia": "Junior",
+    "role": "Administración"
+  },
+  {
+    "nombre": "Matias Fernandez",
+    "email": "matias.fernandez@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Junior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Ignacio Lopez",
+    "email": "ignacio.lopez@gmail.com",
+    "activo": false,
+    "area": "Ventas",
+    "jerarquia": "Junior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Bruno Torres",
+    "email": "bruno.torres@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Administración"
+  },
+  {
+    "nombre": "Sofia Morales",
+    "email": "sofia.morales@gmail.com",
+    "activo": false,
+    "area": "Administracion",
+    "jerarquia": "Junior",
+    "role": "Administración"
+  },
+  {
+    "nombre": "Lucia Acosta",
+    "email": "lucia.acosta@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Mariana Fernandez",
+    "email": "mariana.fernandez@gmail.com",
+    "activo": false,
+    "area": "Logistica",
+    "jerarquia": "Senior",
+    "role": "Supervisor"
+  },
+  {
+    "nombre": "Gonzalo Fernandez",
+    "email": "gonzalo.fernandez@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Administración"
+  },
+  {
+    "nombre": "Milagros Mendoza",
+    "email": "milagros.mendoza@gmail.com",
+    "activo": false,
+    "area": "Reposicion",
+    "jerarquia": "Junior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Martina Morales",
+    "email": "martina.morales@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Junior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Bruno Fernandez",
+    "email": "bruno.fernandez@gmail.com",
+    "activo": false,
+    "area": "Atencion al Cliente",
+    "jerarquia": "Junior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Mariana Delgado",
+    "email": "mariana.delgado@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Administración"
+  },
+  {
+    "nombre": "Julieta Fernandez",
+    "email": "julieta.fernandez@gmail.com",
+    "activo": false,
+    "area": "Caja",
+    "jerarquia": "Senior",
+    "role": "Empleado"
+  },
+  {
+    "nombre": "Matias Mendoza",
+    "email": "matias.mendoza@gmail.com",
+    "activo": true,
+    "area": "Administracion",
+    "jerarquia": "Senior",
+    "role": "Analista"
+  },
+  {
+    "nombre": "Agustin Mendoza",
+    "email": "agustin.mendoza@gmail.com",
+    "activo": false,
+    "area": "Ventas",
+    "jerarquia": "Junior",
+    "role": "Supervisor"
+  },
+  {
+    "nombre": "Julieta Perez",
+    "email": "julieta.perez@gmail.com",
+    "activo": true,
+    "area": "Logistica",
+    "jerarquia": "Senior",
+    "role": "Supervisor"
+  },
+  {
+    "nombre": "Paula Delgado",
+    "email": "paula.delgado@gmail.com",
+    "activo": false,
+    "area": "Caja",
+    "jerarquia": "Junior",
+    "role": "Supervisor"
+  }
+]
