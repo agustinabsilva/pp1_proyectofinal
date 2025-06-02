@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Entrenamiento IA - AINABI</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="styleempleado.css" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #FAF3E0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="none"><path d="M30,50 Q40,30 50,50 T70,50" stroke="%23E6E2C3" stroke-width="2" fill="none" /></svg>');
+      background-repeat: repeat;
+      background-size: 300px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 24px;
+      border: 2px solid #e6e2c3;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+    }
+
+    .header-title {
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 3rem;
+      color: #4d6a3a;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-subtitle {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      color: #4d6a3a;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .card-title {
+      font-family: 'Caveat', cursive;
+      font-weight: 600;
+      font-size: 1.8rem;
+      color: #4d6a3a;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-ainabi {
+      background-color: #4d6a3a;
+      color: #fff;
+      border-radius: 12px;
+      border: none;
+      padding: 10px 24px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-ainabi:hover {
+      background-color: #3a5129;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      color: #fff;
+    }
+
+    .form-check-input:checked {
+      background-color: #4d6a3a;
+      border-color: #4d6a3a;
+    }
+
+    .progress-bar {
+      background-color: #4d6a3a;
+    }
+
+    .table {
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .table thead th {
+      background-color: rgba(77, 106, 58, 0.1);
+      color: #4d6a3a;
+      font-weight: 600;
+    }
+
+    .table-hover tbody tr:hover {
+      background-color: rgba(77, 106, 58, 0.05);
+    }
+
+    .icon-btn {
+      color: #4d6a3a;
+      background: none;
+      border: none;
+      transition: transform 0.2s;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.2);
+    }
+
+    .floating-leaf {
+      position: absolute;
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    .leaf-1 {
+      top: 10%;
+      left: 5%;
+      transform: rotate(15deg);
+    }
+
+    .leaf-2 {
+      top: 30%;
+      right: 8%;
+      transform: rotate(-20deg);
+    }
+
+    .leaf-3 {
+      bottom: 15%;
+      left: 12%;
+      transform: rotate(45deg);
+    }
+
+    .preview-table {
+      font-size: 0.85rem;
+    }
+
+    .preview-table th, 
+    .preview-table td {
+      padding: 0.5rem;
+    }
+
+    .model-card {
+      background: rgba(230, 226, 195, 0.3);
+      border: 1px solid #e6e2c3;
+      border-radius: 16px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .model-card:hover {
+      background: rgba(230, 226, 195, 0.5);
+    }
+    
+    .form-control, .form-select {
+      border: 2px solid #e6e2c3;
+      border-radius: 12px;
+      padding: 10px 15px;
+    }
+    
+    .form-control:focus, .form-select:focus {
+      border-color: #4d6a3a;
+      box-shadow: 0 0 0 0.25rem rgba(77, 106, 58, 0.25);
+    }
+  </style>
+  
+  <!-- Firebase y lógica de app -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
+  <!-- Fin Firebase -->
+</head>
+<body>
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <aside class="sidebar p-4 d-flex flex-column justify-content-between">
+      <div>
+        <h2 class="logo mb-4">🌿 AINABI</h2>
+        <nav class="nav flex-column">
+          <a href="dashboard_analista.html" class="nav-link">
+            <i class="fas fa-chart-line me-2"></i>Dashboard
+          </a>
+          <a href="#" class="nav-link nav-activa">
+            <i class="fas fa-robot me-2"></i>Entrenamiento IA
+          </a>
+          <a href="#" class="nav-link">
+            <i class="fas fa-user me-2"></i>Mi Perfil
+          </a>
+        </nav>
+      </div>
+      <div class="mt-4">
+        <a href="#" class="nav-link text-danger" id="btn-logout">
+          <i class="fas fa-sign-out-alt me-2"></i>Salir
+        </a>
+      </div>
+    </aside>
+
+    <!-- Sección principal -->
+    <main class="flex-grow-1 p-4 pb-5">
+      <!-- Elementos decorativos -->
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 24 24'><path d='M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z' fill='%234d6a3a' opacity='0.3'/></svg>" class="floating-leaf leaf-1" width="80">
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 24 24'><path d='M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z' fill='%234d6a3a' opacity='0.3'/></svg>" class="floating-leaf leaf-2" width="60">
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 24 24'><path d='M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z' fill='%234d6a3a' opacity='0.3'/></svg>" class="floating-leaf leaf-3" width="70">
+      
+      <!-- Encabezado -->
+      <div class="container-fluid mb-5">
+        <h1 class="header-title">Entrenamiento de Modelos IA</h1>
+        <p class="header-subtitle">🤖 Predecí el rendimiento y la rotación de tus empleados con inteligencia artificial.</p>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <!-- Tarjeta 1: Selección de modelo -->
+            <div class="card p-4 mb-4">
+              <h2 class="card-title">🔸 Seleccioná el modelo a entrenar</h2>
+              <div class="mb-3">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="radio" name="modelType" id="modelRendimiento" checked>
+                  <label class="form-check-label" for="modelRendimiento">
+                    Predicción de rendimiento
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="modelType" id="modelRotacion">
+                  <label class="form-check-label" for="modelRotacion">
+                    Detección de rotación
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta 2: Carga de CSV -->
+            <div class="card p-4 mb-4">
+              <h2 class="card-title">🔸 Carga tu CSV</h2>
+              <div class="mb-3">
+                <label for="csvFile" class="form-label">📎 Subí tu archivo:</label>
+                <input class="form-control" type="file" id="csvFile" accept=".csv">
+              </div>
+              <div class="mb-3" id="fileNameContainer" style="display: none;">
+                <p class="mb-2">✔️ <span id="fileName">Empleados.csv</span></p>
+              </div>
+              <div class="mb-3" id="previewContainer" style="display: none;">
+                <p class="mb-2">📌 Preview:</p>
+                <div class="table-responsive">
+                  <table class="table table-sm table-bordered preview-table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Edad</th>
+                        <th>Área</th>
+                        <th>Antigüedad</th>
+                        <th>Rendimiento</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>001</td>
+                        <td>32</td>
+                        <td>Ventas</td>
+                        <td>3</td>
+                        <td>85</td>
+                      </tr>
+                      <tr>
+                        <td>002</td>
+                        <td>28</td>
+                        <td>Marketing</td>
+                        <td>1</td>
+                        <td>78</td>
+                      </tr>
+                      <tr>
+                        <td>003</td>
+                        <td>45</td>
+                        <td>Finanzas</td>
+                        <td>8</td>
+                        <td>92</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="mb-3" id="errorContainer" style="display: none;">
+                <p class="mb-2">⚠️ Errores detectados: <span id="errorText" class="text-success">ninguno</span></p>
+              </div>
+            </div>
+
+            <!-- Tarjeta 3: Configuración del modelo -->
+            <div class="card p-4 mb-4">
+              <h2 class="card-title">🔸 Configuración del modelo</h2>
+              <div class="mb-3">
+                <label for="targetVariable" class="form-label">🎯 Variable objetivo:</label>
+                <select class="form-select" id="targetVariable">
+                  <option selected>Rendimiento</option>
+                  <option>Rotación</option>
+                  <option>Satisfacción</option>
+                </select>
+              </div>
+              <div class="mb-4">
+                <label class="form-label">✅ Columnas seleccionadas:</label>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="colEdad" checked>
+                      <label class="form-check-label" for="colEdad">Edad</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="colArea" checked>
+                      <label class="form-check-label" for="colArea">Área</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="colAntiguedad" checked>
+                      <label class="form-check-label" for="colAntiguedad">Antigüedad</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="colSalario" checked>
+                      <label class="form-check-label" for="colSalario">Salario</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="colCapacitacion" checked>
+                      <label class="form-check-label" for="colCapacitacion">Capacitación</label>
+                    </div>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="colSatisfaccion" checked>
+                      <label class="form-check-label" for="colSatisfaccion">Satisfacción</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">⚙️ Preprocesamiento automático:</label>
+                <div class="d-flex gap-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="cleanNulls" checked>
+                    <label class="form-check-label" for="cleanNulls">Limpiar nulos</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="normalize" checked>
+                    <label class="form-check-label" for="normalize">Normalizar</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta 4: Entrenamiento -->
+            <div class="card p-4 mb-4">
+              <h2 class="card-title">🔸 Entrenamiento</h2>
+              <div class="text-center mb-4">
+                <button id="btnTrainModel" class="btn btn-ainabi">🚀 Entrenar modelo</button>
+              </div>
+              <div id="trainingProgress" style="display: none;">
+                <p class="mb-2">⏳ Progreso:</p>
+                <div class="progress mb-3" style="height: 20px;">
+                  <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
+                </div>
+                <p class="mb-2">📊 Precisión: <span id="accuracyValue">89.3%</span></p>
+                <div class="text-center mt-4">
+                  <button class="btn btn-outline-success">Ver reporte detallado</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta 5: Historial de modelos -->
+            <div class="card p-4 mb-4">
+              <h2 class="card-title">🔸 Historial de modelos</h2>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>📆 Fecha</th>
+                      <th>Tipo</th>
+                      <th>Precisión</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>15/05/2023</td>
+                      <td>Rendimiento</td>
+                      <td>92.5%</td>
+                      <td>
+                        <button class="icon-btn" title="Ver reporte"><i class="fas fa-file-alt"></i></button>
+                        <button class="icon-btn" title="Usar modelo"><i class="fas fa-check-circle"></i></button>
+                        <button class="icon-btn" title="Eliminar"><i class="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>10/05/2023</td>
+                      <td>Rotación</td>
+                      <td>87.2%</td>
+                      <td>
+                        <button class="icon-btn" title="Ver reporte"><i class="fas fa-file-alt"></i></button>
+                        <button class="icon-btn" title="Usar modelo"><i class="fas fa-check-circle"></i></button>
+                        <button class="icon-btn" title="Eliminar"><i class="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>02/05/2023</td>
+                      <td>Rendimiento</td>
+                      <td>85.9%</td>
+                      <td>
+                        <button class="icon-btn" title="Ver reporte"><i class="fas fa-file-alt"></i></button>
+                        <button class="icon-btn" title="Usar modelo"><i class="fas fa-check-circle"></i></button>
+                        <button class="icon-btn" title="Eliminar"><i class="fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+  <script src="env.js"></script>
+  <script>
+    // Inicializar Firebase
+    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Manejo de carga de archivo CSV
+      const csvFileInput = document.getElementById('csvFile');
+      const fileNameContainer = document.getElementById('fileNameContainer');
+      const fileName = document.getElementById('fileName');
+      const previewContainer = document.getElementById('previewContainer');
+      const errorContainer = document.getElementById('errorContainer');
+      
+      csvFileInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+          // Mostrar nombre del archivo
+          fileNameContainer.style.display = 'block';
+          fileName.textContent = e.target.files[0].name;
+          
+          // Mostrar preview y errores
+          previewContainer.style.display = 'block';
+          errorContainer.style.display = 'block';
+          
+          // En un caso real, aquí procesaríamos el CSV
+        }
+      });
+      
+      // Botón de entrenar modelo
+      const btnTrainModel = document.getElementById('btnTrainModel');
+      const trainingProgress = document.getElementById('trainingProgress');
+      
+      btnTrainModel.addEventListener('click', function() {
+        // Mostrar progreso
+        trainingProgress.style.display = 'block';
+        
+        // Simular progreso (en una app real, esto vendría del backend)
+        let progress = 0;
+        const progressBar = document.querySelector('.progress-bar');
+        
+        const interval = setInterval(() => {
+          progress += 10;
+          progressBar.style.width = `${progress}%`;
+          progressBar.textContent = `${progress}%`;
+          progressBar.setAttribute('aria-valuenow', progress);
+          
+          if (progress >= 100) {
+            clearInterval(interval);
+            Swal.fire({
+              title: '¡Entrenamiento completado!',
+              text: 'El modelo ha sido entrenado con éxito.',
+              icon: 'success',
+              confirmButtonColor: '#4d6a3a'
+            });
+          }
+        }, 500);
+      });
+      
+      // Logout
+      document.getElementById('btn-logout').addEventListener('click', async function(e) {
+        e.preventDefault();
+        try {
+          if (typeof firebase !== 'undefined') {
+            await firebase.auth().signOut();
+          }
+          window.location.href = './login.html';
+        } catch (error) {
+          console.error('Error al cerrar sesión:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo cerrar la sesión',
+            confirmButtonColor: '#4d6a3a'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html> 
