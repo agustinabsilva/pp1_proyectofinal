@@ -9,7 +9,6 @@ const db = firebase.firestore();
 async function login() {
   const email = document.getElementById("email").value;
   const pass = document.getElementById("password").value;
-  const resultado = document.getElementById("resultado");
 
   try {
     const cred = await auth.signInWithEmailAndPassword(email, pass);
@@ -22,8 +21,7 @@ async function login() {
         title: "Usuario no encontrado",
         text: "No se encontraron datos registrados para este usuario.",
         confirmButtonColor: "#b88b66"
-      });      
-      /*resultado.innerText = "Usuario sin datos registrados.";*/
+      });
       return;
     }
 
@@ -37,85 +35,136 @@ async function login() {
         confirmButtonColor: "#b88b66"
       });
 
-      /*resultado.innerText = "Tu cuenta está desactivada. Contactá al administrador.";*/
-
       auth.signOut();
       return;
     }
 
     const rol = datos.role;
-     Swal.fire({
+    
+    Swal.fire({
       icon: "success",
       title: `Bienvenido ${datos.nombre}`,
       text: `Rol: ${rol}`,
       confirmButtonColor: "#b88b66",
-      timer: 4000,
+      timer: 2000,
       showConfirmButton: false
+    }).then(() => {
+      // Redirigir según el rol
+      switch(rol) {
+        case 'Admin':
+          window.location.href = './dashboard_admin.html';
+          break;
+        case 'Supervisor':
+          window.location.href = './supervisor.html';
+          break;
+        case 'Empleado':
+          window.location.href = './empleado.html';
+          break;
+        default:
+          console.error('Rol no reconocido:', rol);
+      }
     });
 
-    /*resultado.innerText = `Bienvenido ${datos.nombre} (${rol})`;*/
-  setTimeout(() => {
-      switch (rol) {
-        case "Admin":
-          window.location.href = "dashboard_admin.html";
-          break;
-        case "Supervisor":
-          window.location.href = "supervisor.html";
-          break;
-        case "Empleado":
-          window.location.href = "empleado.html";
-          break;
-        
-        default:
-          Swal.fire({
-            icon: "error",
-            title: "Rol no reconocido",
-            text: "Comunicate con el administrador.",
-            confirmButtonColor: "#b88b66"
-          });
-      }
-    }, 2000);
-
-  } catch (e) {
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    let mensajeError = "Error al iniciar sesión. Por favor, intenta nuevamente.";
+    
+    if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+      mensajeError = "Email o contraseña incorrectos.";
+    }
+    
     Swal.fire({
       icon: "error",
-      title: "Error al iniciar sesión",
-      text: "Usuario o contraseña no valida",
+      title: "Error",
+      text: mensajeError,
       confirmButtonColor: "#b88b66"
     });
   }
 }
 
+// Solo agregar el event listener si estamos en la página de login
+const loginForm = document.querySelector('form');
+if (loginForm) {
+  loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    login();
+  });
+}
+
+// Manejar el cierre de sesión
+const btnLogout = document.getElementById('btn-logout');
+if (btnLogout) {
+  btnLogout.addEventListener('click', async function(e) {
+    e.preventDefault();
+    try {
+      await auth.signOut();
+      window.location.href = './login.html';
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo cerrar la sesión. Por favor, intenta nuevamente.",
+        confirmButtonColor: "#b88b66"
+      });
+    }
+  });
+}
+
 //Perfil
 auth.onAuthStateChanged(async (user) => {
   if (user) {
-    const uid = user.uid;
-    const doc = await db.collection("users").doc(uid).get();
-    if (doc.exists) {
-      const datos = doc.data();
-      // Actualizar el nombre en la bienvenida si existe el elemento
-      const nombreUsuarioElement = document.getElementById("nombre-usuario");
-      if (nombreUsuarioElement) {
-        const nombreCompleto = datos.nombre || "Usuario";
-        const primerNombre = nombreCompleto.split(' ')[0];
-        nombreUsuarioElement.textContent = primerNombre;
+    try {
+      const doc = await db.collection("users").doc(user.uid).get();
+      if (doc.exists) {
+        const datos = doc.data();
+        
+        // Actualizar el nombre en la bienvenida si existe el elemento
+        const nombreUsuarioElement = document.getElementById("nombre-usuario");
+        if (nombreUsuarioElement) {
+          const nombreCompleto = datos.nombre || "Usuario";
+          const primerNombre = nombreCompleto.split(' ')[0];
+          nombreUsuarioElement.textContent = primerNombre;
+        }
+        
+        // Actualizar campos del perfil si existen
+        const userNombreElement = document.getElementById("user-nombre");
+        if (userNombreElement) {
+          userNombreElement.textContent = datos.nombre || "Sin nombre";
+          document.getElementById("user-rol").textContent = datos.role || "Sin rol";
+          document.getElementById("user-area").textContent = datos.area || "Sin área";
+          document.getElementById("user-jerarquia").textContent = datos.jerarquia || "Sin jerarquía";
+          document.getElementById("user-email").textContent = datos.email || user.email || "Sin email";
+          
+          // Actualizar estado activo
+          const userActivoElement = document.getElementById("user-activo");
+          if (userActivoElement) {
+            if (typeof datos.activo !== "undefined") {
+              userActivoElement.textContent = datos.activo ? "Activo" : "Inactivo";
+              userActivoElement.style.background = datos.activo ? "#e6f5d0" : "#f5e6e6";
+              userActivoElement.style.color = datos.activo ? "#4d6a3a" : "#a94442";
+            } else {
+              userActivoElement.textContent = "Sin dato";
+              userActivoElement.style.background = "#f5e6e6";
+              userActivoElement.style.color = "#a94442";
+            }
+          }
+        }
+      } else {
+        console.log('No se encontró el documento del usuario');
+        const nombreUsuarioElement = document.getElementById("nombre-usuario");
+        if (nombreUsuarioElement) {
+          nombreUsuarioElement.textContent = "Usuario";
+        }
       }
-      
-      // Actualizar el resto de los campos del perfil si existen
-      const userNombreElement = document.getElementById("user-nombre");
-      if (userNombreElement) {
-        document.getElementById("user-nombre").textContent = datos.nombre || "Sin nombre";
-        document.getElementById("user-email").textContent = datos.email || user.email || "Sin email";
-        document.getElementById("user-rol").textContent = datos.role || "Sin rol";
-        document.getElementById("user-area").textContent = datos.area || "Sin área";
-        document.getElementById("user-jerarquia").textContent = datos.jerarquia || "Sin jerarquía";
-      }
-    } else {
-      console.log('No se encontró el documento del usuario');
-      const nombreUsuarioElement = document.getElementById("nombre-usuario");
-      if (nombreUsuarioElement) {
-        nombreUsuarioElement.textContent = "Usuario";
-      }
+    } catch (error) {
+      console.error('Error al obtener datos del usuario:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudieron cargar los datos del perfil',
+        icon: 'error',
+        confirmButtonColor: '#b88b66'
+      });
     }
   } else {
     console.log('No hay usuario autenticado');

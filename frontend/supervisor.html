@@ -18,69 +18,715 @@
   <link rel="stylesheet" href="styleempleado.css" />
   <link rel="stylesheet" href="bienvenida.css" />
   <link rel="stylesheet" href="stylesupervisor.css" />
-  <!-- Firebase y lógica de app -->
+  
+  <style>
+    .custom-popup-class {
+      border: 2px solid #e6e2c3;
+      border-radius: 24px;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      position: fixed;
+      top: 50% !important;
+      left: calc(50% + 125px) !important;
+      transform: translate(-50%, -50%) !important;
+      max-width: 500px !important;
+      width: 90% !important;
+    }
+    .custom-title-class {
+      color: #4d6a3a !important;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      margin-bottom: 0 !important;
+      padding: 1em 1em 0.5em !important;
+    }
+    .custom-confirm-button {
+      padding: 8px 32px !important;
+      border-radius: 12px !important;
+      font-family: 'Poppins', sans-serif !important;
+    }
+    .swal2-html-container {
+      margin: 0 !important;
+      padding: 0 10px 20px !important;
+    }
+    .swal2-container {
+      align-items: center !important;
+      padding: 0 !important;
+    }
+    .swal2-popup {
+      margin: 0 !important;
+    }
+    
+    @media (max-width: 768px) {
+      .custom-popup-class {
+        left: 50% !important;
+      }
+    }
+
+    .carpincho-hover:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 4px 15px rgba(183, 215, 194, 0.5);
+    }
+    
+    .custom-tooltip {
+      --bs-tooltip-bg: #4d6a3a;
+      --bs-tooltip-color: #fdfbe8;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-tooltip .tooltip-inner {
+      background: #4d6a3a;
+      color: #fdfbe8;
+      border: 2px solid #e6e2c3;
+      padding: 8px 12px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .custom-tooltip .tooltip-arrow::before {
+      border-right-color: #4d6a3a;
+    }
+
+    .list-group-item {
+      background: #fdfbe8;
+      border: 1px solid #e6e2c3;
+      color: #4d6a3a;
+      transition: all 0.3s ease;
+    }
+
+    .list-group-item:hover {
+      background: #e6e2c3;
+      transform: translateX(5px);
+    }
+
+    .form-control, .form-select {
+      border: 2px solid #e6e2c3;
+      border-radius: 12px;
+      padding: 8px 16px;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #b88b66;
+      box-shadow: 0 0 0 0.25rem rgba(184, 139, 102, 0.25);
+    }
+
+    /* Estilos para el análisis de satisfacción */
+    .satisfaction-analysis {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #fdfbe8;
+      border-radius: 24px;
+      border: 2px solid #e6e2c3;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+      animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .satisfaction-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+    }
+
+    .satisfaction-icon {
+      width: 40px;
+      height: 40px;
+      background: #e6e2c3;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4d6a3a;
+      font-size: 1.2rem;
+    }
+
+    .satisfaction-title {
+      color: #4d6a3a;
+      font-weight: 600;
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .satisfaction-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: rgba(230, 226, 195, 0.3);
+      padding: 1.5rem;
+      border-radius: 16px;
+      text-align: center;
+      border: 1px solid #e6e2c3;
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .stat-card:nth-child(1) {
+      animation-delay: 0.3s;
+    }
+
+    .stat-card:nth-child(2) {
+      animation-delay: 0.4s;
+    }
+
+    .stat-card:nth-child(3) {
+      animation-delay: 0.5s;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #4d6a3a;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: #4d6a3a;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .satisfaction-pie-chart {
+      height: 300px;
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #fdfbe8;
+      border-radius: 16px;
+      border: 1px solid #e6e2c3;
+      opacity: 0;
+      animation: scaleIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
+    }
+
+    @media (max-width: 768px) {
+      .satisfaction-analysis {
+        margin: 1rem;
+        padding: 1rem;
+      }
+
+      .satisfaction-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Estilos para el contenedor de ayuda */
+    .help-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #fdfbe8;
+      border-radius: 20px;
+      padding: 15px 25px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border: 2px solid #e6e2c3;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .help-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(77, 106, 58, 0.2);
+      border-color: #4d6a3a;
+    }
+
+    .help-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #4d6a3a;
+      font-weight: 600;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .help-label img {
+      width: 25px;
+      height: auto;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .help-container:hover .help-label img {
+      transform: rotate(10deg) scale(1.2);
+    }
+
+    /* Estilos para el modal del video */
+    .video-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(77, 106, 58, 0.2);
+      backdrop-filter: blur(5px);
+      z-index: 1001;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .video-modal.active {
+      opacity: 1;
+    }
+
+    .video-modal .video-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: #fdfbe8;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(77, 106, 58, 0.15);
+      border: 2px solid #e6e2c3;
+      width: 90%;
+      max-width: 800px;
+      height: 600px;
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .video-modal.active .video-container {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    .video-modal .help-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e6e2c3;
+      width: 100%;
+      text-align: center;
+    }
+
+    .video-modal .help-icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      background: #e6e2c3;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-modal .help-icon img {
+      width: 25px;
+      height: 25px;
+      transition: transform 0.3s ease;
+    }
+
+    .video-modal .help-title {
+      color: #4d6a3a;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      height: calc(100% - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(77, 106, 58, 0.1);
+      overflow: hidden;
+    }
+
+    .video-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 16px;
+      max-width: 560px;
+      max-height: 315px;
+    }
+
+    .close-video {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background: #4d6a3a;
+      color: #fdfbe8;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 2px solid #fdfbe8;
+      z-index: 2;
+    }
+
+    .close-video:hover {
+      background: #779c5c;
+      transform: scale(1.1) rotate(90deg);
+    }
+
+    .close-video i {
+      font-size: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .video-modal .video-container {
+        width: 95%;
+        padding: 20px;
+        height: 500px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .video-modal .video-container {
+        padding: 15px;
+        height: 400px;
+      }
+    }
+
+    /* Animaciones para el análisis de satisfacción */
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Asegurar que las animaciones solo se ejecuten cuando se muestra la sección */
+    #inicio-section {
+      opacity: 0;
+      animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    #inicio-section.active {
+      opacity: 1;
+    }
+
+    /* Modal para solicitar cambio de datos */
+    .modal-centered {
+      position: fixed !important;
+      top: 50% !important;
+      left: calc(50% + 125px) !important;
+      transform: translate(-50%, -50%) !important;
+      margin: 0 !important;
+    }
+    
+    .modal-centered .modal-content {
+      margin: 0 auto !important;
+      max-width: 600px !important;
+      width: 100% !important;
+      min-height: 600px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      padding: 20px !important;
+    }
+
+    .modal-centered .modal-body {
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      padding: 0 !important;
+    }
+
+    .modal-centered .modal-body > div {
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    .form-container {
+      background: rgba(230, 226, 195, 0.3);
+      border-radius: 16px;
+      padding: 35px 50px;
+      margin: 20px auto;
+      width: 100% !important;
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+    }
+
+    .modal-centered .btn-close {
+      position: absolute !important;
+      right: 20px !important;
+      top: 20px !important;
+      opacity: 1 !important;
+      color: #4d6a3a !important;
+      background: none !important;
+      border: none !important;
+      font-size: 1.5rem !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      padding: 0 !important;
+      width: 30px !important;
+      height: 30px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .modal-centered .btn-close:hover {
+      color: #b88b66 !important;
+      transform: scale(1.1) !important;
+    }
+
+    .modal-centered .btn-close:focus {
+      box-shadow: none !important;
+      outline: none !important;
+    }
+
+    @media (max-width: 768px) {
+      .modal-centered {
+        left: 50% !important;
+        top: 0 !important;
+        transform: translate(-50%, 0) !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .modal-centered .modal-content {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: none !important;
+        min-height: 100vh !important;
+        margin: 0 !important;
+        padding: 15px !important;
+        border: none !important;
+        border-radius: 0 !important;
+      }
+
+      .modal-centered .modal-body {
+        padding: 10px !important;
+        margin-top: 20px !important;
+      }
+
+      .form-container {
+        padding: 20px !important;
+        margin: 10px auto !important;
+        width: 100% !important;
+      }
+
+      .modal-centered .btn-close {
+        right: 15px !important;
+        top: 15px !important;
+      }
+
+      .modal-centered h5.modal-title {
+        font-size: 1.3rem !important;
+        margin: 15px 0 20px !important;
+      }
+
+      .modal-centered input.form-control {
+        font-size: 1rem !important;
+        padding: 10px 15px !important;
+      }
+
+      .modal-centered label.form-label {
+        font-size: 1rem !important;
+      }
+
+      .modal-centered button[type="submit"] {
+        width: 100% !important;
+        margin-top: 10px !important;
+        padding: 12px !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .modal-centered .modal-content {
+        padding: 10px !important;
+      }
+
+      .form-container {
+        padding: 15px !important;
+      }
+
+      .modal-centered h5.modal-title {
+        font-size: 1.2rem !important;
+      }
+    }
+
+    .tooltip {
+      font-family: 'Poppins', sans-serif !important;
+    }
+
+    .tooltip .tooltip-inner {
+      background-color: #4d6a3a !important;
+      color: #fdfbe8 !important;
+      border: 2px solid #e6e2c3 !important;
+      border-radius: 12px !important;
+      padding: 8px 16px !important;
+      font-size: 0.95rem !important;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .tooltip .tooltip-arrow::before {
+      border-right-color: #4d6a3a !important;
+    }
+
+    .bs-tooltip-auto[data-popper-placement^=right] .tooltip-arrow::before, 
+    .bs-tooltip-end .tooltip-arrow::before {
+      border-right-color: #4d6a3a !important;
+    }
+
+    .bs-tooltip-auto[data-popper-placement^=left] .tooltip-arrow::before,
+    .bs-tooltip-start .tooltip-arrow::before {
+      border-left-color: #4d6a3a !important;
+    }
+
+    .bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before,
+    .bs-tooltip-top .tooltip-arrow::before {
+      border-top-color: #4d6a3a !important;
+    }
+
+    .bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow::before,
+    .bs-tooltip-bottom .tooltip-arrow::before {
+      border-bottom-color: #4d6a3a !important;
+    }
+  </style>
+
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
+  
+  <!-- Configuración de Firebase -->
+  <script src="env.js"></script>
+  <script>
+    // Verificar si ya existe una instancia de Firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
   <script defer src="app.js"></script>
-  <!-- Fin Firebase -->
 </head>
 <body>
-
-  
+  <!-- Botón hamburguesa para móvil -->
+  <div class="menu-toggle">
+    <i class="fas fa-bars"></i>
+  </div>
 
   <!-- Contenido principal con sidebar -->
   <div class="d-flex">
    <!-- Sidebar -->
-<aside class="sidebar p-4 d-flex flex-column justify-content-between">
-  <div>
+    <aside class="sidebar">
+      <div class="sidebar-content">
+        <div class="sidebar-top">
     <h2 class="logo mb-4">🌿 AINABI</h2>
     <nav class="nav flex-column">
-      <a href="./empleado.html" class="nav-link" id="nav-inicio">
+            <a href="#" class="nav-link" id="nav-inicio">
         <i class="fas fa-home me-2"></i>Inicio
       </a>
       <a href="#" class="nav-link" id="nav-feedback">
         <i class="fas fa-sync-alt me-2"></i>Feedback 360°
       </a>
-      <a href="./profileempleado.html" class="nav-link" id="nav-perfil">
+      <a href="#" class="nav-link" id="nav-historial">
+        <i class="fas fa-chart-line me-2"></i>Historial de Análisis
+      </a>
+            <a href="#" class="nav-link" id="nav-perfil">
         <i class="fas fa-user me-2"></i>Mi Perfil
       </a>
     </nav>
   </div>
 
-  <!-- Íconos inferiores -->
-  <div class="mt-4">
-    <a href="./index.html" class="nav-link">
-      <i class="fas fa-house me-2"></i>Inicio General
-    </a>
-    <a href="./index.html" class="nav-link text-danger">
+        <div class="sidebar-bottom">
+          <a href="#" class="nav-link text-danger" id="btn-logout">
       <i class="fas fa-sign-out-alt me-2"></i>Salir
     </a>
+        </div>
   </div>
 </aside>
-
-
-
 
     <!-- Sección principal -->
     <main class="flex-grow-1 p-4">
       <div id="inicio-section">
-        
-        
-        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 400px; width: 100%;">
-            <div class="bienvenida-carpincho" style="display: flex; justify-content: center; ">
-              <img src="./assets/profilephoto.png" alt="Carpincho AINABI" style=" border-radius: 50%; object-fit: cover; background: #e6e2c3; margin-bottom: 10px;">
+        <div class="container py-4">
+          <div class="row justify-content-center">
+            <!-- Columna izquierda: Bienvenida -->
+            <div class="col-lg-5 mb-4">
+              <div class="card h-100 shadow-sm" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3;">
+                <div class="card-body p-4">
+                  <div class="bienvenida-carpincho" style="display: flex; justify-content: center;">
+                    <img src="./assets/profilephoto.png" 
+                         alt="Carpincho AINABI" 
+                         style="width: 110px; 
+                                height: 110px; 
+                                border-radius: 50%; 
+                                object-fit: cover; 
+                                background: #e6e2c3; 
+                                margin-bottom: 10px;
+                                transition: all 0.3s ease;
+                                transform-origin: center;
+                                cursor: pointer;"
+                         class="carpincho-hover"
+                         data-bs-toggle="tooltip" 
+                         data-bs-placement="right" 
+                         data-bs-custom-class="custom-tooltip"
+                         title="¡Gracias por liderar con el ejemplo! 🌟">
             </div>
             
             <h2 class="bienvenida-titulo text-center" style="color: #4d6a3a; font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;">
-              ¡Bienvenido/a!
+                    ¡Hola, <span id="nombre-usuario">Supervisor</span>!
             </h2>
             <p class="bienvenida-texto text-center" style="color: #4d6a3a;">
-              <span class="bienvenida-emoji">🌿</span> Nos alegra tenerte como parte de nuestro equipo.🌿<br><br>
-              Desde acá podrás realizar feedback sobre tus empleados y gestionar tu perfil.<br><br>
-              <span class="bienvenida-resaltado" style="font-weight:600;">¡El carpincho te acompaña en tu desarrollo profesional!</span><br><br>
-              Utilizá el menú lateral para comenzar a potenciar tu crecimiento.
+                    <span class="bienvenida-emoji">🌿</span> Nos alegra tenerte como parte<br>
+                    de nuestro equipo.<span class="bienvenida-emoji">🌿</span><br><br>
+                    Desde acá podrás acceder, realizar<br>
+                    feedback y gestionar tu perfil.<br><br>
+                    <span class="bienvenida-resaltado" style="font-weight:600;">¡El carpincho te acompaña en tu<br>
+                    desarrollo profesional!</span><br><br>
+                    Utilizá el menú lateral para comenzar<br>
+                    a potenciar tu crecimiento.
             </p>
             <div class="bienvenida-brillo text-center">
               <span>✨</span>
@@ -88,6 +734,161 @@
           </div>
         </div>
       </div>
+
+            <!-- Columna derecha: Análisis -->
+            <div class="col-lg-7 mb-4">
+              <div class="satisfaction-analysis h-100">
+                <div class="satisfaction-header">
+                  <div class="satisfaction-icon">
+                    <i class="fas fa-chart-line"></i>
+                  </div>
+                  <h3 class="satisfaction-title">Análisis de Satisfacción del Equipo</h3>
+                </div>
+                
+                <div class="satisfaction-stats">
+                  <div class="stat-card">
+                    <div class="stat-value" id="promedio-satisfaccion">-</div>
+                    <div class="stat-label">Satisfacción Promedio</div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-value" id="total-feedbacks">-</div>
+                    <div class="stat-label">Feedbacks Recibidos</div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-value" id="empleados-activos">-</div>
+                    <div class="stat-label">Empleados Activos</div>
+                  </div>
+                </div>
+
+                <div class="satisfaction-pie-chart mt-4">
+                  <canvas id="satisfactionPieChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón de ayuda flotante -->
+          <div class="help-container" id="help-trigger">
+            <div class="help-label">
+              ¿Necesitas ayuda? El <img src="./assets/capyclipper.png" alt="Carpincho helper"> te da una patita
+            </div>
+          </div>
+
+          <!-- Modal del video -->
+          <div class="video-modal" id="video-modal">
+            <div class="video-container">
+              <div class="help-header">
+                <div class="help-icon">
+                  <img src="./assets/capyclipper.png" alt="Carpincho helper">
+                </div>
+                <h3 class="help-title">¡El carpincho te ayuda a aprender! 🌿</h3>
+              </div>
+              <button class="close-video" aria-label="Cerrar video">
+                <i class="fas fa-times"></i>
+              </button>
+              <div class="video-wrapper">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/5paLp9ns7lc?si=oQLwV94JUfvsXJmL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        @media (max-width: 992px) {
+          .satisfaction-analysis {
+            margin-top: 0;
+          }
+          .video-container {
+            position: static !important;
+            margin: 1rem auto !important;
+            max-width: 100% !important;
+          }
+        }
+        
+        @media (min-width: 992px) {
+          .video-container {
+            position: fixed !important;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+          }
+        }
+
+        .card, .satisfaction-analysis {
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover, .satisfaction-analysis:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .satisfaction-analysis {
+          margin-top: 0;
+          padding: 2rem;
+        }
+
+        .satisfaction-stats {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.5rem;
+          margin-top: 2rem;
+        }
+
+        .stat-card {
+          background: rgba(230, 226, 195, 0.3);
+          padding: 1.5rem;
+          border-radius: 16px;
+          text-align: center;
+          border: 1px solid #e6e2c3;
+          transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          background: rgba(230, 226, 195, 0.5);
+        }
+
+        .stat-value {
+          font-size: 2.5rem;
+          font-weight: 700;
+          color: #4d6a3a;
+          margin-bottom: 0.75rem;
+        }
+
+        .stat-label {
+          color: #4d6a3a;
+          font-size: 1rem;
+          font-weight: 500;
+          line-height: 1.3;
+        }
+
+        @media (max-width: 768px) {
+          .satisfaction-stats {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+
+          .stat-card {
+            padding: 1.25rem;
+          }
+
+          .stat-value {
+            font-size: 2rem;
+          }
+        }
+
+        #inicio-section {
+          min-height: calc(100vh - 2rem);
+          padding: 1rem 0;
+        }
+
+        .container {
+          max-width: 1400px;
+        }
+      </style>
 
       <div id="autoevaluacion-section" style="display:none;">
        <!-- <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
@@ -128,35 +929,77 @@
 
       <div id="feedback-section" style="display:none;">
         <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 500px; width: 100%;">
-            <div class="d-flex justify-content-center align-items-start" style="min-height: 80vh;">
-              <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 600px; width: 100%;">
-                <h5 class="card-title text-center mb-3" style="color: #4d6a3a; font-weight: 700;">Empleados de tu área</h5>
-                <ul id="lista-empleados-area" class="list-group mb-4"></ul>
-                <div id="form-feedback-container" style="display:none;">
-                  <h5 class="mb-3" style="color: #4d6a3a;">Dejar feedback para <span id="nombre-empleado-feedback"></span></h5>
-                  <form id="form-feedback-empleado">
-                    <div class="mb-3">
-                      <label for="desempeno-empleado" class="form-label">Nivel de desempeño</label>
-                      <select class="form-select" id="desempeno-empleado" required>
-                        <option value="">Seleccionar</option>
-                        <option>Satisfactorio</option>
-                        <option>Bueno</option>
-                        <option>Deficiente</option>
-                      </select>
-                    </div>
-                    <div class="mb-3">
-                      <label for="comentario-empleado" class="form-label">Comentario</label>
-                      <textarea class="form-control" id="comentario-empleado" rows="3" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-success">Enviar Feedback</button>
-                  </form>
+          <div class="card shadow-sm p-4" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; max-width: 600px; width: 100%;">
+            <div class="text-center mb-4">
+              <h2 style="color: #4d6a3a; font-weight: 700; letter-spacing: 2px;">Feedback 360°</h2>
+              <p style="color: #4d6a3a;">Selecciona un empleado de tu área para dejar feedback sobre su desempeño</p>
+            </div>
+
+            <div id="lista-empleados" class="mb-4">
+              <!-- Los empleados se cargarán aquí dinámicamente -->
+            </div>
+
+            <!-- Formulario de feedback (inicialmente oculto) -->
+            <div id="form-feedback" style="display: none;">
+              <h4 class="mb-3" style="color: #4d6a3a;">Feedback para <span id="nombre-empleado-seleccionado">empleado</span></h4>
+              
+              <form id="formulario-feedback">
+                <input type="hidden" id="empleado-uid">
+                
+                <div class="mb-3">
+                  <label for="mes-feedback" class="form-label" style="color: #4d6a3a;">Mes de evaluación</label>
+                  <select class="form-select" id="mes-feedback" required>
+                    <option value="">Selecciona un mes</option>
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                  </select>
                 </div>
-              </div>
+
+                <div class="mb-3">
+                  <label for="desempeno" class="form-label" style="color: #4d6a3a;">Nivel de desempeño</label>
+                  <select class="form-select" id="desempeno" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="Excelente">Excelente</option>
+                    <option value="Muy Bueno">Muy Bueno</option>
+                    <option value="Bueno">Bueno</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Necesita Mejorar">Necesita Mejorar</option>
+                  </select>
+                </div>
+
+                <div class="mb-4">
+                  <label for="comentarios" class="form-label" style="color: #4d6a3a;">Comentarios y sugerencias</label>
+                  <textarea class="form-control" id="comentarios" rows="4" required 
+                            placeholder="Describe el desempeño del empleado y proporciona sugerencias constructivas..."
+                            style="border: 2px solid #e6e2c3; border-radius: 12px;"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-light" onclick="volverALista()"
+                          style="border: 2px solid #e6e2c3; border-radius: 12px;">
+                    <i class="fas fa-arrow-left me-2"></i>Volver
+                  </button>
+                  <button type="submit" class="btn" 
+                          style="background: #4d6a3a; color: white; border-radius: 12px;">
+                    <i class="fas fa-paper-plane me-2"></i>Enviar Feedback
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
+      
       <script>
         // Suponiendo que tienes el área del supervisor en una variable supervisorArea
         let supervisorArea = ""; // Debes obtener este dato del usuario autenticado
@@ -209,7 +1052,10 @@
               <h2 style="color: #4d6a3a; font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;">🌿AINABI🌿</h2>
               <div style="display: flex; justify-content: center;">
                 <div style="background: #e6e2c3; border-radius: 50%; width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; box-shadow: 0 2px 8px #b7d7c2;">
-                  <img src="./assets/profilephoto.png" alt="Foto de perfil" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                  <img src="./assets/profilephoto.png" 
+                       alt="Foto de perfil" 
+                       style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;"
+                       class="carpincho-hover">
                 </div>
               </div>
               <h3 id="user-nombre" style="color: #4d6a3a; font-weight: 600; margin-bottom: 18px; margin-top: 10px;">Nombre Apellido</h3>
@@ -239,29 +1085,613 @@
               </div>
             </div>
             <div class="text-center mt-3">
-              <button id="btn-solicitar-cambio" class="btn btn-light border btn-ainabi" style="border-radius: 12px; border: 2px solid #e6e2c3;">Solicitar cambiar datos</button>
+              <button id="btn-solicitar-cambio" class="btn btn-light border btn-ainabi" 
+                      style="border-radius: 12px; border: 2px solid #e6e2c3; background: #4d6a3a; color: white;">
+                Solicitar cambiar datos
+              </button>
             </div>
           </div>
         </div>
       </div>
+
+      <div id="historial-section" style="display:none;">
+        <div class="container-fluid py-4">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <div class="card shadow-sm" style="background: #fdfbe8; border-radius: 24px; border: 2px solid #e6e2c3; width: 100%; max-width: 1200px; margin: 0 auto;">
+                <div class="card-body p-4">
+                  <div class="d-flex align-items-center mb-4">
+                    <div class="satisfaction-icon me-3">
+                      <i class="fas fa-history"></i>
+                    </div>
+                    <h3 class="satisfaction-title mb-0">Historial de Análisis de Satisfacción</h3>
+                  </div>
+
+                  <div class="filtros-container">
+                    <div class="filtros-grid">
+                      <div class="filtro-item">
+                        <label for="año-filtro" class="form-label">
+                          Seleccionar Año
+                        </label>
+                        <select class="form-select" id="año-filtro">
+                          <option value="">Todos los años</option>
+                          <option value="2025">2025</option>
+                          <option value="2024">2024</option>
+                        </select>
+                      </div>
+                      <div class="filtro-item">
+                        <label for="mes-filtro" class="form-label">
+                          Seleccionar Mes
+                        </label>
+                        <select class="form-select" id="mes-filtro">
+                          <option value="">Todos los meses</option>
+                          <option value="1">Enero</option>
+                          <option value="2">Febrero</option>
+                          <option value="3">Marzo</option>
+                          <option value="4">Abril</option>
+                          <option value="5">Mayo</option>
+                          <option value="6">Junio</option>
+                          <option value="7">Julio</option>
+                          <option value="8">Agosto</option>
+                          <option value="9">Septiembre</option>
+                          <option value="10">Octubre</option>
+                          <option value="11">Noviembre</option>
+                          <option value="12">Diciembre</option>
+                        </select>
+                      </div>
+                      <div class="filtro-buttons">
+                        <button class="btn btn-aplicar" onclick="aplicarFiltros()">
+                          <i class="fas fa-filter me-2"></i>Aplicar filtros
+                        </button>
+                        <button class="btn btn-limpiar" onclick="limpiarFiltros()">
+                          <i class="fas fa-times me-2"></i>Limpiar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="resultados-filtro" style="display: none;">
+                    <div class="satisfaction-stats">
+                      <div class="stat-card">
+                        <div class="stat-value" id="promedio-historico">-</div>
+                        <div class="stat-label">Satisfacción Promedio</div>
+                      </div>
+                      <div class="stat-card">
+                        <div class="stat-value" id="feedbacks-historico">-</div>
+                        <div class="stat-label">Feedbacks Recibidos</div>
+                      </div>
+                      <div class="stat-card">
+                        <div class="stat-value" id="empleados-historico">-</div>
+                        <div class="stat-label">Empleados Activos</div>
+                      </div>
+                    </div>
+
+                    <div class="satisfaction-pie-chart">
+                      <canvas id="historicalPieChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        #historial-section .container-fluid {
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 0 2rem;
+        }
+
+        #historial-section .card {
+          width: 100%;
+          max-width: 1200px;
+          margin: 0 auto;
+          height: auto !important;
+        }
+
+        #historial-section .card-body {
+          padding: 2rem !important;
+        }
+
+        /* Estilos para los filtros */
+        .filtros-container {
+          margin-bottom: 2rem;
+        }
+
+        .filtros-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1.5rem;
+          align-items: end;
+        }
+
+        .filtro-item {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .filtro-item .form-label {
+          color: #4d6a3a;
+          font-weight: 500;
+          margin-bottom: 0.25rem;
+        }
+
+        .filtro-buttons {
+          display: flex;
+          gap: 1rem;
+          align-items: flex-end;
+        }
+
+        .btn-aplicar {
+          background: #4d6a3a;
+          color: white;
+          min-width: 140px;
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          border: none;
+          transition: all 0.3s ease;
+        }
+
+        .btn-aplicar:hover {
+          background: #3d5430;
+          color: white;
+        }
+
+        .btn-limpiar {
+          background: transparent;
+          color: #6c757d;
+          min-width: 120px;
+          padding: 0.5rem 1rem;
+          border: 1px solid #6c757d;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+        }
+
+        .btn-limpiar:hover {
+          background: #6c757d;
+          color: white;
+        }
+
+        /* Estilos para las estadísticas */
+        .satisfaction-stats {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.5rem;
+          margin: 2rem 0;
+        }
+
+        .stat-card {
+          padding: 1.5rem;
+          text-align: center;
+          background: rgba(230, 226, 195, 0.3);
+          border-radius: 16px;
+          border: 1px solid #e6e2c3;
+          transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+          transform: translateY(-5px);
+        }
+
+        .stat-value {
+          font-size: 2.5rem;
+          font-weight: 700;
+          color: #4d6a3a;
+          margin-bottom: 0.75rem;
+        }
+
+        .stat-label {
+          color: #4d6a3a;
+          font-size: 1rem;
+          font-weight: 500;
+          line-height: 1.3;
+        }
+
+        .satisfaction-pie-chart {
+          height: 400px;
+          margin: 2rem auto;
+          max-width: 800px;
+          width: 100%;
+          padding: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+          #historial-section .container-fluid {
+            padding: 0 1rem;
+          }
+
+          .satisfaction-stats {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .filtros-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .filtro-buttons {
+            grid-column: 1 / -1;
+            justify-content: center;
+          }
+        }
+
+        @media (max-width: 768px) {
+          #historial-section .card-body {
+            padding: 1rem !important;
+          }
+
+          .satisfaction-stats {
+            grid-template-columns: 1fr;
+          }
+
+          .filtros-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+
+          .filtro-buttons {
+            flex-direction: column;
+            width: 100%;
+          }
+
+          .btn-aplicar,
+          .btn-limpiar {
+            width: 100%;
+          }
+
+          .satisfaction-pie-chart {
+            height: 300px;
+            padding: 0.5rem;
+          }
+
+          .stat-value {
+            font-size: 2rem;
+          }
+        }
+
+        @media (max-width: 576px) {
+          #historial-section .container-fluid {
+            padding: 0 0.5rem;
+          }
+
+          .filtros-container {
+            margin-bottom: 1.5rem;
+          }
+
+          .stat-card {
+            padding: 1rem;
+          }
+        }
+      </style>
     </main>
   </div>
-  <script src="env.js"></script>
+
+  <!-- Modal para solicitar cambio de datos -->
+  <div class="modal fade" id="modalCambioDatos" tabindex="-1" aria-labelledby="modalCambioDatosLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-centered">
+      <div class="modal-content" style="background: #fdfbe8; border: 2px solid #e6e2c3; border-radius: 24px;">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-body">
+          <div style="text-align: center;">
+            <h5 class="modal-title" id="modalCambioDatosLabel" style="color: #4d6a3a; font-weight: 700; font-family: 'Poppins', sans-serif; margin: 20px 0 30px; font-size: 1.5rem;">
+              Solicitud de cambio de datos 
+            </h5>
+            <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+              <div style="position: relative; display: inline-block;">
+                <img src="./assets/profilephoto.png" 
+                     alt="Carpincho AINABI" 
+                     style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; background: #e6e2c3; padding: 10px;"
+                     class="profile-hover">
+              </div>
+            </div>
+            <p style="color: #4d6a3a; margin-bottom: 30px; font-size: 1.2rem;">
+              Completa los datos que deseas actualizar 
+            </p>
+            <form id="form-cambio-datos" style="flex: 1; display: flex; flex-direction: column;">
+              <div class="form-container">
+                <div class="mb-5">
+                  <label for="nuevo-nombre" class="form-label" style="color: #4d6a3a; font-weight: 500; text-align: left; display: block; margin-bottom: 10px; font-size: 1.1rem;">
+                    Nuevo nombre <span style="color: #b88b66;">*</span>
+                  </label>
+                  <input type="text" 
+                         class="form-control" 
+                         id="nuevo-nombre" 
+                         required
+                         style="border: 2px solid #e6e2c3; 
+                                border-radius: 12px; 
+                                background: #fff; 
+                                padding: 12px 20px;
+                                font-size: 1.1rem;">
+                </div>
+                <div class="mb-5">
+                  <label for="nuevo-email" class="form-label" style="color: #4d6a3a; font-weight: 500; text-align: left; display: block; margin-bottom: 10px; font-size: 1.1rem;">
+                    Nuevo email <span style="color: #b88b66;">*</span>
+                  </label>
+                  <input type="email" 
+                         class="form-control" 
+                         id="nuevo-email" 
+                         required
+                         style="border: 2px solid #e6e2c3; 
+                                border-radius: 12px; 
+                                background: #fff; 
+                                padding: 12px 20px;
+                                font-size: 1.1rem;"
+                         oninput="validarEmail(this)">
+                  <div id="email-error" style="color: #b88b66; font-size: 0.9rem; margin-top: 8px; display: none;">
+                    Por favor, ingresa un email válido
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top: auto; padding-bottom: 10px;">
+                <small class="form-text" style="color: #b88b66; display: block; margin-bottom: 20px; font-size: 1rem;">
+                  * Todos los campos son obligatorios
+                </small>
+                <button type="submit" 
+                        class="btn btn-light border btn-ainabi" 
+                        style="border-radius: 12px; 
+                               border: 2px solid #e6e2c3; 
+                               padding: 12px 50px; 
+                               background: #4d6a3a; 
+                               color: #fff; 
+                               font-family: 'Poppins', sans-serif;
+                               font-size: 1.1rem;">
+                  Enviar solicitud
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // Inicializar el modal con las opciones correctas
+  document.addEventListener('DOMContentLoaded', function() {
+    const modalCambioDatos = document.getElementById('modalCambioDatos');
+    if (modalCambioDatos) {
+      const modal = new bootstrap.Modal(modalCambioDatos, {
+        backdrop: true,
+        keyboard: true
+      });
+    }
+  });
+
+  // Mostrar el modal al hacer clic en el botón
+  document.addEventListener('DOMContentLoaded', function() {
+    const btnCambio = document.getElementById('btn-solicitar-cambio');
+    if (btnCambio) {
+      btnCambio.addEventListener('click', function() {
+        const modal = new bootstrap.Modal(document.getElementById('modalCambioDatos'));
+        modal.show();
+      });
+    }
+
+    // Manejar el envío del formulario de cambio de datos
+    const formCambio = document.getElementById('form-cambio-datos');
+    if (formCambio) {
+      formCambio.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const nuevoNombre = document.getElementById('nuevo-nombre').value;
+        const nuevoEmail = document.getElementById('nuevo-email').value;
+
+        try {
+          const user = firebase.auth().currentUser;
+          if (user) {
+            // Verificar si el email ya existe en la base de datos
+            const emailQuery = await firebase.firestore()
+              .collection('users')
+              .where('email', '==', nuevoEmail)
+              .get();
+
+            if (!emailQuery.empty) {
+              const emailInput = document.getElementById('nuevo-email');
+              const errorDiv = document.getElementById('email-error');
+              emailInput.style.borderColor = '#b88b66';
+              errorDiv.textContent = 'Este email ya está registrado';
+              errorDiv.style.display = 'block';
+              return;
+            }
+
+            // Obtener datos actuales del usuario
+            const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+            let nombreActual = '';
+            let emailActual = '';
+            if (userDoc.exists) {
+              const data = userDoc.data();
+              nombreActual = data.nombre || '';
+              emailActual = data.email || user.email || '';
+            }
+
+            // Si el email es el mismo que el actual
+            if (nuevoEmail === emailActual) {
+              const emailInput = document.getElementById('nuevo-email');
+              const errorDiv = document.getElementById('email-error');
+              emailInput.style.borderColor = '#b88b66';
+              errorDiv.textContent = 'El nuevo email debe ser diferente al actual';
+              errorDiv.style.display = 'block';
+              return;
+            }
+
+            await firebase.firestore().collection('solicitudes_cambio_datos').add({
+              uid: user.uid,
+              nombre_actual: nombreActual,
+              email_actual: emailActual,
+              nombre_nuevo: nuevoNombre,
+              email_nuevo: nuevoEmail,
+              estado: "pendiente",
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            // Cerrar el modal
+            bootstrap.Modal.getInstance(document.getElementById('modalCambioDatos')).hide();
+
+            // Mostrar mensaje de éxito
+            Swal.fire({
+              title: '🌿 ¡Solicitud enviada! 🌿',
+              html: `<div style="color: #4d6a3a; font-family: 'Poppins', sans-serif; text-align: center;">
+                      <div style="display: flex; justify-content: center; margin: 20px 0;">
+                        <div style="position: relative; display: inline-block;">
+                          <img src="./assets/profilephoto.png" 
+                               alt="Carpincho AINABI" 
+                               style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; background: #e6e2c3; padding: 10px;"
+                               class="profile-hover">
+                          <div style="position: absolute; bottom: 0; right: 0; background: #4d6a3a; border-radius: 50%; width: 25px; height: 25px; display: flex; align-items: center; justify-content: center;">
+                            <span style="color: #fff; font-size: 14px;">✓</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div style="background: rgba(230, 226, 195, 0.3); border-radius: 16px; padding: 20px; margin: 15px auto; max-width: 300px;">
+                        <p style="color: #4d6a3a; font-weight: 600; margin-bottom: 10px;">
+                          Tu solicitud fue enviada al administrador
+                        </p>
+                        <p style="color: #4d6a3a; font-size: 0.95rem; margin: 0;">
+                          De ser aceptada, te notificaremos por email
+                        </p>
+                      </div>
+                    </div>`,
+              showConfirmButton: true,
+              confirmButtonText: 'Entendido',
+              confirmButtonColor: '#4d6a3a',
+              background: '#fdfbe8',
+              customClass: {
+                popup: 'custom-popup-class',
+                title: 'custom-title-class',
+                confirmButton: 'custom-confirm-button'
+              }
+            });
+            formCambio.reset();
+          } else {
+            Swal.fire({
+              title: '🌿 Error 🌿',
+              html: `<div style="color: #4d6a3a; font-family: 'Poppins', sans-serif; text-align: center;">
+                      <div style="display: flex; justify-content: center; margin: 20px 0;">
+                        <div style="position: relative; display: inline-block;">
+                          <img src="./assets/profilephoto.png" 
+                               alt="Carpincho AINABI" 
+                               style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; background: #e6e2c3; padding: 10px;"
+                               class="profile-hover">
+                        </div>
+                      </div>
+                      <div style="background: rgba(230, 226, 195, 0.3); border-radius: 16px; padding: 20px; margin: 15px auto; max-width: 300px;">
+                        <p style="color: #4d6a3a; font-weight: 600; margin: 0;">
+                          Debes estar logueado para enviar la solicitud
+                        </p>
+                      </div>
+                    </div>`,
+              showConfirmButton: true,
+              confirmButtonText: 'Entendido',
+              confirmButtonColor: '#4d6a3a',
+              background: '#fdfbe8',
+              customClass: {
+                popup: 'custom-popup-class',
+                title: 'custom-title-class',
+                confirmButton: 'custom-confirm-button'
+              }
+            });
+          }
+        } catch (err) {
+          Swal.fire({
+            title: '🌿 Error 🌿',
+            html: `<div style="color: #4d6a3a; font-family: 'Poppins', sans-serif; text-align: center;">
+                    <div style="display: flex; justify-content: center; margin: 20px 0;">
+                      <div style="position: relative; display: inline-block;">
+                        <img src="./assets/profilephoto.png" 
+                             alt="Carpincho AINABI" 
+                             style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; background: #e6e2c3; padding: 10px;"
+                             class="profile-hover">
+                      </div>
+                    </div>
+                    <div style="background: rgba(230, 226, 195, 0.3); border-radius: 16px; padding: 20px; margin: 15px auto; max-width: 300px;">
+                      <p style="color: #4d6a3a; font-weight: 600; margin: 0;">
+                        No se pudo enviar la solicitud: ${err.message}
+                      </p>
+                    </div>
+                  </div>`,
+            showConfirmButton: true,
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#4d6a3a',
+            background: '#fdfbe8',
+            customClass: {
+              popup: 'custom-popup-class',
+              title: 'custom-title-class',
+              confirmButton: 'custom-confirm-button'
+            }
+          });
+        }
+      });
+    }
+  });
+
+  function validarEmail(input) {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    const errorDiv = document.getElementById('email-error');
+    const submitButton = document.querySelector('#form-cambio-datos button[type="submit"]');
+    
+    if (!emailRegex.test(input.value)) {
+      input.style.borderColor = '#b88b66';
+      errorDiv.style.display = 'block';
+      submitButton.disabled = true;
+    } else {
+      input.style.borderColor = '#e6e2c3';
+      errorDiv.style.display = 'none';
+      submitButton.disabled = false;
+    }
+  }
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
   <script>
     // Función para mostrar solo la sección seleccionada
     function mostrarSeccion(seccionId) {
+      // Ocultar todas las secciones
       document.getElementById('inicio-section').style.display = 'none';
       document.getElementById('autoevaluacion-section').style.display = 'none';
       document.getElementById('feedback-section').style.display = 'none';
       document.getElementById('perfil-section').style.display = 'none';
-      document.getElementById(seccionId).style.display = 'block';
+      document.getElementById('historial-section').style.display = 'none';
+
+      // Mostrar la sección seleccionada
+      const seccionSeleccionada = document.getElementById(seccionId);
+      seccionSeleccionada.style.display = 'block';
+
+      // Si es la sección de inicio, reiniciar las animaciones
+      if (seccionId === 'inicio-section') {
+        // Remover y volver a agregar la clase para reiniciar las animaciones
+        seccionSeleccionada.classList.remove('active');
+        void seccionSeleccionada.offsetWidth; // Forzar reflow
+        seccionSeleccionada.classList.add('active');
+
+        // Reiniciar las animaciones de las tarjetas de estadísticas
+        const statCards = seccionSeleccionada.querySelectorAll('.stat-card');
+        statCards.forEach((card, index) => {
+          card.style.animation = 'none';
+          void card.offsetWidth; // Forzar reflow
+          card.style.animation = `fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${0.3 + (index * 0.1)}s forwards`;
+        });
+
+        // Reiniciar la animación del gráfico
+        const pieChart = seccionSeleccionada.querySelector('.satisfaction-pie-chart');
+        if (pieChart) {
+          pieChart.style.animation = 'none';
+          void pieChart.offsetWidth; // Forzar reflow
+          pieChart.style.animation = 'scaleIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards';
+        }
+      }
     }
 
     // Cambia la clase activa en la barra lateral
     function setActiveNav(navId) {
       document.getElementById('nav-inicio').classList.remove('nav-activa');
       document.getElementById('nav-feedback').classList.remove('nav-activa');
+      document.getElementById('nav-historial').classList.remove('nav-activa');
       document.getElementById('nav-perfil').classList.remove('nav-activa');
       document.getElementById(navId).classList.add('nav-activa');
     }
@@ -282,254 +1712,1048 @@
         mostrarSeccion('perfil-section');
         setActiveNav('nav-perfil');
       });
+      document.getElementById('nav-historial').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarSeccion('historial-section');
+        setActiveNav('nav-historial');
+        cargarHistorialAnalisis(); // Nueva función que cargaremos a continuación
+      });
     });
-  </script>
-  <script>
-  document.addEventListener('DOMContentLoaded', async function() {
-    // Espera a que Firebase esté listo y el usuario esté autenticado
-    firebase.auth().onAuthStateChanged(async function(user) {
-      if (user) {
-        try {
-          // Obtiene el documento del usuario desde la colección 'users'
-          const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
-          if (userDoc.exists) {
-            const data = userDoc.data();
-            document.getElementById('user-nombre').textContent = data.nombre || "Sin nombre";
-            document.getElementById('user-rol').textContent = data.role || "Sin rol";
-            document.getElementById('user-area').textContent = data.area || "Sin área";
-            document.getElementById('user-jerarquia').textContent = data.jerarquia || "Sin jerarquía";
-            document.getElementById('user-email').textContent = data.email || user.email || "Sin email";
-            // Estado activo: true/false
-            if (typeof data.activo !== "undefined") {
-              document.getElementById('user-activo').textContent = data.activo ? "Activo" : "Inactivo";
-              document.getElementById('user-activo').style.background = data.activo ? "#e6f5d0" : "#f5e6e6";
-              document.getElementById('user-activo').style.color = data.activo ? "#4d6a3a" : "#a94442";
-            } else {
-              document.getElementById('user-activo').textContent = "Sin dato";
-              document.getElementById('user-activo').style.background = "#f5e6e6";
-              document.getElementById('user-activo').style.color = "#a94442";
-            }
-          }
-        } catch (err) {
-          console.error("Error al obtener datos del perfil:", err);
-        }
+
+    // Variables globales para almacenar los datos
+    let datosAnalisis = [];
+    let datosFiltrados = [];
+
+    // Función para cargar el historial de análisis
+    async function cargarHistorialAnalisis() {
+      // Mostrar estado inicial vacío
+      mostrarEstadoVacio();
+    }
+
+    // Función para mostrar estado vacío
+    function mostrarEstadoVacio() {
+      const resultadosFiltro = document.getElementById('resultados-filtro');
+      
+      document.getElementById('promedio-historico').textContent = '-';
+      document.getElementById('feedbacks-historico').textContent = '-';
+      document.getElementById('empleados-historico').textContent = '-';
+      
+      // Ocultar sección de resultados
+      resultadosFiltro.style.display = 'none';
+
+      // Limpiar gráfico si existe
+      if (window.historicalChart) {
+        window.historicalChart.destroy();
       }
-    });
-  });
-  // Guardar autoevaluación con fecha y nombre
-  const formAuto = document.getElementById('form-autoevaluacion');
-  if (formAuto) {
-    formAuto.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const fecha = document.getElementById('fecha-autoevaluacion').value;
-      const desempeno = document.getElementById('desempeno').value;
-      const comentario = document.getElementById('comentario').value;
-      try {
-        const user = firebase.auth().currentUser;
-        if (user) {
-          // Obtener el nombre del usuario desde la colección users
-          const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
-          let nombre = "";
-          if (userDoc.exists) {
-            nombre = userDoc.data().nombre || "";
-          }
-          await firebase.firestore().collection('autoevaluaciones').add({
-            uid: user.uid,
-            nombre: nombre,
-            fecha: fecha,
-            desempeno: desempeno,
-            comentario: comentario,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          });
-          // Reemplaza el alert por SweetAlert2
-          Swal.fire({
-            
-            title: "¡Tu feedback fue recibido correctamente!",
-            imageUrl: "./assets/capiok.png",
-            imageHeight: 100,
-            confirmButtonColor: "#b88b66"
-          });
-          formAuto.reset();
-        } else {
-          alert('Debes estar logueado para guardar la autoevaluación.');
-        }
-      } catch (err) {
-        alert('Error al guardar la autoevaluación: ' + err.message);
-      }
-    });
-  }
-  </script>
+    }
 
-<!-- Modal para solicitar cambio de datos -->
-<div class="modal fade" id="modalCambioDatos" tabindex="-1" aria-labelledby="modalCambioDatosLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="border-radius: 20px;">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalCambioDatosLabel">Solicitud de cambio de datos</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body">
-        <form id="form-cambio-datos">
-          <div class="mb-3">
-            <label for="nuevo-nombre" class="form-label">Nuevo nombre</label>
-            <input type="text" class="form-control" id="nuevo-nombre" required>
-          </div>
-          <div class="mb-3">
-            <label for="nuevo-email" class="form-label">Nuevo email</label>
-            <input type="email" class="form-control" id="nuevo-email" required>
-          </div>
-          <div class="text-center">
-            <button type="submit" class="btn btn-success px-4">Enviar solicitud</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+    // Función para mostrar resultados
+    function mostrarResultados(satisfaccionPromedio, cantidadFeedbacks, empleadosActivos, distribucion, nombreMes, añoSeleccionado) {
+      const resultadosFiltro = document.getElementById('resultados-filtro');
+      
+      // Mostrar sección de resultados
+      resultadosFiltro.style.display = 'block';
+      
+      // Actualizar UI
+      document.getElementById('promedio-historico').textContent = `${satisfaccionPromedio}%`;
+      document.getElementById('feedbacks-historico').textContent = cantidadFeedbacks;
+      document.getElementById('empleados-historico').textContent = empleadosActivos;
 
-<script>
-// Mostrar el modal al hacer clic en el botón
-document.addEventListener('DOMContentLoaded', function() {
-  const btnCambio = document.getElementById('btn-solicitar-cambio');
-  if (btnCambio) {
-    btnCambio.addEventListener('click', function() {
-      const modal = new bootstrap.Modal(document.getElementById('modalCambioDatos'));
-      modal.show();
-    });
-  }
+      // Actualizar gráfico
+      actualizarGraficoHistorico(distribucion);
+    }
 
-  // Manejar el envío del formulario de cambio de datos
-  const formCambio = document.getElementById('form-cambio-datos');
-  if (formCambio) {
-    formCambio.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const nuevoNombre = document.getElementById('nuevo-nombre').value;
-      const nuevoEmail = document.getElementById('nuevo-email').value;
-      try {
-        const user = firebase.auth().currentUser;
-        if (user) {
-          await firebase.firestore().collection('solicitudes_cambio_datos').add({
-            uid: user.uid,
-            nombre: nuevoNombre,
-            email: nuevoEmail,
-            estado: "pendiente",
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          });
-          // Cerrar el modal
-          bootstrap.Modal.getInstance(document.getElementById('modalCambioDatos')).hide();
-          // Mostrar popup de éxito
-          Swal.fire({
-            title: "¡Solicitud enviada!",
-            text: "Tu solicitud de cambio de datos fue enviada al administrador.",
-            icon: "success",
-            confirmButtonColor: "#b88b66"
-          });
-          formCambio.reset();
-        } else {
-          Swal.fire({
-            title: "Error",
-            text: "Debes estar logueado para enviar la solicitud.",
-            icon: "error",
-            confirmButtonColor: "#b88b66"
-          });
-        }
-      } catch (err) {
+    // Función para aplicar filtros
+    async function aplicarFiltros() {
+      const añoSeleccionado = document.getElementById('año-filtro').value;
+      const mesSeleccionado = document.getElementById('mes-filtro').value;
+
+      if (!añoSeleccionado || !mesSeleccionado) {
         Swal.fire({
-          title: "Error",
-          text: "No se pudo enviar la solicitud: " + err.message,
-          icon: "error",
-          confirmButtonColor: "#b88b66"
+          title: 'Atención',
+          text: 'Por favor selecciona año y mes para continuar',
+          icon: 'warning',
+          confirmButtonColor: '#4d6a3a',
+          background: '#fdfbe8',
+          customClass: {
+            popup: 'custom-popup-class',
+            confirmButton: 'custom-confirm-button'
+          }
+        });
+        mostrarEstadoVacio();
+        return;
+      }
+
+      // Limpiar tabla y mostrar estado de carga
+      mostrarEstadoVacio();
+
+      try {
+        const user = firebase.auth().currentUser;
+        if (!user) return;
+
+          const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
+        const areaUsuario = userData.area;
+
+        // Obtener empleados del área
+        const empleadosSnapshot = await firebase.firestore()
+          .collection('users')
+          .where('area', '==', areaUsuario)
+          .where('role', '==', 'Empleado')
+          .get();
+
+        const empleadosIds = new Set();
+        empleadosSnapshot.forEach(doc => empleadosIds.add(doc.id));
+
+        // Calcular fechas del período seleccionado
+        const fechaInicio = new Date(parseInt(añoSeleccionado), parseInt(mesSeleccionado) - 1, 1);
+        const fechaFin = new Date(parseInt(añoSeleccionado), parseInt(mesSeleccionado), 0, 23, 59, 59);
+
+        // Obtener autoevaluaciones del período
+        const autoevaluacionesSnapshot = await firebase.firestore()
+          .collection('autoevaluaciones')
+          .where('timestamp', '>=', firebase.firestore.Timestamp.fromDate(fechaInicio))
+          .where('timestamp', '<=', firebase.firestore.Timestamp.fromDate(fechaFin))
+          .orderBy('timestamp', 'desc')
+          .get();
+
+        // Procesar autoevaluaciones
+        const ultimasAutoevaluaciones = new Map();
+        let distribucion = {
+          muySatisfecho: 0,
+          satisfecho: 0,
+          neutral: 0,
+          pocoSatisfecho: 0,
+          insatisfecho: 0
+        };
+        let totalSatisfaccion = 0;
+        let cantidadFeedbacks = 0;
+
+        autoevaluacionesSnapshot.forEach(doc => {
+          const autoevaluacion = doc.data();
+          if (!empleadosIds.has(autoevaluacion.uid)) return;
+
+          // Solo considerar la última autoevaluación de cada empleado
+          if (!ultimasAutoevaluaciones.has(autoevaluacion.uid)) {
+            ultimasAutoevaluaciones.set(autoevaluacion.uid, autoevaluacion);
+            
+            let valorSatisfaccion;
+            switch (autoevaluacion.satisfaccion) {
+              case 'Muy satisfecho':
+                valorSatisfaccion = 100;
+                distribucion.muySatisfecho++;
+                break;
+              case 'Satisfecho':
+                valorSatisfaccion = 80;
+                distribucion.satisfecho++;
+                break;
+              case 'Neutral':
+                valorSatisfaccion = 60;
+                distribucion.neutral++;
+                break;
+              case 'Poco satisfecho':
+                valorSatisfaccion = 40;
+                distribucion.pocoSatisfecho++;
+                break;
+              case 'Insatisfecho':
+                valorSatisfaccion = 20;
+                distribucion.insatisfecho++;
+                break;
+              default:
+                valorSatisfaccion = 0;
+            }
+            
+            totalSatisfaccion += valorSatisfaccion;
+            cantidadFeedbacks++;
+          }
+        });
+
+        // Si no hay datos, mostrar mensaje
+        if (cantidadFeedbacks === 0) {
+          Swal.fire({
+            title: 'Sin datos',
+            text: 'No se encontraron autoevaluaciones para el período seleccionado',
+            icon: 'info',
+            confirmButtonColor: '#4d6a3a',
+            background: '#fdfbe8',
+            customClass: {
+              popup: 'custom-popup-class',
+              confirmButton: 'custom-confirm-button'
+            }
+          });
+          mostrarEstadoVacio();
+          return;
+        }
+
+        // Calcular promedio
+        const satisfaccionPromedio = Math.round(totalSatisfaccion / cantidadFeedbacks);
+        const nombreMes = fechaInicio.toLocaleString('es-ES', { month: 'long' });
+
+        // Mostrar resultados
+        mostrarResultados(
+          satisfaccionPromedio,
+          cantidadFeedbacks,
+          empleadosSnapshot.size,
+          distribucion,
+          nombreMes,
+          añoSeleccionado
+        );
+
+        // Mostrar toast de éxito
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          icon: 'success',
+          title: 'Análisis actualizado',
+          background: '#fdfbe8',
+          customClass: {
+            popup: 'colored-toast'
+          }
+        });
+
+      } catch (error) {
+        console.error('Error al aplicar filtros:', error);
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudieron cargar los datos del período seleccionado',
+          icon: 'error',
+          confirmButtonColor: '#b88b66',
+          background: '#fdfbe8',
+          customClass: {
+            popup: 'custom-popup-class',
+            confirmButton: 'custom-confirm-button'
+          }
+        });
+        mostrarEstadoVacio();
+      }
+    }
+
+    // Función para limpiar filtros
+    function limpiarFiltros() {
+      document.getElementById('año-filtro').value = '';
+      document.getElementById('mes-filtro').value = '';
+      mostrarEstadoVacio();
+    }
+
+    // Función para ver detalle del análisis
+    function verDetalleAnalisis(distribucionStr) {
+      const [muySatisfecho, satisfecho, neutral, pocoSatisfecho, insatisfecho] = distribucionStr.split(',').map(Number);
+      const mesSeleccionado = document.getElementById('mes-filtro').value;
+      const añoSeleccionado = document.getElementById('año-filtro').value;
+      const nombreMes = new Date(añoSeleccionado, mesSeleccionado - 1).toLocaleString('es-ES', { month: 'long' });
+
+      Swal.fire({
+        title: `Análisis de ${nombreMes} ${añoSeleccionado}`,
+        html: `
+          <div style="text-align: left; color: #4d6a3a;">
+            <p><strong>Satisfacción promedio:</strong> ${document.getElementById('promedio-historico').textContent}</p>
+            <p><strong>Total de autoevaluaciones:</strong> ${document.getElementById('feedbacks-historico').textContent}</p>
+            <p><strong>Empleados activos:</strong> ${document.getElementById('empleados-historico').textContent}</p>
+            <p><strong>Distribución:</strong></p>
+            <ul>
+              <li>Muy satisfechos: ${muySatisfecho}</li>
+              <li>Satisfechos: ${satisfecho}</li>
+              <li>Neutrales: ${neutral}</li>
+              <li>Poco satisfechos: ${pocoSatisfecho}</li>
+              <li>Insatisfechos: ${insatisfecho}</li>
+            </ul>
+      </div>
+        `,
+        confirmButtonColor: '#4d6a3a',
+        background: '#fdfbe8',
+        customClass: {
+          popup: 'custom-popup-class',
+          confirmButton: 'custom-confirm-button'
+        }
+      });
+    }
+
+    // Función para actualizar el gráfico de torta histórico
+    function actualizarGraficoHistorico(distribucion) {
+      const ctx = document.getElementById('historicalPieChart').getContext('2d');
+      
+      // Destruir el gráfico anterior si existe
+      if (window.historicalChart) {
+        window.historicalChart.destroy();
+      }
+
+      window.historicalChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: [
+            'Muy satisfechos 😊',
+            'Satisfechos 🌟',
+            'Neutrales 😌',
+            'Poco satisfechos 🤔',
+            'Insatisfechos 😕'
+          ],
+          datasets: [{
+            data: [
+              distribucion.muySatisfecho,
+              distribucion.satisfecho,
+              distribucion.neutral,
+              distribucion.pocoSatisfecho,
+              distribucion.insatisfecho
+            ],
+            backgroundColor: [
+              'rgba(77, 106, 58, 0.9)',    // Verde oscuro
+              'rgba(119, 156, 92, 0.9)',   // Verde medio
+              'rgba(183, 215, 194, 0.9)',  // Verde claro
+              'rgba(230, 226, 195, 0.9)',  // Beige
+              'rgba(184, 139, 102, 0.9)'   // Marrón claro
+            ],
+            borderColor: [
+              '#4d6a3a',  // Verde oscuro
+              '#779c5c',  // Verde medio
+              '#b7d7c2',  // Verde claro
+              '#e6e2c3',  // Beige
+              '#b88b66'   // Marrón claro
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                font: {
+                  family: 'Poppins',
+                  size: 12
+                },
+                color: '#4d6a3a',
+                padding: 20,
+                generateLabels: function(chart) {
+                  const data = chart.data;
+                  if (data.labels.length && data.datasets.length) {
+                    return data.labels.map((label, i) => {
+                      const meta = chart.getDatasetMeta(0);
+                      const style = meta.controller.getStyle(i);
+                      const value = data.datasets[0].data[i];
+                      const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                      const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                      
+                      return {
+                        text: `${label} (${percentage}%)`,
+                        fillStyle: data.datasets[0].backgroundColor[i],
+                        strokeStyle: data.datasets[0].borderColor[i],
+                        lineWidth: 1,
+                        hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                        index: i
+                      };
+                    });
+                  }
+                  return [];
+                }
+              }
+            },
+            tooltip: {
+              backgroundColor: '#fdfbe8',
+              titleColor: '#4d6a3a',
+              bodyColor: '#4d6a3a',
+              borderColor: '#e6e2c3',
+              borderWidth: 1,
+              padding: 12,
+              bodyFont: {
+                family: 'Poppins'
+              },
+              callbacks: {
+                label: function(context) {
+                  const value = context.raw;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                  return `${context.label}: ${value} empleados (${percentage}%)`;
+                }
+              }
+            }
+          },
+          cutout: '60%'
+        }
+      });
+    }
+
+    // Función para ver el detalle de un análisis específico
+    async function verDetalleAnalisis(analisisId) {
+      try {
+        const doc = await firebase.firestore()
+          .collection('analisis_satisfaccion')
+          .doc(analisisId)
+          .get();
+
+        if (!doc.exists) {
+          throw new Error('No se encontró el análisis');
+        }
+
+        const analisis = doc.data();
+        const fecha = analisis.timestamp.toDate();
+        const mes = fecha.toLocaleString('es-ES', { month: 'long' });
+        const año = fecha.getFullYear();
+
+          Swal.fire({
+          title: `Análisis de ${mes} ${año}`,
+          html: `
+            <div style="text-align: left; color: #4d6a3a;">
+              <p><strong>Satisfacción promedio:</strong> ${analisis.satisfaccionPromedio}%</p>
+              <p><strong>Total de feedbacks:</strong> ${analisis.totalFeedbacks}</p>
+              <p><strong>Empleados activos:</strong> ${analisis.empleadosActivos}</p>
+              <p><strong>Distribución:</strong></p>
+              <ul>
+                <li>Muy satisfechos: ${analisis.distribucion?.muySatisfecho || 0}</li>
+                <li>Satisfechos: ${analisis.distribucion?.satisfecho || 0}</li>
+                <li>Neutrales: ${analisis.distribucion?.neutral || 0}</li>
+                <li>Poco satisfechos: ${analisis.distribucion?.pocoSatisfecho || 0}</li>
+                <li>Insatisfechos: ${analisis.distribucion?.insatisfecho || 0}</li>
+              </ul>
+            </div>
+          `,
+          confirmButtonColor: '#4d6a3a',
+          background: '#fdfbe8',
+          customClass: {
+            popup: 'custom-popup-class',
+            confirmButton: 'custom-confirm-button'
+          }
+        });
+
+      } catch (error) {
+        console.error('Error al cargar detalle:', error);
+          Swal.fire({
+          title: 'Error',
+          text: 'No se pudo cargar el detalle del análisis',
+          icon: 'error',
+          confirmButtonColor: '#b88b66'
         });
       }
-    });
-  }
-});
+    }
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
-</body>
-</html>
-
+  
 <script>
+    // Funcionalidad del menú hamburguesa
 document.addEventListener('DOMContentLoaded', function() {
-  firebase.auth().onAuthStateChanged(async function(user) {
-    if (user) {
-      // Obtener el área del supervisor actual
-      const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
-      if (userDoc.exists) {
-        const supervisorData = userDoc.data();
-        const areaSupervisor = supervisorData.area;
+      const menuToggle = document.querySelector('.menu-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      
+      menuToggle.addEventListener('click', function() {
+        menuToggle.classList.toggle('active');
+        sidebar.classList.toggle('active');
+      });
 
-        // Consultar todos los usuarios del área del supervisor
-        firebase.firestore().collection('users')
-          .where('area', '==', areaSupervisor)
-          .get()
-          .then((querySnapshot) => {
-            const lista = document.getElementById('lista-empleados-area');
-            lista.innerHTML = ""; // Limpiar la lista antes de agregar
-            querySnapshot.forEach((doc) => {
-              const data = doc.data();
-              if (doc.id !== user.uid) {
-                const li = document.createElement('li');
-                li.className = "list-group-item list-group-item-action";
-                li.style.cursor = "pointer";
-                li.textContent = data.nombre + " (" + data.email + ")";
-                li.addEventListener('click', function() {
-                  document.getElementById('form-feedback-container').style.display = "block";
-                  document.getElementById('nombre-empleado-feedback').textContent = data.nombre;
-                  document.getElementById('form-feedback-empleado').setAttribute('data-uid', doc.id);
-                });
-                lista.appendChild(li);
-              }
-            });
-            if (lista.innerHTML === "") {
-              lista.innerHTML = "<li class='list-group-item'>No hay empleados en tu área.</li>";
-            }
-          })
-          .catch((error) => {
-            console.error("Error obteniendo empleados:", error);
-          });
+      // Cerrar sidebar al hacer clic en un enlace (en móvil)
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            menuToggle.classList.remove('active');
+            sidebar.classList.remove('active');
+          }
+        });
+      });
+
+      // Manejar el botón de logout
+      document.getElementById('btn-logout').addEventListener('click', function(e) {
+        e.preventDefault();
+        Swal.fire({
+          title: '🌿 ¿Deseas cerrar sesión? 🌿',
+          html: `<div style="color: #4d6a3a; font-family: 'Poppins', sans-serif; text-align: center;">
+                  <div style="display: flex; justify-content: center; margin: 20px 0;">
+                    <div style="position: relative; display: inline-block;">
+                      <img src="./assets/profilephoto.png" 
+                           alt="Carpincho AINABI" 
+                           style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; background: #e6e2c3; padding: 10px;"
+                           class="profile-hover">
+                    </div>
+                  </div>
+                  <div style="background: rgba(230, 226, 195, 0.3); border-radius: 16px; padding: 20px; margin: 15px auto; max-width: 300px;">
+                    <p style="color: #4d6a3a; font-weight: 600; margin: 0;">
+                      Estás a punto de cerrar sesión
+                    </p>
+                  </div>
+                </div>`,
+          showCancelButton: true,
+          showCloseButton: true,
+          allowOutsideClick: true,
+          allowEscapeKey: true,
+          confirmButtonText: 'Sí, salir',
+          cancelButtonText: 'No, quedarme',
+          confirmButtonColor: '#4d6a3a',
+          cancelButtonColor: '#b88b66',
+          background: '#fdfbe8',
+          customClass: {
+            popup: 'custom-popup-class',
+            title: 'custom-title-class',
+            confirmButton: 'custom-confirm-button',
+            cancelButton: 'custom-cancel-button',
+            closeButton: 'custom-close-button'
+          }
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              await firebase.auth().signOut();
+              // Limpiar datos de sesión
+              sessionStorage.clear();
+              localStorage.clear();
+              // Limpiar cualquier cookie relacionada con la sesión
+              document.cookie.split(";").forEach(function(c) { 
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+              });
+              // Redirigir al login
+              window.location.href = './login.html';
+            } catch (error) {
+              console.error('Error al cerrar sesión:', error);
+              Swal.fire({
+                title: '🌿 Error 🌿',
+                html: `<div style="color: #4d6a3a; font-family: 'Poppins', sans-serif; text-align: center;">
+                        <div style="display: flex; justify-content: center; margin: 20px 0;">
+                          <div style="position: relative; display: inline-block;">
+                            <img src="./assets/profilephoto.png" 
+                                 alt="Carpincho AINABI" 
+                                 style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; background: #e6e2c3; padding: 10px;"
+                                 class="profile-hover">
+                          </div>
+                        </div>
+                        <div style="background: rgba(230, 226, 195, 0.3); border-radius: 16px; padding: 20px; margin: 15px auto; max-width: 300px;">
+                          <p style="color: #4d6a3a; font-weight: 600; margin: 0;">
+                            No se pudo cerrar la sesión. Por favor, intenta nuevamente.
+                          </p>
+                        </div>
+                      </div>`,
+                showCloseButton: true,
+                allowOutsideClick: true,
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#4d6a3a',
+                background: '#fdfbe8',
+                customClass: {
+                  popup: 'custom-popup-class',
+                  title: 'custom-title-class',
+                  confirmButton: 'custom-confirm-button'
+                }
+              });
       }
     }
   });
+      });
+});
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Función para calcular el análisis de satisfacción
+      async function calcularAnalisisSatisfaccion(areaUsuario) {
+        try {
+          // Obtener todos los empleados del área para poder filtrar las autoevaluaciones
+          const empleadosSnapshot = await firebase.firestore()
+            .collection('users')
+            .where('area', '==', areaUsuario)
+            .where('role', '==', 'Empleado')
+            .get();
 
-  // Manejar envío del feedback
-  const formFeedback = document.getElementById('form-feedback-empleado');
-  if (formFeedback) {
-    formFeedback.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const uidEmpleado = formFeedback.getAttribute('data-uid');
-      const nombreEmpleado = document.getElementById('nombre-empleado-feedback').textContent;
-      const desempeno = document.getElementById('desempeno-empleado').value;
-      const comentario = document.getElementById('comentario-empleado').value;
-      const supervisor = firebase.auth().currentUser;
-      if (!uidEmpleado || !supervisor) return;
-      try {
-        await firebase.firestore().collection('feedbacks').add({
-          uidEmpleado: uidEmpleado,
-          nombreEmpleado: nombreEmpleado,
-          uidSupervisor: supervisor.uid,
-          desempeno: desempeno,
-          comentario: comentario,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        Swal.fire({
-          title: "¡Feedback enviado!",
-          icon: "success",
-          confirmButtonColor: "#b88b66"
-        });
-        formFeedback.reset();
-        document.getElementById('form-feedback-container').style.display = "none";
-      } catch (err) {
-        Swal.fire({
-          title: "Error",
-          text: "No se pudo enviar el feedback: " + err.message,
-          icon: "error",
-          confirmButtonColor: "#b88b66"
-        });
+          // Crear un Set con los UIDs de los empleados del área
+          const empleadosDelArea = new Set();
+          empleadosSnapshot.forEach(doc => {
+            empleadosDelArea.add(doc.id);
+          });
+
+          // Obtener el primer y último día del mes actual
+          const hoy = new Date();
+          const primerDiaMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+          const ultimoDiaMes = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0, 23, 59, 59);
+
+          // Convertir a timestamps de Firestore
+          const timestampInicio = firebase.firestore.Timestamp.fromDate(primerDiaMes);
+          const timestampFin = firebase.firestore.Timestamp.fromDate(ultimoDiaMes);
+
+          // Obtener las autoevaluaciones del mes actual
+          const autoevaluacionesSnapshot = await firebase.firestore()
+            .collection('autoevaluaciones')
+            .where('timestamp', '>=', timestampInicio)
+            .where('timestamp', '<=', timestampFin)
+            .orderBy('timestamp', 'desc')
+            .get();
+
+          let totalSatisfaccion = 0;
+          let cantidadFeedbacks = 0;
+          let distribucionSatisfaccion = {
+            muySatisfecho: 0,
+            satisfecho: 0,
+            neutral: 0,
+            pocoSatisfecho: 0,
+            insatisfecho: 0
+          };
+          
+          // Mapa para rastrear la última autoevaluación de cada empleado
+          const ultimasAutoevaluaciones = new Map();
+          
+          autoevaluacionesSnapshot.forEach(doc => {
+            const autoevaluacion = doc.data();
+            // Solo procesar si es un empleado del área
+            if (empleadosDelArea.has(autoevaluacion.uid)) {
+              // Si ya tenemos una autoevaluación más reciente de este empleado, ignorar esta
+              if (!ultimasAutoevaluaciones.has(autoevaluacion.uid)) {
+                ultimasAutoevaluaciones.set(autoevaluacion.uid, autoevaluacion);
+                
+                // Convertir nivel de satisfacción a número
+                let valorSatisfaccion;
+                switch (autoevaluacion.satisfaccion) {
+                  case 'Muy satisfecho':
+                    valorSatisfaccion = 100;
+                    distribucionSatisfaccion.muySatisfecho++;
+                    break;
+                  case 'Satisfecho':
+                    valorSatisfaccion = 80;
+                    distribucionSatisfaccion.satisfecho++;
+                    break;
+                  case 'Neutral':
+                    valorSatisfaccion = 60;
+                    distribucionSatisfaccion.neutral++;
+                    break;
+                  case 'Poco satisfecho':
+                    valorSatisfaccion = 40;
+                    distribucionSatisfaccion.pocoSatisfecho++;
+                    break;
+                  case 'Insatisfecho':
+                    valorSatisfaccion = 20;
+                    distribucionSatisfaccion.insatisfecho++;
+                    break;
+                  default:
+                    valorSatisfaccion = 0;
+                }
+                
+                totalSatisfaccion += valorSatisfaccion;
+                cantidadFeedbacks++;
+              }
+            }
+          });
+
+          // Calcular promedio general
+          const promedioGeneral = cantidadFeedbacks > 0 ? 
+            Math.round(totalSatisfaccion / cantidadFeedbacks) : 0;
+
+          // Obtener el nombre del mes actual
+          const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+          const mesActual = nombresMeses[hoy.getMonth()];
+
+          // Actualizar los valores en la UI con el mes actual
+          document.getElementById('promedio-satisfaccion').textContent = `${promedioGeneral}%`;
+          document.getElementById('total-feedbacks').textContent = cantidadFeedbacks;
+          document.getElementById('empleados-activos').textContent = empleadosSnapshot.size;
+
+          // Actualizar el título para incluir el mes actual
+          const tituloAnalisis = document.querySelector('.satisfaction-title');
+          if (tituloAnalisis) {
+            tituloAnalisis.textContent = `Análisis de Satisfacción del Equipo - ${mesActual}`;
+          }
+
+          // Crear el gráfico de torta
+          const ctx = document.getElementById('satisfactionPieChart').getContext('2d');
+          
+          // Establecer el color de fondo del canvas
+          ctx.canvas.style.backgroundColor = '#fdfbe8';
+          
+          new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+              labels: [
+                'Muy satisfechos 😊',
+                'Satisfechos 🌟',
+                'Neutrales 😌',
+                'Poco satisfechos 🤔',
+                'Insatisfechos 😕'
+              ],
+              datasets: [{
+                data: [
+                  distribucionSatisfaccion.muySatisfecho,
+                  distribucionSatisfaccion.satisfecho,
+                  distribucionSatisfaccion.neutral,
+                  distribucionSatisfaccion.pocoSatisfecho,
+                  distribucionSatisfaccion.insatisfecho
+                ],
+                backgroundColor: [
+                  'rgba(77, 106, 58, 0.9)',    // Verde oscuro para Muy satisfechos
+                  'rgba(119, 156, 92, 0.9)',   // Verde medio para Satisfechos
+                  'rgba(183, 215, 194, 0.9)',  // Verde claro para Neutrales
+                  'rgba(230, 226, 195, 0.9)',  // Beige para Poco satisfechos
+                  'rgba(184, 139, 102, 0.9)'   // Marrón claro para Insatisfechos
+                ],
+                borderColor: [
+                  '#4d6a3a',  // Verde oscuro
+                  '#779c5c',  // Verde medio
+                  '#b7d7c2',  // Verde claro
+                  '#e6e2c3',  // Beige
+                  '#b88b66'   // Marrón claro
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: {
+                    font: {
+                      family: 'Poppins',
+                      size: 12
+                    },
+                    color: '#4d6a3a',
+                    padding: 20,
+                    generateLabels: function(chart) {
+                      const data = chart.data;
+                      if (data.labels.length && data.datasets.length) {
+                        return data.labels.map((label, i) => {
+                          const meta = chart.getDatasetMeta(0);
+                          const style = meta.controller.getStyle(i);
+                          const value = data.datasets[0].data[i];
+                          const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                          const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                          
+                          return {
+                            text: `${label} (${percentage}%)`,
+                            fillStyle: data.datasets[0].backgroundColor[i],
+                            strokeStyle: data.datasets[0].borderColor[i],
+                            lineWidth: 1,
+                            hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                            index: i
+                          };
+                        });
+                      }
+                      return [];
+                    }
+                  }
+                },
+                tooltip: {
+                  backgroundColor: '#fdfbe8',
+                  titleColor: '#4d6a3a',
+                  bodyColor: '#4d6a3a',
+                  borderColor: '#e6e2c3',
+                  borderWidth: 1,
+                  padding: 12,
+                  bodyFont: {
+                    family: 'Poppins'
+                  },
+                  callbacks: {
+                    label: function(context) {
+                      const value = context.raw;
+                      const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                      const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                      return `${context.label}: ${value} empleados (${percentage}%)`;
+                    }
+                  }
+                }
+              },
+              cutout: '60%'
+            }
+          });
+
+        } catch (error) {
+          console.error('Error al calcular análisis:', error);
+          Swal.fire({
+            title: 'Error',
+            text: 'No se pudo cargar el análisis de satisfacción',
+            icon: 'error',
+            confirmButtonColor: '#b88b66'
+          });
+        }
       }
+
+      // Obtener el área del supervisor cuando se autentica
+      firebase.auth().onAuthStateChanged(async function(user) {
+        if (user) {
+          try {
+            const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+            if (userDoc.exists) {
+              const userData = userDoc.data();
+              // Calcular análisis de satisfacción para el área del supervisor
+              calcularAnalisisSatisfaccion(userData.area);
+            }
+          } catch (error) {
+            console.error('Error al obtener datos del usuario:', error);
+          }
+        }
+      });
+});
+</script>
+
+<script>
+    // Funcionalidad para el modal del video
+    document.addEventListener('DOMContentLoaded', function() {
+      const helpTrigger = document.getElementById('help-trigger');
+      const videoModal = document.getElementById('video-modal');
+      const closeVideo = document.querySelector('.close-video');
+
+      helpTrigger.addEventListener('click', function() {
+        videoModal.style.display = 'block';
+        // Forzar reflow
+        void videoModal.offsetWidth;
+        videoModal.classList.add('active');
+      });
+
+      function closeVideoModal() {
+        videoModal.classList.remove('active');
+        setTimeout(() => {
+          videoModal.style.display = 'none';
+        }, 300);
+      }
+
+      closeVideo.addEventListener('click', closeVideoModal);
+
+      videoModal.addEventListener('click', function(e) {
+        if (e.target === videoModal) {
+          closeVideoModal();
+        }
+      });
+
+      // Cerrar con la tecla Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && videoModal.style.display === 'block') {
+          closeVideoModal();
+        }
+      });
+});
+</script>
+
+<script>
+    // Evento para el enlace del perfil
+    document.getElementById('nav-perfil').addEventListener('click', async function(e) {
+      e.preventDefault();
+      mostrarSeccion('perfil-section');
+      setActiveNav('nav-perfil');
+      
+      // Recargar datos del perfil
+      const user = firebase.auth().currentUser;
+      if (user) {
+        try {
+          const doc = await firebase.firestore().collection('users').doc(user.uid).get();
+          if (doc.exists) {
+            const datos = doc.data();
+            document.getElementById('user-nombre').textContent = datos.nombre || "Sin nombre";
+            document.getElementById('user-rol').textContent = datos.role || "Sin rol";
+            document.getElementById('user-area').textContent = datos.area || "Sin área";
+            document.getElementById('user-jerarquia').textContent = datos.jerarquia || "Sin jerarquía";
+            document.getElementById('user-email').textContent = datos.email || user.email || "Sin email";
+            
+            const userActivoElement = document.getElementById('user-activo');
+            if (userActivoElement) {
+              if (typeof datos.activo !== "undefined") {
+                userActivoElement.textContent = datos.activo ? "Activo" : "Inactivo";
+                userActivoElement.style.background = datos.activo ? "#e6f5d0" : "#f5e6e6";
+                userActivoElement.style.color = datos.activo ? "#4d6a3a" : "#a94442";
+              } else {
+                userActivoElement.textContent = "Sin dato";
+                userActivoElement.style.background = "#f5e6e6";
+                userActivoElement.style.color = "#a94442";
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error al cargar datos del perfil:', error);
+          Swal.fire({
+            title: 'Error',
+            text: 'No se pudieron cargar los datos del perfil',
+            icon: 'error',
+            confirmButtonColor: '#b88b66'
+          });
+        }
+      }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Inicializar todos los tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl, {
+          template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+        });
+      });
+    });
+</script>
+
+<script>
+  // Actualizar nombre de usuario en la bienvenida cuando se inicia sesión
+  document.addEventListener('DOMContentLoaded', function() {
+    firebase.auth().onAuthStateChanged(async function(user) {
+      if (user) {
+        try {
+          const doc = await firebase.firestore().collection('users').doc(user.uid).get();
+          if (doc.exists) {
+            const datos = doc.data();
+            const nombreUsuarioElement = document.getElementById('nombre-usuario');
+            if (nombreUsuarioElement) {
+              const nombreCompleto = datos.nombre || 'Usuario';
+              const primerNombre = nombreCompleto.split(' ')[0];
+              nombreUsuarioElement.textContent = primerNombre;
+              
+              // Agregar una animación suave al cambiar el nombre
+              nombreUsuarioElement.style.opacity = '0';
+              setTimeout(() => {
+                nombreUsuarioElement.style.transition = 'opacity 0.5s ease';
+                nombreUsuarioElement.style.opacity = '1';
+              }, 100);
+            }
+          }
+        } catch (error) {
+          console.error('Error al obtener datos del usuario:', error);
+        }
+      }
+    });
+  });
+</script>
+
+<script>
+// Función para cargar los empleados del área
+async function cargarEmpleadosArea() {
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  try {
+    // Obtener el área del supervisor
+    const supervisorDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+    const supervisorArea = supervisorDoc.data().area;
+
+    // Obtener empleados del área
+    const empleadosSnapshot = await firebase.firestore()
+      .collection('users')
+      .where('role', '==', 'Empleado')
+      .where('area', '==', supervisorArea)
+      .where('activo', '==', true)
+      .get();
+
+    const listaEmpleados = document.getElementById('lista-empleados');
+    listaEmpleados.innerHTML = '';
+
+    if (empleadosSnapshot.empty) {
+      listaEmpleados.innerHTML = `
+        <div class="alert" style="background: rgba(230, 226, 195, 0.3); border: none; color: #4d6a3a; text-align: center;">
+          No hay empleados activos en tu área
+        </div>`;
+      return;
+    }
+
+    empleadosSnapshot.forEach(doc => {
+      const empleado = doc.data();
+      const empleadoCard = document.createElement('div');
+      empleadoCard.className = 'card mb-3';
+      empleadoCard.style = `
+        background: rgba(230, 226, 195, 0.3); 
+        border: 2px solid #e6e2c3; 
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      `;
+      empleadoCard.innerHTML = `
+        <div class="card-body d-flex align-items-center">
+          <img src="./assets/profilephoto.png" 
+               alt="Foto de perfil" 
+               style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; background: #e6e2c3;">
+          <div>
+            <h5 class="card-title mb-1" style="color: #4d6a3a; font-weight: 600;">${empleado.nombre}</h5>
+            <p class="card-text mb-0" style="color: #4d6a3a; font-size: 0.9rem;">${empleado.email}</p>
+          </div>
+        </div>
+      `;
+
+      empleadoCard.addEventListener('mouseover', () => {
+        empleadoCard.style.transform = 'translateY(-3px)';
+        empleadoCard.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+      });
+
+      empleadoCard.addEventListener('mouseout', () => {
+        empleadoCard.style.transform = 'none';
+        empleadoCard.style.boxShadow = 'none';
+      });
+
+      empleadoCard.addEventListener('click', () => {
+        mostrarFormularioFeedback(doc.id, empleado.nombre);
+      });
+
+      listaEmpleados.appendChild(empleadoCard);
+    });
+  } catch (error) {
+    console.error('Error al cargar empleados:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'No se pudieron cargar los empleados',
+      confirmButtonColor: '#4d6a3a'
+    });
+  }
+}
+
+// Función para mostrar el formulario de feedback
+function mostrarFormularioFeedback(empleadoUid, nombreEmpleado) {
+  document.getElementById('lista-empleados').style.display = 'none';
+  document.getElementById('form-feedback').style.display = 'block';
+  document.getElementById('empleado-uid').value = empleadoUid;
+  document.getElementById('nombre-empleado-seleccionado').textContent = nombreEmpleado;
+  
+  // Establecer el mes actual por defecto
+  const mesActual = new Date().getMonth() + 1;
+  document.getElementById('mes-feedback').value = mesActual;
+}
+
+// Función para volver a la lista de empleados
+function volverALista() {
+  document.getElementById('lista-empleados').style.display = 'block';
+  document.getElementById('form-feedback').style.display = 'none';
+  document.getElementById('formulario-feedback').reset();
+}
+
+// Manejar el envío del formulario de feedback
+document.getElementById('formulario-feedback').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const empleadoUid = document.getElementById('empleado-uid').value;
+  const mes = document.getElementById('mes-feedback').value;
+  const desempeno = document.getElementById('desempeno').value;
+  const comentarios = document.getElementById('comentarios').value;
+  const supervisorUid = firebase.auth().currentUser.uid;
+
+  try {
+    // Crear el documento de feedback
+    await firebase.firestore().collection('feedback').add({
+      empleado_uid: empleadoUid,
+      supervisor_uid: supervisorUid,
+      mes: parseInt(mes),
+      año: new Date().getFullYear(),
+      desempeno: desempeno,
+      comentarios: comentarios,
+      fecha_creacion: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    // Mostrar mensaje de éxito
+    Swal.fire({
+      icon: 'success',
+      title: '¡Feedback enviado!',
+      text: 'El feedback ha sido registrado exitosamente',
+      confirmButtonColor: '#4d6a3a'
+    }).then(() => {
+      volverALista();
+    });
+  } catch (error) {
+    console.error('Error al enviar feedback:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'No se pudo enviar el feedback',
+      confirmButtonColor: '#4d6a3a'
     });
   }
 });
+
+// Cargar empleados cuando se navega a la sección de feedback
+document.getElementById('nav-feedback').addEventListener('click', function(e) {
+  e.preventDefault();
+  mostrarSeccion('feedback-section');
+  setActiveNav('nav-feedback');
+  cargarEmpleadosArea();
+});
 </script>
+</body>
+</html>
