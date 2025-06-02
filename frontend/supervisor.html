@@ -935,6 +935,26 @@
               <p style="color: #4d6a3a;">Selecciona un empleado de tu área para dejar feedback sobre su desempeño</p>
             </div>
 
+            <!-- Buscador -->
+            <div class="mb-4">
+              <div class="search-container" style="position: relative;">
+                <input type="text" 
+                       id="buscador-empleados" 
+                       class="form-control" 
+                       placeholder="Buscar empleado por nombre o email..."
+                       style="padding-left: 40px; 
+                              border: 2px solid #e6e2c3; 
+                              border-radius: 12px;
+                              background: white;">
+                <i class="fas fa-search" 
+                   style="position: absolute; 
+                          left: 15px; 
+                          top: 50%; 
+                          transform: translateY(-50%); 
+                          color: #4d6a3a;"></i>
+              </div>
+            </div>
+
             <div id="lista-empleados" class="mb-4">
               <!-- Los empleados se cargarán aquí dinámicamente -->
             </div>
@@ -947,22 +967,11 @@
                 <input type="hidden" id="empleado-uid">
                 
                 <div class="mb-3">
-                  <label for="mes-feedback" class="form-label" style="color: #4d6a3a;">Mes de evaluación</label>
-                  <select class="form-select" id="mes-feedback" required>
-                    <option value="">Selecciona un mes</option>
-                    <option value="1">Enero</option>
-                    <option value="2">Febrero</option>
-                    <option value="3">Marzo</option>
-                    <option value="4">Abril</option>
-                    <option value="5">Mayo</option>
-                    <option value="6">Junio</option>
-                    <option value="7">Julio</option>
-                    <option value="8">Agosto</option>
-                    <option value="9">Septiembre</option>
-                    <option value="10">Octubre</option>
-                    <option value="11">Noviembre</option>
-                    <option value="12">Diciembre</option>
-                  </select>
+                  <label class="form-label" style="color: #4d6a3a;">Mes de evaluación</label>
+                  <div style="background: rgba(230, 226, 195, 0.3); padding: 12px; border-radius: 12px; color: #4d6a3a; font-weight: 500;">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    <span id="mes-actual"></span>
+                  </div>
                 </div>
 
                 <div class="mb-3">
@@ -2625,56 +2634,17 @@ async function cargarEmpleadosArea() {
       .where('activo', '==', true)
       .get();
 
-    const listaEmpleados = document.getElementById('lista-empleados');
-    listaEmpleados.innerHTML = '';
-
-    if (empleadosSnapshot.empty) {
-      listaEmpleados.innerHTML = `
-        <div class="alert" style="background: rgba(230, 226, 195, 0.3); border: none; color: #4d6a3a; text-align: center;">
-          No hay empleados activos en tu área
-        </div>`;
-      return;
-    }
-
+    // Guardar los empleados en una variable global para el buscador
+    window.empleadosData = [];
     empleadosSnapshot.forEach(doc => {
-      const empleado = doc.data();
-      const empleadoCard = document.createElement('div');
-      empleadoCard.className = 'card mb-3';
-      empleadoCard.style = `
-        background: rgba(230, 226, 195, 0.3); 
-        border: 2px solid #e6e2c3; 
-        border-radius: 16px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-      `;
-      empleadoCard.innerHTML = `
-        <div class="card-body d-flex align-items-center">
-          <img src="./assets/profilephoto.png" 
-               alt="Foto de perfil" 
-               style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; background: #e6e2c3;">
-          <div>
-            <h5 class="card-title mb-1" style="color: #4d6a3a; font-weight: 600;">${empleado.nombre}</h5>
-            <p class="card-text mb-0" style="color: #4d6a3a; font-size: 0.9rem;">${empleado.email}</p>
-          </div>
-        </div>
-      `;
-
-      empleadoCard.addEventListener('mouseover', () => {
-        empleadoCard.style.transform = 'translateY(-3px)';
-        empleadoCard.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+      window.empleadosData.push({
+        id: doc.id,
+        ...doc.data()
       });
-
-      empleadoCard.addEventListener('mouseout', () => {
-        empleadoCard.style.transform = 'none';
-        empleadoCard.style.boxShadow = 'none';
-      });
-
-      empleadoCard.addEventListener('click', () => {
-        mostrarFormularioFeedback(doc.id, empleado.nombre);
-      });
-
-      listaEmpleados.appendChild(empleadoCard);
     });
+
+    // Mostrar todos los empleados inicialmente
+    mostrarEmpleadosFiltrados('');
   } catch (error) {
     console.error('Error al cargar empleados:', error);
     Swal.fire({
@@ -2686,74 +2656,244 @@ async function cargarEmpleadosArea() {
   }
 }
 
-// Función para mostrar el formulario de feedback
-function mostrarFormularioFeedback(empleadoUid, nombreEmpleado) {
-  document.getElementById('lista-empleados').style.display = 'none';
-  document.getElementById('form-feedback').style.display = 'block';
-  document.getElementById('empleado-uid').value = empleadoUid;
-  document.getElementById('nombre-empleado-seleccionado').textContent = nombreEmpleado;
-  
-  // Establecer el mes actual por defecto
-  const mesActual = new Date().getMonth() + 1;
-  document.getElementById('mes-feedback').value = mesActual;
-}
+// Función para mostrar empleados filtrados
+function mostrarEmpleadosFiltrados(filtro) {
+  const listaEmpleados = document.getElementById('lista-empleados');
+  listaEmpleados.innerHTML = '';
 
-// Función para volver a la lista de empleados
-function volverALista() {
-  document.getElementById('lista-empleados').style.display = 'block';
-  document.getElementById('form-feedback').style.display = 'none';
-  document.getElementById('formulario-feedback').reset();
-}
+  if (!window.empleadosData || window.empleadosData.length === 0) {
+    listaEmpleados.innerHTML = `
+      <div class="alert" style="background: rgba(230, 226, 195, 0.3); border: none; color: #4d6a3a; text-align: center;">
+        No hay empleados activos en tu área
+      </div>`;
+    return;
+  }
 
-// Manejar el envío del formulario de feedback
-document.getElementById('formulario-feedback').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  
-  const empleadoUid = document.getElementById('empleado-uid').value;
-  const mes = document.getElementById('mes-feedback').value;
-  const desempeno = document.getElementById('desempeno').value;
-  const comentarios = document.getElementById('comentarios').value;
-  const supervisorUid = firebase.auth().currentUser.uid;
+  const empleadosFiltrados = window.empleadosData.filter(empleado => {
+    const terminoBusqueda = filtro.toLowerCase();
+    return empleado.nombre.toLowerCase().includes(terminoBusqueda) ||
+           empleado.email.toLowerCase().includes(terminoBusqueda);
+  });
 
-  try {
-    // Crear el documento de feedback
-    await firebase.firestore().collection('feedback').add({
-      empleado_uid: empleadoUid,
-      supervisor_uid: supervisorUid,
-      mes: parseInt(mes),
-      año: new Date().getFullYear(),
-      desempeno: desempeno,
-      comentarios: comentarios,
-      fecha_creacion: firebase.firestore.FieldValue.serverTimestamp()
+  if (empleadosFiltrados.length === 0) {
+    listaEmpleados.innerHTML = `
+      <div class="alert" style="background: rgba(230, 226, 195, 0.3); border: none; color: #4d6a3a; text-align: center;">
+        No se encontraron empleados que coincidan con la búsqueda
+      </div>`;
+    return;
+  }
+
+  empleadosFiltrados.forEach(empleado => {
+    const empleadoCard = document.createElement('div');
+    empleadoCard.className = 'card mb-3';
+    empleadoCard.style = `
+      background: rgba(230, 226, 195, 0.3); 
+      border: 2px solid #e6e2c3; 
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    `;
+    empleadoCard.innerHTML = `
+      <div class="card-body d-flex align-items-center">
+        <img src="./assets/profilephoto.png" 
+             alt="Foto de perfil" 
+             style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; background: #e6e2c3;">
+        <div>
+          <h5 class="card-title mb-1" style="color: #4d6a3a; font-weight: 600;">${empleado.nombre}</h5>
+          <p class="card-text mb-0" style="color: #4d6a3a; font-size: 0.9rem;">${empleado.email}</p>
+        </div>
+      </div>
+    `;
+
+    empleadoCard.addEventListener('mouseover', () => {
+      empleadoCard.style.transform = 'translateY(-3px)';
+      empleadoCard.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
     });
 
-    // Mostrar mensaje de éxito
-    Swal.fire({
-      icon: 'success',
-      title: '¡Feedback enviado!',
-      text: 'El feedback ha sido registrado exitosamente',
-      confirmButtonColor: '#4d6a3a'
-    }).then(() => {
-      volverALista();
+    empleadoCard.addEventListener('mouseout', () => {
+      empleadoCard.style.transform = 'none';
+      empleadoCard.style.boxShadow = 'none';
     });
-  } catch (error) {
-    console.error('Error al enviar feedback:', error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'No se pudo enviar el feedback',
-      confirmButtonColor: '#4d6a3a'
+
+    empleadoCard.addEventListener('click', () => {
+      mostrarFormularioFeedback(empleado.id, empleado.nombre);
+    });
+
+    listaEmpleados.appendChild(empleadoCard);
+  });
+}
+
+// Agregar evento de búsqueda
+document.addEventListener('DOMContentLoaded', function() {
+  const buscador = document.getElementById('buscador-empleados');
+  if (buscador) {
+    buscador.addEventListener('input', function(e) {
+      mostrarEmpleadosFiltrados(e.target.value);
     });
   }
 });
 
-// Cargar empleados cuando se navega a la sección de feedback
-document.getElementById('nav-feedback').addEventListener('click', function(e) {
-  e.preventDefault();
-  mostrarSeccion('feedback-section');
-  setActiveNav('nav-feedback');
-  cargarEmpleadosArea();
-});
+// ... resto del código existente ...
+</script>
+
+<script>
+    // Evento para el enlace del feedback
+    document.getElementById('nav-feedback').addEventListener('click', function(e) {
+      e.preventDefault();
+      mostrarSeccion('feedback-section');
+      setActiveNav('nav-feedback');
+      cargarEmpleadosArea();
+    });
+</script>
+
+<script>
+    // Función para mostrar el formulario de feedback
+    function mostrarFormularioFeedback(empleadoUid, nombreEmpleado) {
+      // Ocultar lista y mostrar formulario con una transición suave
+      const listaEmpleados = document.getElementById('lista-empleados');
+      const formFeedback = document.getElementById('form-feedback');
+      const buscador = document.getElementById('buscador-empleados');
+
+      // Guardar la búsqueda actual
+      if (buscador) {
+        window.ultimaBusqueda = buscador.value;
+        buscador.style.display = 'none';
+      }
+
+      listaEmpleados.style.opacity = '0';
+      setTimeout(() => {
+        listaEmpleados.style.display = 'none';
+        formFeedback.style.display = 'block';
+        setTimeout(() => {
+          formFeedback.style.opacity = '1';
+        }, 50);
+      }, 300);
+
+      // Actualizar datos del formulario
+      document.getElementById('empleado-uid').value = empleadoUid;
+      document.getElementById('nombre-empleado-seleccionado').textContent = nombreEmpleado;
+      
+      // Mostrar el mes actual
+      const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+      const fecha = new Date();
+      document.getElementById('mes-actual').textContent = `${meses[fecha.getMonth()]} ${fecha.getFullYear()}`;
+    }
+
+    // Función para volver a la lista de empleados
+    function volverALista() {
+      const listaEmpleados = document.getElementById('lista-empleados');
+      const formFeedback = document.getElementById('form-feedback');
+      const buscador = document.getElementById('buscador-empleados');
+
+      // Restaurar buscador con el último valor
+      if (buscador) {
+        buscador.style.display = 'block';
+        if (window.ultimaBusqueda) {
+          buscador.value = window.ultimaBusqueda;
+          mostrarEmpleadosFiltrados(window.ultimaBusqueda);
+        }
+      }
+
+      // Transición suave al volver
+      formFeedback.style.opacity = '0';
+      setTimeout(() => {
+        formFeedback.style.display = 'none';
+        listaEmpleados.style.display = 'block';
+        document.getElementById('formulario-feedback').reset();
+        setTimeout(() => {
+          listaEmpleados.style.opacity = '1';
+        }, 50);
+      }, 300);
+    }
+
+    // Manejar el envío del formulario de feedback
+    document.getElementById('formulario-feedback').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const empleadoUid = document.getElementById('empleado-uid').value;
+      const mesActual = new Date().getMonth() + 1;
+      const desempeno = document.getElementById('desempeno').value;
+      const comentarios = document.getElementById('comentarios').value;
+      const supervisorUid = firebase.auth().currentUser.uid;
+
+      try {
+        // Verificar si ya existe un feedback para este empleado en el mes actual
+        const feedbackExistente = await firebase.firestore()
+          .collection('feedback')
+          .where('empleado_uid', '==', empleadoUid)
+          .where('supervisor_uid', '==', supervisorUid)
+          .where('mes', '==', mesActual)
+          .where('año', '==', new Date().getFullYear())
+          .get();
+
+        if (!feedbackExistente.empty) {
+          const resultado = await Swal.fire({
+            title: 'Feedback existente',
+            html: `Ya existe un feedback para este empleado en el mes actual.<br><br>¿Deseas actualizarlo?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#4d6a3a',
+            cancelButtonColor: '#b88b66',
+            confirmButtonText: 'Sí, actualizar',
+            cancelButtonText: 'No, cancelar'
+          });
+
+          if (!resultado.isConfirmed) {
+            return;
+          }
+
+          // Actualizar el feedback existente
+          await feedbackExistente.docs[0].ref.update({
+            desempeno: desempeno,
+            comentarios: comentarios,
+            fecha_actualizacion: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        } else {
+          // Crear nuevo feedback
+          await firebase.firestore().collection('feedback').add({
+            empleado_uid: empleadoUid,
+            supervisor_uid: supervisorUid,
+            mes: mesActual,
+            año: new Date().getFullYear(),
+            desempeno: desempeno,
+            comentarios: comentarios,
+            fecha_creacion: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+
+        // Mostrar mensaje de éxito
+        await Swal.fire({
+          icon: 'success',
+          title: '¡Feedback enviado!',
+          text: 'El feedback ha sido registrado exitosamente',
+          confirmButtonColor: '#4d6a3a'
+        });
+
+        volverALista();
+      } catch (error) {
+        console.error('Error al enviar feedback:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo enviar el feedback',
+          confirmButtonColor: '#4d6a3a'
+        });
+      }
+    });
+
+    // Agregar estilos para las transiciones
+    const style = document.createElement('style');
+    style.textContent = `
+      #lista-empleados, #form-feedback {
+        transition: opacity 0.3s ease;
+      }
+      #form-feedback {
+        opacity: 0;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // ... resto del código existente ...
 </script>
 </body>
 </html>

@@ -54,6 +54,9 @@ async function login() {
         case 'Admin':
           window.location.href = './dashboard_admin.html';
           break;
+        case 'Analista':
+          window.location.href = './dashboard_analista.html';
+          break;
         case 'Supervisor':
           window.location.href = './supervisor.html';
           break;
