@@ -1,5 +1,8 @@
+// Verificar si ya existe una instancia de Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
-firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
@@ -90,12 +93,35 @@ auth.onAuthStateChanged(async (user) => {
     const doc = await db.collection("users").doc(uid).get();
     if (doc.exists) {
       const datos = doc.data();
-      document.getElementById("user-nombre").textContent = datos.nombre || "Sin nombre";
-      document.getElementById("user-dni").textContent = datos.dni || "Sin DNI";
-      document.getElementById("user-email").textContent = datos.email || user.email || "Sin email";
-      document.getElementById("user-rol").textContent = datos.role || "Sin rol";
-      document.getElementById("user-area").textContent = datos.area || "Sin área";
-      document.getElementById("user-jerarquia").textContent = datos.jerarquia || "Sin jerarquía";
+      // Actualizar el nombre en la bienvenida si existe el elemento
+      const nombreUsuarioElement = document.getElementById("nombre-usuario");
+      if (nombreUsuarioElement) {
+        const nombreCompleto = datos.nombre || "Usuario";
+        const primerNombre = nombreCompleto.split(' ')[0];
+        nombreUsuarioElement.textContent = primerNombre;
+      }
+      
+      // Actualizar el resto de los campos del perfil si existen
+      const userNombreElement = document.getElementById("user-nombre");
+      if (userNombreElement) {
+        document.getElementById("user-nombre").textContent = datos.nombre || "Sin nombre";
+        document.getElementById("user-email").textContent = datos.email || user.email || "Sin email";
+        document.getElementById("user-rol").textContent = datos.role || "Sin rol";
+        document.getElementById("user-area").textContent = datos.area || "Sin área";
+        document.getElementById("user-jerarquia").textContent = datos.jerarquia || "Sin jerarquía";
+      }
+    } else {
+      console.log('No se encontró el documento del usuario');
+      const nombreUsuarioElement = document.getElementById("nombre-usuario");
+      if (nombreUsuarioElement) {
+        nombreUsuarioElement.textContent = "Usuario";
+      }
+    }
+  } else {
+    console.log('No hay usuario autenticado');
+    // No redirigir si ya estamos en la página de login
+    if (!window.location.pathname.includes('login.html')) {
+      window.location.href = './login.html';
     }
   }
 });
@@ -184,4 +210,88 @@ async function ejecutarKMeans() {
 
 function limpiarResultados() {
   document.getElementById('resultados-kmeans').innerHTML = '';
+}
+
+// Guardar autoevaluación con fecha y nombre
+const formAuto = document.getElementById('form-autoevaluacion');
+if (formAuto) {
+  formAuto.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const fecha = document.getElementById('fecha-autoevaluacion').value;
+    const desempeno = document.getElementById('desempeno').value;
+    const satisfaccion = document.getElementById('satisfaccion').value;
+    const comentario = document.getElementById('comentario').value;
+    
+    try {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        // Obtener el nombre del usuario desde la colección users
+        const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+        let nombre = "";
+        if (userDoc.exists) {
+          nombre = userDoc.data().nombre || "";
+        }
+        
+        // Verificar si ya existe autoevaluación este mes
+        const [anioSeleccionado, mesSeleccionado] = fecha.split('-');
+        const querySnapshot = await firebase.firestore()
+          .collection('autoevaluaciones')
+          .where('uid', '==', user.uid)
+          .get();
+        
+        let yaExiste = false;
+        querySnapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.fecha) {
+            const [anio, mes] = data.fecha.split('-');
+            if (anio === anioSeleccionado && mes === mesSeleccionado) {
+              yaExiste = true;
+            }
+          }
+        });
+        
+        if (yaExiste) {
+          Swal.fire({
+            title: "Ya realizaste tu autoevaluación este mes",
+            text: "Por favor, vuelve el próximo mes para realizar una nueva autoevaluación.",
+            icon: "info",
+            confirmButtonColor: "#b88b66"
+          });
+          return;
+        }
+        
+        await firebase.firestore().collection('autoevaluaciones').add({
+          uid: user.uid,
+          nombre: nombre,
+          fecha: fecha,
+          desempeno: desempeno,
+          satisfaccion: satisfaccion,
+          comentario: comentario,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        Swal.fire({
+          title: "¡Tu feedback fue recibido correctamente!",
+          imageUrl: "./assets/capiok.png",
+          imageHeight: 100,
+          confirmButtonColor: "#b88b66"
+        });
+        formAuto.reset();
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "Debes estar logueado para guardar la autoevaluación.",
+          icon: "error",
+          confirmButtonColor: "#b88b66"
+        });
+      }
+    } catch (err) {
+      Swal.fire({
+        title: "Error",
+        text: "Error al guardar la autoevaluación: " + err.message,
+        icon: "error",
+        confirmButtonColor: "#b88b66"
+      });
+    }
+  });
 }
