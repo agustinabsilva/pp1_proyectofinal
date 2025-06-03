@@ -482,10 +482,12 @@
               <div class="mb-3">
                 <label style="color: #527a5a; font-weight: 500; margin-bottom: 10px;">Modelo a utilizar:</label>
                 <select class="form-select" style="background-color: #eaf8e6; border: 1px solid #e6e2c3; border-radius: 10px; padding: 10px; color: #527a5a; transition: all 0.3s ease; font-family: 'Poppins', sans-serif;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
-                  <option value="ultimo">Último modelo entrenado (Precisión: 89.4%)</option>
-                  <option value="modelo1">Modelo 2023-06-15 (Precisión: 87.2%)</option>
-                  <option value="modelo2">Modelo 2023-03-22 (Precisión: 85.8%)</option>
+                  <option value="">Cargando modelos disponibles...</option>
                 </select>
+                <small style="display: block; color: #8b7e55; margin-top: 5px; font-style: italic;">
+                  <i class="fas fa-info-circle me-1"></i>
+                  Seleccione el archivo CSV de entrenamiento que desea utilizar como modelo
+                </small>
               </div>
               
               <button id="btnPredecir" style="background-color: #eaf8e6; border: none; border-radius: 10px; color: #527a5a; font-weight: 600; padding: 12px; cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';this.style.backgroundColor='#d9f0d0';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.backgroundColor='#eaf8e6';">
@@ -741,12 +743,20 @@
         setActiveNav('nav-entrenamiento-ia');
       });
 
-      document.getElementById('nav-predecir-rendimiento').addEventListener('click', function(e) {
+      document.getElementById('nav-predecir-rendimiento').addEventListener('click', async function(e) {
         e.preventDefault();
+        console.log("🎯 Click en nav-predecir-rendimiento");
+        
         mostrarSeccion('predecir-rendimiento-section');
         setActiveNav('nav-predecir-rendimiento');
-        // Cargar historial de CSV al abrir la sección
-        updateCSVHistoryUI('prediction');
+        
+        console.log("🔄 Intentando cargar modelos...");
+        try {
+          await updateModelSelector();
+          console.log("✅ Modelos cargados exitosamente");
+        } catch (error) {
+          console.error("❌ Error al cargar modelos:", error);
+        }
       });
 
       document.getElementById('nav-deteccion-rotacion').addEventListener('click', function(e) {
@@ -783,16 +793,29 @@
       
       csvFileInput.addEventListener('change', async function(e) {
         if (e.target.files.length > 0) {
+          console.log("📁 Archivo seleccionado:", e.target.files[0].name);
           csvFile = e.target.files[0];
+          
           try {
+            console.log("💾 Guardando archivo en Firebase...");
             await saveCSVToFirebase(csvFile, 'training');
+            
+            console.log("✅ Archivo guardado exitosamente");
             Swal.fire({
               title: 'Archivo cargado',
-              text: 'El archivo CSV ha sido cargado y guardado correctamente',
+              text: 'El archivo CSV ha sido guardado como modelo de entrenamiento',
               icon: 'success',
               confirmButtonColor: '#4d6a3a'
             });
+
+            // Actualizar lista de modelos
+            const predecirSection = document.getElementById('predecir-rendimiento-section');
+            if (predecirSection && window.getComputedStyle(predecirSection).display !== 'none') {
+              console.log("🔄 Actualizando lista de modelos...");
+              await updateModelSelector();
+            }
           } catch (error) {
+            console.error("❌ Error al procesar archivo:", error);
             Swal.fire({
               title: 'Error',
               text: 'Error al guardar el archivo: ' + error.message,
@@ -925,8 +948,21 @@
       const btnPredecir = document.getElementById('btnPredecir');
       
       if (btnPredecir) {
-        btnPredecir.addEventListener('click', function() {
+        btnPredecir.addEventListener('click', async function() {
           const fileInput = document.getElementById('csvFilePredecir');
+          const resultadosDiv = document.createElement('div');
+          resultadosDiv.id = 'regresion-resultados';
+          resultadosDiv.style.whiteSpace = 'pre-wrap';
+          resultadosDiv.style.color = '#4d6a3a';
+          resultadosDiv.style.marginTop = '20px';
+          resultadosDiv.style.padding = '15px';
+          resultadosDiv.style.backgroundColor = '#f4f7eb';
+          resultadosDiv.style.borderRadius = '10px';
+          resultadosDiv.style.border = '1px solid #e6e2c3';
+
+          // Insertar el div de resultados después del botón de predicción
+          btnPredecir.parentNode.insertBefore(resultadosDiv, btnPredecir.nextSibling);
+
           if (!fileInput.files.length) {
             Swal.fire({
               title: 'Error',
@@ -936,65 +972,247 @@
             });
             return;
           }
-          
-          // Verificar si el modelo está entrenado
-          if (!modeloEntrenado) {
+
+          // Obtener el modelo seleccionado
+          const modelSelect = document.querySelector('.form-select');
+          const selectedModelId = modelSelect.value;
+
+          if (!selectedModelId) {
             Swal.fire({
-              title: 'Modelo no entrenado',
-              text: 'Primero debes entrenar el modelo en la sección de Entrenamiento IA',
-              icon: 'warning',
+              title: 'Error',
+              text: 'Por favor, seleccioná un modelo para realizar la predicción',
+              icon: 'error',
               confirmButtonColor: '#4d6a3a'
             });
             return;
           }
-          
-          // Preparar FormData para enviar el archivo
-          const formData = new FormData();
-          formData.append("file", fileInput.files[0]);
-          
-          Swal.fire({
-            title: 'Realizando predicción',
-            text: 'Analizando datos y generando predicciones...',
-            icon: 'info',
-            confirmButtonColor: '#4d6a3a',
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-              
-              // Llamada a la API para realizar la predicción
-              fetch("https://azurepy.onrender.com/api/predict/future_performance", {
-                method: "POST",
-                body: formData
-              })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error("Error en la petición: " + response.statusText);
-                }
-                return response.json();
-              })
-              .then(data => {
-                Swal.fire({
-                  title: '¡Predicción completada!',
-                  text: 'Los resultados han sido generados correctamente',
-                  icon: 'success',
-                  confirmButtonColor: '#4d6a3a'
-                });
-                
-                // Aquí podrías mostrar los resultados en algún elemento HTML
-                console.log("Resultados de la predicción:", data);
-              })
-              .catch(error => {
-                console.error("Error al realizar predicción:", error);
-                Swal.fire({
-                  title: 'Error',
-                  text: 'No se pudo realizar la predicción: ' + error.message,
-                  icon: 'error',
-                  confirmButtonColor: '#4d6a3a'
-                });
-              });
+
+          try {
+            console.log("🔍 Iniciando proceso de predicción");
+            console.log("📁 Archivo de predicción:", fileInput.files[0].name);
+            console.log("🔑 ID del modelo seleccionado:", selectedModelId);
+
+            // Obtener el CSV del modelo seleccionado
+            console.log("📚 Obteniendo modelo de Firebase...");
+            const modelDoc = await db.collection("csv_files").doc(selectedModelId).get();
+            if (!modelDoc.exists) {
+              throw new Error("Modelo no encontrado en Firebase");
             }
-          });
+            console.log("✅ Modelo obtenido de Firebase");
+
+            // Preparar FormData para enviar ambos archivos
+            console.log("📦 Preparando datos para enviar...");
+            const formData = new FormData();
+            
+            // Agregar archivo de predicción
+            const predictionFile = fileInput.files[0];
+            formData.append("file", predictionFile);
+            console.log("📎 Archivo de predicción agregado:", predictionFile.name);
+
+            // Crear y agregar archivo del modelo
+            const modelContent = modelDoc.data().content;
+            const modelBlob = new Blob([modelContent], { type: 'text/csv' });
+            const modelFile = new File([modelBlob], 'model.csv', { type: 'text/csv' });
+            formData.append("model_file", modelFile);
+            console.log("📎 Archivo del modelo agregado");
+
+            // Log del contenido del FormData
+            console.log("📋 Contenido del FormData:");
+            for (let pair of formData.entries()) {
+              console.log(pair[0], pair[1]);
+            }
+            
+            resultadosDiv.textContent = "Realizando predicción...";
+            
+            Swal.fire({
+              title: 'Realizando predicción',
+              text: 'Analizando datos y generando predicciones...',
+              icon: 'info',
+              confirmButtonColor: '#4d6a3a',
+              showConfirmButton: false,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+                
+                console.log("🚀 Enviando petición a la API...");
+                fetch("https://azurepy.onrender.com/api/predict/future_performance", {
+                  method: "POST",
+                  body: formData
+                })
+                .then(async response => {
+                  console.log("📡 Respuesta recibida:", response.status, response.statusText);
+                  
+                  if (!response.ok) {
+                    // Intentar leer el cuerpo del error si existe
+                    let errorBody = "";
+                    try {
+                      const errorData = await response.json();
+                      errorBody = JSON.stringify(errorData);
+                    } catch (e) {
+                      errorBody = await response.text();
+                    }
+                    console.error("❌ Error en la respuesta:", {
+                      status: response.status,
+                      statusText: response.statusText,
+                      body: errorBody
+                    });
+                    throw new Error(`Error en la petición (${response.status}): ${errorBody || response.statusText}`);
+                  }
+                  
+                  return response.json();
+                })
+                .then(data => {
+                  console.log("✅ Datos recibidos:", data);
+
+                  // Asegurarse de que data sea un array
+                  let empleados = [];
+                  
+                  // Si data es un array, usarlo directamente
+                  if (Array.isArray(data)) {
+                    empleados = data;
+                  } 
+                  // Si data es un objeto con predictions o data
+                  else if (typeof data === 'object' && data !== null) {
+                    if (data.predictions) {
+                      empleados = Array.isArray(data.predictions) ? data.predictions : [data.predictions];
+                    } else if (data.data) {
+                      empleados = Array.isArray(data.data) ? data.data : [data.data];
+                    } else {
+                      // Si es un objeto simple, convertirlo en array
+                      empleados = [data];
+                    }
+                  }
+
+                  // Crear la tabla simplificada
+                  let tablaHTML = `
+                    <div style="margin-top: 20px; padding: 20px; background-color: white; border-radius: 10px; border: 1px solid #e6e2c3;">
+                      <h4 style="color: #4d6a3a; margin-bottom: 20px; font-family: 'Montserrat', sans-serif;">
+                        📊 Predicción de Rendimiento Futuro
+                      </h4>
+                      <div class="table-responsive">
+                        <table class="table table-hover" style="background-color: white; border-radius: 8px; overflow: hidden;">
+                          <thead style="background-color: #f4f7eb;">
+                            <tr>
+                              <th style="color: #4d6a3a; font-weight: 600; padding: 15px; border-bottom: 2px solid #e6e2c3;">Nombre</th>
+                              <th style="color: #4d6a3a; font-weight: 600; padding: 15px; border-bottom: 2px solid #e6e2c3;">Área</th>
+                              <th style="color: #4d6a3a; font-weight: 600; padding: 15px; border-bottom: 2px solid #e6e2c3;">Jerarquía</th>
+                              <th style="color: #4d6a3a; font-weight: 600; padding: 15px; border-bottom: 2px solid #e6e2c3;">Rendimiento Futuro</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                  `;
+
+                  if (empleados.length > 0) {
+                    empleados.forEach(empleado => {
+                      // Extraer los valores necesarios del empleado
+                      const nombre = empleado.nombre || empleado.name || 'N/A';
+                      const area = empleado.area || empleado.department || 'N/A';
+                      const jerarquia = empleado.jerarquia || empleado.hierarchy || empleado.position || 'N/A';
+                      
+                      // Obtener el rendimiento futuro
+                      let rendimientoValue = empleado.rendimiento_futuro || 
+                                           empleado.desempenio_futuro || 
+                                           empleado.predicted_performance || 
+                                           empleado.predicted_value ||
+                                           empleado.prediction;
+
+                      // Formatear el rendimiento
+                      let rendimientoFormateado;
+                      if (typeof rendimientoValue === 'number') {
+                        if (rendimientoValue >= 0 && rendimientoValue <= 1) {
+                          rendimientoFormateado = (rendimientoValue * 100).toFixed(2) + '%';
+                        } else {
+                          rendimientoFormateado = rendimientoValue.toFixed(2);
+                        }
+                      } else {
+                        rendimientoFormateado = rendimientoValue || 'N/A';
+                      }
+
+                      // Determinar el color del rendimiento
+                      let rendimientoColor = '#4d6a3a'; // Color por defecto
+                      const rendimientoNum = parseFloat(rendimientoFormateado);
+                      if (!isNaN(rendimientoNum)) {
+                        if (rendimientoNum >= 90) rendimientoColor = '#2e7d32'; // Verde oscuro
+                        else if (rendimientoNum >= 80) rendimientoColor = '#558b2f'; // Verde
+                        else if (rendimientoNum >= 70) rendimientoColor = '#f9a825'; // Amarillo
+                        else rendimientoColor = '#c62828'; // Rojo
+                      }
+
+                      tablaHTML += `
+                        <tr style="border-bottom: 1px solid #e6e2c3;">
+                          <td style="padding: 15px; color: #4d6a3a;">${nombre}</td>
+                          <td style="padding: 15px; color: #4d6a3a;">${area}</td>
+                          <td style="padding: 15px; color: #4d6a3a;">${jerarquia}</td>
+                          <td style="padding: 15px; font-weight: 600; color: ${rendimientoColor};">
+                            ${rendimientoFormateado}
+                          </td>
+                        </tr>
+                      `;
+                    });
+                  } else {
+                    tablaHTML += `
+                      <tr>
+                        <td colspan="4" style="text-align: center; padding: 20px; color: #8b7e55;">
+                          <i class="fas fa-info-circle"></i> No se encontraron datos para mostrar
+                        </td>
+                      </tr>
+                    `;
+                  }
+
+                  tablaHTML += `
+                          </tbody>
+                        </table>
+                      </div>
+                      <div style="margin-top: 15px; font-size: 0.9em; color: #8b7e55;">
+                        <i class="fas fa-info-circle"></i> Total de empleados analizados: ${empleados.length}
+                      </div>
+                    </div>
+
+                    <!-- Botón para ver todos los datos -->
+                    <div class="mt-3">
+                      <button class="btn btn-sm" 
+                              style="background-color: #f4f7eb; color: #4d6a3a; border: 1px solid #e6e2c3;" 
+                              type="button" 
+                              onclick="document.getElementById('rawData').style.display = document.getElementById('rawData').style.display === 'none' ? 'block' : 'none'">
+                        <i class="fas fa-code"></i> Ver datos completos
+                      </button>
+                      <pre id="rawData" style="display: none; margin-top: 10px; padding: 15px; background-color: #f4f7eb; border-radius: 8px; color: #4d6a3a; overflow-x: auto;">
+${JSON.stringify(data, null, 2)}
+                      </pre>
+                    </div>
+                  `;
+
+                  resultadosDiv.innerHTML = tablaHTML;
+
+                  Swal.fire({
+                    title: '¡Predicción completada!',
+                    text: 'Los resultados han sido generados correctamente',
+                    icon: 'success',
+                    confirmButtonColor: '#4d6a3a'
+                  });
+                })
+                .catch(error => {
+                  console.error("❌ Error en el proceso:", error);
+                  Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo realizar la predicción: ' + error.message,
+                    icon: 'error',
+                    confirmButtonColor: '#4d6a3a'
+                  });
+                  resultadosDiv.textContent = "Error al realizar la predicción: " + error.message;
+                });
+              }
+            });
+          } catch (error) {
+            console.error("❌ Error al preparar la predicción:", error);
+            Swal.fire({
+              title: 'Error',
+              text: 'Error al preparar la predicción: ' + error.message,
+              icon: 'error',
+              confirmButtonColor: '#4d6a3a'
+            });
+            resultadosDiv.textContent = "Error al preparar la predicción: " + error.message;
+          }
         });
       }
       
@@ -1086,45 +1304,25 @@
 
       // Cargar datos del usuario logueado
       auth.onAuthStateChanged(async (user) => {
+        console.log("🔐 Estado de autenticación cambiado:", user ? "Autenticado" : "No autenticado");
+        
         if (user) {
-          try {
-            const doc = await db.collection("users").doc(user.uid).get();
-            if (doc.exists) {
-              const data = doc.data();
-              
-              // Actualizar campos del perfil
-              document.getElementById('user-nombre').textContent = data.nombre || "Sin nombre";
-              document.getElementById('user-rol').textContent = data.role || "Sin rol";
-              document.getElementById('user-area').textContent = data.area || "Sin área";
-              document.getElementById('user-jerarquia').textContent = data.jerarquia || "Sin jerarquía";
-              document.getElementById('user-email').textContent = data.email || user.email || "Sin email";
-              
-              // Estado activo
-              if (typeof data.activo !== "undefined") {
-                document.getElementById('user-activo').textContent = data.activo ? "Activo" : "Inactivo";
-                document.getElementById('user-activo').style.background = data.activo ? "#e6f5d0" : "#f5e6e6";
-                document.getElementById('user-activo').style.color = data.activo ? "#4d6a3a" : "#a94442";
-              } else {
-                document.getElementById('user-activo').textContent = "Sin dato";
-                document.getElementById('user-activo').style.background = "#f5e6e6";
-                document.getElementById('user-activo').style.color = "#a94442";
-              }
+          console.log("👤 Usuario autenticado:", user.uid);
+          const predecirSection = document.getElementById('predecir-rendimiento-section');
+          
+          if (predecirSection && window.getComputedStyle(predecirSection).display !== 'none') {
+            console.log("📊 Sección de predicción visible, cargando modelos...");
+            try {
+              await updateModelSelector();
+              console.log("✅ Modelos cargados después de autenticación");
+            } catch (error) {
+              console.error("❌ Error al cargar modelos después de autenticación:", error);
             }
-          } catch (error) {
-            console.error('Error al obtener datos del usuario:', error);
-            Swal.fire({
-              title: 'Error',
-              text: 'No se pudieron cargar los datos del usuario',
-              icon: 'error',
-              confirmButtonColor: '#4d6a3a'
-            });
+          } else {
+            console.log("ℹ️ Sección de predicción no visible, no se cargan modelos");
           }
         } else {
-          console.log('No hay usuario autenticado');
-          // No redirigir si ya estamos en la página de login
-          if (!window.location.pathname.includes('login.html')) {
-            window.location.href = './login.html';
-          }
+          console.log("⚠️ No hay usuario autenticado");
         }
       });
 
@@ -1208,6 +1406,98 @@
             icon: 'error',
             confirmButtonColor: '#4d6a3a'
           });
+        }
+      }
+
+      // Función para cargar modelos desde Firebase
+      async function loadTrainingModels() {
+        console.log("🔍 Iniciando loadTrainingModels");
+        
+        try {
+          // Verificar autenticación
+          if (!auth.currentUser) {
+            console.error("❌ No hay usuario autenticado");
+            throw new Error("Usuario no autenticado");
+          }
+          
+          const userId = auth.currentUser.uid;
+          console.log("👤 UserID:", userId);
+
+          console.log("📚 Consultando colección csv_files en Firebase...");
+          const snapshot = await db.collection("csv_files")
+            .where("userId", "==", userId)
+            .where("type", "==", "training")
+            .orderBy("uploadedAt", "desc")
+            .get();
+
+          console.log("📊 Número de documentos encontrados:", snapshot.size);
+          
+          const models = [];
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            console.log("📄 Documento encontrado:", {
+              id: doc.id,
+              fileName: data.fileName,
+              uploadedAt: data.uploadedAt,
+              type: data.type
+            });
+            models.push({
+              id: doc.id,
+              ...data
+            });
+          });
+
+          console.log("✅ Modelos cargados exitosamente:", models);
+          return models;
+        } catch (error) {
+          console.error("❌ Error en loadTrainingModels:", error);
+          throw error;
+        }
+      }
+
+      // Función para actualizar el selector de modelos
+      async function updateModelSelector() {
+        console.log("🔄 Iniciando updateModelSelector");
+        
+        const modelSelect = document.querySelector('.form-select');
+        if (!modelSelect) {
+          console.error("❌ No se encontró el elemento select");
+          return;
+        }
+
+        try {
+          console.log("⏳ Mostrando estado de carga...");
+          modelSelect.innerHTML = '<option value="">Cargando modelos...</option>';
+          modelSelect.disabled = true;
+
+          console.log("🔍 Solicitando modelos...");
+          const models = await loadTrainingModels();
+          console.log("📋 Modelos obtenidos:", models);
+
+          if (models && models.length > 0) {
+            console.log("✅ Actualizando selector con", models.length, "modelos");
+            modelSelect.innerHTML = models.map(model => `
+              <option value="${model.id}">
+                ${model.fileName} (${new Date(model.uploadedAt).toLocaleDateString()})
+              </option>
+            `).join('');
+          } else {
+            console.log("ℹ️ No hay modelos disponibles");
+            modelSelect.innerHTML = '<option value="">No hay modelos disponibles - Entrene un modelo primero</option>';
+          }
+        } catch (error) {
+          console.error("❌ Error en updateModelSelector:", error);
+          modelSelect.innerHTML = '<option value="">Error al cargar modelos</option>';
+          
+          // Mostrar error más detallado
+          Swal.fire({
+            title: 'Error al cargar modelos',
+            text: 'Detalles: ' + error.message,
+            icon: 'error',
+            confirmButtonColor: '#4d6a3a'
+          });
+        } finally {
+          modelSelect.disabled = false;
         }
       }
     });
