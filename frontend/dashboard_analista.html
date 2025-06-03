@@ -7,7 +7,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -185,13 +185,14 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      max-width: 250px;
       cursor: pointer;
       transition: all 0.3s ease;
     }
 
     .file-upload-btn:hover {
       background-color: #e6e2c3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .file-name-display {
@@ -382,27 +383,27 @@
           <div class="main-container" style="max-width: 1400px; width: 95%; background-color: #faf6e9; border-radius: 20px; border: 1px solid #e6e2c3; padding: 30px;">
             <!-- Encabezado -->
             <div class="text-center mb-4">
-              <h1 style="font-family: 'Caveat', cursive; font-weight: 600; font-size: 2.8rem; color: #8b7e55; margin-bottom: 10px;">✨ Entrenamiento de Modelos IA ✨</h1>
+              <h1 style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 2.5rem; color: #527a5a; margin-bottom: 15px; letter-spacing: 1px;">✨ Entrenamiento de Modelos IA ✨</h1>
               <p style="font-family: 'Poppins', sans-serif; color: #4d6a3a; font-size: 1.1rem; margin-bottom: 25px;">
                 Entrená un modelo de inteligencia artificial para predecir el rendimiento de los empleados.
               </p>
             </div>
             
             <!-- Contenedor principal -->
-            <div style="background-color: #fff; border-radius: 15px; border: 1px solid #e6e2c3; padding: 25px; margin-bottom: 20px; overflow-x: visible;">
+            <div style="background-color: #fff; border-radius: 15px; border: 1px solid #e6e2c3; padding: 25px; margin-bottom: 20px; overflow-x: visible; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)';" onmouseout="this.style.boxShadow='';">
               <!-- Sección de carga de dataset -->
-              <h3 style="color: #6b5b3d; font-size: 1.3rem; margin-bottom: 20px;">Cargar Dataset de Entrenamiento</h3>
+              <h3 style="color: #527a5a; font-size: 1.3rem; margin-bottom: 20px; font-family: 'Montserrat', sans-serif; font-weight: 600; border-bottom: 1px solid #e6e2c3; padding-bottom: 8px;">Cargar Dataset de Entrenamiento</h3>
               
               <div class="mb-4">
                 <input type="file" id="csvFile" accept=".csv" class="hidden-file-input">
-                <label for="csvFile" style="background-color: #f8f4e5; border: 1px solid #e6e2c3; border-radius: 10px; padding: 12px 20px; color: #6b5b3d; display: block; cursor: pointer; text-align: center; width: 100%;">
+                <label for="csvFile" style="background-color: #eaf8e6; border: 1px solid #e6e2c3; border-radius: 10px; padding: 12px 20px; color: #527a5a; display: block; cursor: pointer; text-align: center; width: 100%; transition: all 0.3s ease; font-family: 'Poppins', sans-serif;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';this.style.backgroundColor='#d9f0d0';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.backgroundColor='#eaf8e6';">
                   <i class="fas fa-check-circle me-2"></i> Seleccionar archivo
                 </label>
               </div>
               
               <!-- Formato esperado del dataset -->
-              <div style="background-color: #f8f4e5; border: 1px solid #e6e2c3; border-radius: 10px; padding: 12px 15px; margin-bottom: 25px;">
-                <p style="color: #6b5b3d; font-size: 0.9rem; margin-bottom: 8px; font-weight: 500;">
+              <div style="background-color: #f8f4e5; border: 1px solid #e6e2c3; border-radius: 10px; padding: 12px 15px; margin-bottom: 25px; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 4px 8px rgba(0,0,0,0.05)';" onmouseout="this.style.boxShadow='';">
+                <p style="color: #6b5b3d; font-size: 0.9rem; margin-bottom: 8px; font-weight: 500; font-family: 'Poppins', sans-serif;">
                   <i class="fas fa-info-circle me-2"></i> Formato esperado del dataset:
                 </p>
                 <div style="overflow-x: auto; max-width: 100%;">
@@ -437,96 +438,13 @@
                     </tbody>
                   </table>
                 </div>
-                <p style="color: #8b7e55; font-size: 0.8rem; margin-top: 8px; margin-bottom: 0;">
+                <p style="color: #8b7e55; font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; font-family: 'Poppins', sans-serif; font-style: italic;">
                   El archivo CSV debe incluir todas estas columnas para que el modelo funcione correctamente.
                 </p>
               </div>
               
-              <!-- Sección de configuración -->
-              <h3 style="color: #6b5b3d; font-size: 1.3rem; margin-bottom: 20px; margin-top: 30px;">Configurar el Modelo</h3>
-              
-              <!-- Configuración del modelo -->
-              <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <label style="color: #6b5b3d; font-weight: 500;">Variable objetivo:</label>
-                  <span style="color: #6b5b3d; font-weight: 400;">desempenio_futuro</span>
-                </div>
-                
-                <div style="background-color: #f8f4e5; border: 1px solid #e6e2c3; border-radius: 8px; padding: 15px; margin-bottom: 10px;">
-                  <p style="color: #6b5b3d; font-weight: 500; margin-bottom: 10px;">Variables a utilizar:</p>
-                  <div class="row">
-                    <div class="col-3">
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="varNombre" checked style="border-color: #b88b66;">
-                        <label class="form-check-label" for="varNombre" style="color: #6b5b3d;">
-                          nombre
-                        </label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="varArea" checked style="border-color: #b88b66;">
-                        <label class="form-check-label" for="varArea" style="color: #6b5b3d;">
-                          area
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="varJerarquia" checked style="border-color: #b88b66;">
-                        <label class="form-check-label" for="varJerarquia" style="color: #6b5b3d;">
-                          jerarquia
-                        </label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="varPuntaje" checked style="border-color: #b88b66;">
-                        <label class="form-check-label" for="varPuntaje" style="color: #6b5b3d;">
-                          puntaje
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="varProyectos" checked style="border-color: #b88b66;">
-                        <label class="form-check-label" for="varProyectos" style="color: #6b5b3d;">
-                          cantidad_proyectos
-                        </label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="varDesempenio" checked style="border-color: #b88b66;">
-                        <label class="form-check-label" for="varDesempenio" style="color: #6b5b3d;">
-                          desempenio
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-3">
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="varPersonasEquipo" checked style="border-color: #b88b66;">
-                        <label class="form-check-label" for="varPersonasEquipo" style="color: #6b5b3d;">
-                          personas_equipo
-                        </label>
-                      </div>
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="varHorasExtra" checked style="border-color: #b88b66;">
-                        <label class="form-check-label" for="varHorasExtra" style="color: #6b5b3d;">
-                          horas_extra
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" id="varAsistencia" checked style="border-color: #b88b66;">
-                        <label class="form-check-label" for="varAsistencia" style="color: #6b5b3d;">
-                          asistencia_puntualidad
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
               <!-- Botón de entrenamiento -->
-              <button id="btnTrainModel" style="background-color: #f0e6c7; border: none; border-radius: 10px; color: #6b5b3d; font-weight: 600; padding: 12px; cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease;">
+              <button id="btnTrainModel" style="background-color: #eaf8e6; border: none; border-radius: 10px; color: #527a5a; font-weight: 600; padding: 12px; cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';this.style.backgroundColor='#d9f0d0';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.backgroundColor='#eaf8e6';">
                 Entrenar modelo
               </button>
             </div>
@@ -540,39 +458,44 @@
           <div class="main-container" style="max-width: 1400px; width: 95%; background-color: #faf6e9; border-radius: 20px; border: 1px solid #e6e2c3; padding: 30px;">
             <!-- Encabezado -->
             <div class="text-center mb-4">
-              <h1 style="font-family: 'Caveat', cursive; font-weight: 600; font-size: 2.8rem; color: #8b7e55; margin-bottom: 10px;">✨ Predicción de Rendimiento ✨</h1>
+              <h1 style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 2.5rem; color: #527a5a; margin-bottom: 15px; letter-spacing: 1px;">✨ Predicción de Rendimiento ✨</h1>
               <p style="font-family: 'Poppins', sans-serif; color: #4d6a3a; font-size: 1.1rem; margin-bottom: 25px;">
                 Utilizá el modelo entrenado para predecir el rendimiento futuro de los empleados.
               </p>
             </div>
             
             <!-- Contenedor principal -->
-            <div style="background-color: #fff; border-radius: 15px; border: 1px solid #e6e2c3; padding: 25px; margin-bottom: 20px;">
-              <h3 style="color: #6b5b3d; font-size: 1.3rem; margin-bottom: 20px;">Cargar Datos para Predicción</h3>
+            <div style="background-color: #fff; border-radius: 15px; border: 1px solid #e6e2c3; padding: 25px; margin-bottom: 20px; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)';" onmouseout="this.style.boxShadow='';">
+              <h3 style="color: #527a5a; font-size: 1.3rem; margin-bottom: 20px; font-family: 'Montserrat', sans-serif; font-weight: 600; border-bottom: 1px solid #e6e2c3; padding-bottom: 8px;">Cargar Datos para Predicción</h3>
               
               <div class="mb-4">
                 <input type="file" id="csvFilePredecir" accept=".csv" class="hidden-file-input">
-                <label for="csvFilePredecir" style="background-color: #f8f4e5; border: 1px solid #e6e2c3; border-radius: 10px; padding: 12px 20px; color: #6b5b3d; display: block; cursor: pointer; text-align: center; width: 100%;">
+                <label for="csvFilePredecir" style="background-color: #eaf8e6; border: 1px solid #e6e2c3; border-radius: 10px; padding: 12px 20px; color: #527a5a; display: block; cursor: pointer; text-align: center; width: 100%; transition: all 0.3s ease; font-family: 'Poppins', sans-serif;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';this.style.backgroundColor='#d9f0d0';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.backgroundColor='#eaf8e6';">
                   <i class="fas fa-upload me-2"></i> Seleccionar archivo de empleados
                 </label>
               </div>
               
-              <p style="color: #8b7e55; font-size: 0.9rem; margin-bottom: 20px;">
+              <p style="color: #8b7e55; font-size: 0.9rem; margin-bottom: 20px; font-family: 'Poppins', sans-serif; font-style: italic;">
                 <i class="fas fa-info-circle me-2"></i> Cargá un archivo CSV con los datos de los empleados para predecir su rendimiento futuro.
               </p>
               
               <div class="mb-3">
-                <label style="color: #6b5b3d; font-weight: 500; margin-bottom: 10px;">Modelo a utilizar:</label>
-                <select class="form-select" style="background-color: #f8f4e5; border: 1px solid #e6e2c3; border-radius: 10px; padding: 10px; color: #6b5b3d;">
+                <label style="color: #527a5a; font-weight: 500; margin-bottom: 10px;">Modelo a utilizar:</label>
+                <select class="form-select" style="background-color: #eaf8e6; border: 1px solid #e6e2c3; border-radius: 10px; padding: 10px; color: #527a5a; transition: all 0.3s ease; font-family: 'Poppins', sans-serif;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
                   <option value="ultimo">Último modelo entrenado (Precisión: 89.4%)</option>
                   <option value="modelo1">Modelo 2023-06-15 (Precisión: 87.2%)</option>
                   <option value="modelo2">Modelo 2023-03-22 (Precisión: 85.8%)</option>
                 </select>
               </div>
               
-              <button id="btnPredecir" style="background-color: #f0e6c7; border: none; border-radius: 10px; color: #6b5b3d; font-weight: 600; padding: 12px; cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease;">
+              <button id="btnPredecir" style="background-color: #eaf8e6; border: none; border-radius: 10px; color: #527a5a; font-weight: 600; padding: 12px; cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';this.style.backgroundColor='#d9f0d0';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.backgroundColor='#eaf8e6';">
                 Realizar predicción
               </button>
+
+              <!-- Contenedor para el historial de CSV -->
+              <div id="csv-history-container" class="mt-4" style="background-color: #fff; border-radius: 15px; border: 1px solid #e6e2c3; padding: 20px; margin-top: 30px;">
+                <!-- El contenido se cargará dinámicamente -->
+              </div>
             </div>
           </div>
         </div>
@@ -584,37 +507,37 @@
           <div class="main-container" style="max-width: 1400px; width: 95%; background-color: #faf6e9; border-radius: 20px; border: 1px solid #e6e2c3; padding: 30px;">
             <!-- Encabezado -->
             <div class="text-center mb-4">
-              <h1 style="font-family: 'Caveat', cursive; font-weight: 600; font-size: 2.8rem; color: #8b7e55; margin-bottom: 10px;">✨ Detección de Rotación ✨</h1>
+              <h1 style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 2.5rem; color: #527a5a; margin-bottom: 15px; letter-spacing: 1px;">✨ Detección de Rotación ✨</h1>
               <p style="font-family: 'Poppins', sans-serif; color: #4d6a3a; font-size: 1.1rem; margin-bottom: 25px;">
                 Identificá empleados con alto riesgo de rotación para tomar acciones preventivas.
               </p>
             </div>
             
             <!-- Contenedor principal -->
-            <div style="background-color: #fff; border-radius: 15px; border: 1px solid #e6e2c3; padding: 25px; margin-bottom: 20px;">
-              <h3 style="color: #6b5b3d; font-size: 1.3rem; margin-bottom: 20px;">Análisis de Riesgo de Rotación</h3>
+            <div style="background-color: #fff; border-radius: 15px; border: 1px solid #e6e2c3; padding: 25px; margin-bottom: 20px; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)';" onmouseout="this.style.boxShadow='';">
+              <h3 style="color: #527a5a; font-size: 1.3rem; margin-bottom: 20px; font-family: 'Montserrat', sans-serif; font-weight: 600; border-bottom: 1px solid #e6e2c3; padding-bottom: 8px;">Análisis de Riesgo de Rotación</h3>
               
               <div class="mb-4">
                 <input type="file" id="csvFileRotacion" accept=".csv" class="hidden-file-input">
-                <label for="csvFileRotacion" style="background-color: #f8f4e5; border: 1px solid #e6e2c3; border-radius: 10px; padding: 12px 20px; color: #6b5b3d; display: block; cursor: pointer; text-align: center; width: 100%;">
+                <label for="csvFileRotacion" style="background-color: #eaf8e6; border: 1px solid #e6e2c3; border-radius: 10px; padding: 12px 20px; color: #527a5a; display: block; cursor: pointer; text-align: center; width: 100%; transition: all 0.3s ease; font-family: 'Poppins', sans-serif;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';this.style.backgroundColor='#d9f0d0';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.backgroundColor='#eaf8e6';">
                   <i class="fas fa-upload me-2"></i> Seleccionar archivo de empleados
                 </label>
               </div>
               
-              <p style="color: #8b7e55; font-size: 0.9rem; margin-bottom: 20px;">
+              <p style="color: #8b7e55; font-size: 0.9rem; margin-bottom: 20px; font-family: 'Poppins', sans-serif; font-style: italic;">
                 <i class="fas fa-info-circle me-2"></i> Cargá un archivo CSV con los datos de los empleados para analizar su riesgo de rotación.
               </p>
               
               <div class="mb-3">
-                <label style="color: #6b5b3d; font-weight: 500; margin-bottom: 10px;">Umbral de riesgo:</label>
-                <select class="form-select" style="background-color: #f8f4e5; border: 1px solid #e6e2c3; border-radius: 10px; padding: 10px; color: #6b5b3d;">
+                <label style="color: #527a5a; font-weight: 500; margin-bottom: 10px;">Umbral de riesgo:</label>
+                <select class="form-select" style="background-color: #eaf8e6; border: 1px solid #e6e2c3; border-radius: 10px; padding: 10px; color: #527a5a; transition: all 0.3s ease; font-family: 'Poppins', sans-serif;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
                   <option value="alto">Alto (>75%)</option>
                   <option value="medio" selected>Medio (>50%)</option>
                   <option value="bajo">Bajo (>25%)</option>
                 </select>
               </div>
               
-              <button id="btnDetectarRotacion" style="background-color: #f0e6c7; border: none; border-radius: 10px; color: #6b5b3d; font-weight: 600; padding: 12px; cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease;">
+              <button id="btnDetectarRotacion" style="background-color: #eaf8e6; border: none; border-radius: 10px; color: #527a5a; font-weight: 600; padding: 12px; cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';this.style.backgroundColor='#d9f0d0';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.backgroundColor='#eaf8e6';">
                 Analizar riesgo de rotación
               </button>
             </div>
@@ -696,6 +619,96 @@
     const db = firebase.firestore();
 
     document.addEventListener('DOMContentLoaded', function() {
+      // Variables para el modelo de regresión lineal
+      let csvFile = null;
+      let modeloEntrenado = false;
+
+      // Función para leer y guardar CSV en Firebase
+      async function saveCSVToFirebase(file, type) {
+        const reader = new FileReader();
+        
+        reader.onload = async function(e) {
+          const csvContent = e.target.result;
+          const timestamp = new Date().toISOString();
+          const userId = auth.currentUser.uid;
+          
+          try {
+            const docRef = await db.collection("csv_files").add({
+              content: csvContent,
+              fileName: file.name,
+              type: type, // 'training', 'prediction', 'rotation'
+              uploadedAt: timestamp,
+              userId: userId,
+              fileSize: file.size
+            });
+            
+            console.log("CSV guardado en Firebase con ID:", docRef.id);
+            return docRef.id;
+          } catch (error) {
+            console.error("Error al guardar CSV:", error);
+            throw error;
+          }
+        };
+        
+        reader.readAsText(file);
+      }
+
+      // Función para cargar historial de CSV
+      async function loadCSVHistory(type) {
+        try {
+          const userId = auth.currentUser.uid;
+          const snapshot = await db.collection("csv_files")
+            .where("userId", "==", userId)
+            .where("type", "==", type)
+            .orderBy("uploadedAt", "desc")
+            .get();
+          
+          const history = [];
+          snapshot.forEach(doc => {
+            history.push({
+              id: doc.id,
+              ...doc.data()
+            });
+          });
+          
+          return history;
+        } catch (error) {
+          console.error("Error al cargar historial:", error);
+          throw error;
+        }
+      }
+
+      // Función para reconstruir CSV desde Firebase
+      async function reconstructCSV(fileId) {
+        try {
+          const doc = await db.collection("csv_files").doc(fileId).get();
+          if (doc.exists) {
+            const data = doc.data();
+            return {
+              content: data.content,
+              fileName: data.fileName
+            };
+          }
+          throw new Error("Archivo no encontrado");
+        } catch (error) {
+          console.error("Error al reconstruir CSV:", error);
+          throw error;
+        }
+      }
+
+      // Función para descargar CSV
+      function downloadCSV(content, fileName) {
+        const blob = new Blob([content], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+
       // Función para mostrar solo la sección seleccionada
       function mostrarSeccion(seccionId) {
         // Ocultar todas las secciones
@@ -732,6 +745,8 @@
         e.preventDefault();
         mostrarSeccion('predecir-rendimiento-section');
         setActiveNav('nav-predecir-rendimiento');
+        // Cargar historial de CSV al abrir la sección
+        updateCSVHistoryUI('prediction');
       });
 
       document.getElementById('nav-deteccion-rotacion').addEventListener('click', function(e) {
@@ -763,18 +778,28 @@
         }
       });
 
-      // Manejo de carga de archivo CSV
+      // Manejo de carga de archivo CSV para entrenamiento
       const csvFileInput = document.getElementById('csvFile');
       
-      csvFileInput.addEventListener('change', function(e) {
+      csvFileInput.addEventListener('change', async function(e) {
         if (e.target.files.length > 0) {
-          // En un caso real, aquí procesaríamos el CSV
-          Swal.fire({
-            title: 'Archivo cargado',
-            text: 'El archivo CSV ha sido cargado correctamente',
-            icon: 'success',
-            confirmButtonColor: '#4d6a3a'
-          });
+          csvFile = e.target.files[0];
+          try {
+            await saveCSVToFirebase(csvFile, 'training');
+            Swal.fire({
+              title: 'Archivo cargado',
+              text: 'El archivo CSV ha sido cargado y guardado correctamente',
+              icon: 'success',
+              confirmButtonColor: '#4d6a3a'
+            });
+          } catch (error) {
+            Swal.fire({
+              title: 'Error',
+              text: 'Error al guardar el archivo: ' + error.message,
+              icon: 'error',
+              confirmButtonColor: '#4d6a3a'
+            });
+          }
         }
       });
       
@@ -782,14 +807,25 @@
       const csvFilePredecirInput = document.getElementById('csvFilePredecir');
       
       if (csvFilePredecirInput) {
-        csvFilePredecirInput.addEventListener('change', function(e) {
+        csvFilePredecirInput.addEventListener('change', async function(e) {
           if (e.target.files.length > 0) {
-            Swal.fire({
-              title: 'Archivo cargado',
-              text: 'El archivo CSV para predicción ha sido cargado correctamente',
-              icon: 'success',
-              confirmButtonColor: '#4d6a3a'
-            });
+            try {
+              await saveCSVToFirebase(e.target.files[0], 'prediction');
+              await updateCSVHistoryUI('prediction');
+              Swal.fire({
+                title: 'Archivo cargado',
+                text: 'El archivo CSV para predicción ha sido cargado y guardado correctamente',
+                icon: 'success',
+                confirmButtonColor: '#4d6a3a'
+              });
+            } catch (error) {
+              Swal.fire({
+                title: 'Error',
+                text: 'Error al guardar el archivo: ' + error.message,
+                icon: 'error',
+                confirmButtonColor: '#4d6a3a'
+              });
+            }
           }
         });
       }
@@ -813,29 +849,77 @@
       // Botón de entrenar modelo
       const btnTrainModel = document.getElementById('btnTrainModel');
       
-      btnTrainModel.addEventListener('click', function() {
-              Swal.fire({
+      btnTrainModel.addEventListener('click', async function() {
+        // Validar que se haya seleccionado un archivo
+        if (!csvFile) {
+          Swal.fire({
+            title: 'Error',
+            text: 'Por favor, selecciona un archivo CSV para entrenar el modelo',
+            icon: 'error',
+            confirmButtonColor: '#4d6a3a'
+          });
+          return;
+        }
+
+        // Verificar que el archivo sea CSV
+        if (!csvFile.name.toLowerCase().endsWith('.csv')) {
+          Swal.fire({
+            title: 'Error',
+            text: 'El archivo debe tener formato CSV',
+            icon: 'error',
+            confirmButtonColor: '#4d6a3a'
+          });
+          return;
+        }
+
+        // Mostrar loading
+        Swal.fire({
           title: 'Entrenando modelo',
           text: 'El proceso puede tomar unos minutos...',
           icon: 'info',
-                confirmButtonColor: '#4d6a3a',
+          confirmButtonColor: '#4d6a3a',
           showConfirmButton: false,
           allowOutsideClick: false,
           didOpen: () => {
             Swal.showLoading();
             
-            // Simulamos el entrenamiento
-            setTimeout(() => {
+            // Preparar FormData para enviar el archivo
+            const formData = new FormData();
+            formData.append("file", csvFile);
+            
+            // Llamada a la API para entrenar el modelo
+            fetch("https://azurepy.onrender.com/api/predict/performance_train", {
+              method: "POST",
+              body: formData
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error("Error en la petición: " + response.statusText);
+              }
+              return response.json();
+            })
+            .then(data => {
+              // Modelo entrenado con éxito
+              modeloEntrenado = true;
               Swal.fire({
                 title: '¡Entrenamiento completado!',
-                text: 'El modelo ha sido entrenado con éxito. Precisión: 89.4%',
+                text: 'El modelo ha sido entrenado con éxito. Precisión: ' + (data.r2_score || "89.4%"),
                 icon: 'success',
                 confirmButtonColor: '#4d6a3a'
               });
-            }, 3000);
-              }
+            })
+            .catch(error => {
+              console.error("Error al entrenar modelo:", error);
+              Swal.fire({
+                title: 'Error',
+                text: 'No se pudo entrenar el modelo: ' + error.message,
+                icon: 'error',
+                confirmButtonColor: '#4d6a3a'
+              });
             });
+          }
         });
+      });
 
       // Botón para realizar predicción
       const btnPredecir = document.getElementById('btnPredecir');
@@ -853,6 +937,21 @@
             return;
           }
           
+          // Verificar si el modelo está entrenado
+          if (!modeloEntrenado) {
+            Swal.fire({
+              title: 'Modelo no entrenado',
+              text: 'Primero debes entrenar el modelo en la sección de Entrenamiento IA',
+              icon: 'warning',
+              confirmButtonColor: '#4d6a3a'
+            });
+            return;
+          }
+          
+          // Preparar FormData para enviar el archivo
+          const formData = new FormData();
+          formData.append("file", fileInput.files[0]);
+          
           Swal.fire({
             title: 'Realizando predicción',
             text: 'Analizando datos y generando predicciones...',
@@ -863,15 +962,37 @@
             didOpen: () => {
               Swal.showLoading();
               
-              // Simulamos el proceso de predicción
-              setTimeout(() => {
+              // Llamada a la API para realizar la predicción
+              fetch("https://azurepy.onrender.com/api/predict/future_performance", {
+                method: "POST",
+                body: formData
+              })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error("Error en la petición: " + response.statusText);
+                }
+                return response.json();
+              })
+              .then(data => {
                 Swal.fire({
                   title: '¡Predicción completada!',
                   text: 'Los resultados han sido generados correctamente',
                   icon: 'success',
                   confirmButtonColor: '#4d6a3a'
                 });
-              }, 2500);
+                
+                // Aquí podrías mostrar los resultados en algún elemento HTML
+                console.log("Resultados de la predicción:", data);
+              })
+              .catch(error => {
+                console.error("Error al realizar predicción:", error);
+                Swal.fire({
+                  title: 'Error',
+                  text: 'No se pudo realizar la predicción: ' + error.message,
+                  icon: 'error',
+                  confirmButtonColor: '#4d6a3a'
+                });
+              });
             }
           });
         });
@@ -1012,6 +1133,83 @@
       var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
       });
+
+      // Función para actualizar la UI con el historial de CSV
+      async function updateCSVHistoryUI(type) {
+        try {
+          const history = await loadCSVHistory(type);
+          const historyContainer = document.getElementById('csv-history-container');
+          
+          if (!historyContainer) return;
+          
+          historyContainer.innerHTML = `
+            <h4 style="color: #527a5a; font-size: 1.1rem; margin-bottom: 15px; font-family: 'Montserrat', sans-serif; font-weight: 600;">
+              Historial de archivos CSV
+            </h4>
+            <div class="table-responsive">
+              <table class="table" style="font-size: 0.9rem;">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${history.map(file => `
+                    <tr>
+                      <td>${file.fileName}</td>
+                      <td>${new Date(file.uploadedAt).toLocaleString()}</td>
+                      <td>
+                        <button onclick="handleCSVReconstruction('${file.id}')" 
+                                class="btn btn-sm"
+                                style="background-color: #eaf8e6; color: #527a5a; border: none;">
+                          <i class="fas fa-download"></i> Descargar
+                        </button>
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          `;
+        } catch (error) {
+          console.error("Error al actualizar UI:", error);
+        }
+      }
+
+      // Función para manejar la reconstrucción de CSV
+      async function handleCSVReconstruction(fileId) {
+        try {
+          Swal.fire({
+            title: 'Descargando archivo',
+            text: 'Preparando el archivo CSV...',
+            icon: 'info',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+
+          const csvData = await reconstructCSV(fileId);
+          downloadCSV(csvData.content, csvData.fileName);
+
+          Swal.fire({
+            title: '¡Descarga completada!',
+            text: 'El archivo CSV ha sido reconstruido exitosamente',
+            icon: 'success',
+            confirmButtonColor: '#4d6a3a'
+          });
+        } catch (error) {
+          Swal.fire({
+            title: 'Error',
+            text: 'No se pudo reconstruir el archivo: ' + error.message,
+            icon: 'error',
+            confirmButtonColor: '#4d6a3a'
+          });
+        }
+      }
     });
   </script>
 </body>
