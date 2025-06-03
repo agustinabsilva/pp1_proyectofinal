@@ -1064,95 +1064,66 @@
                 .then(data => {
                   console.log("✅ Datos recibidos:", data);
 
-                  // Asegurarse de que data sea un array
-                  let empleados = [];
-                  
-                  // Si data es un array, usarlo directamente
-                  if (Array.isArray(data)) {
-                    empleados = data;
-                  } 
-                  // Si data es un objeto con predictions o data
-                  else if (typeof data === 'object' && data !== null) {
-                    if (data.predictions) {
-                      empleados = Array.isArray(data.predictions) ? data.predictions : [data.predictions];
-                    } else if (data.data) {
-                      empleados = Array.isArray(data.data) ? data.data : [data.data];
-                    } else {
-                      // Si es un objeto simple, convertirlo en array
-                      empleados = [data];
-                    }
-                  }
+                  // Obtener el array de resultados
+                  let empleados = data.resultados || [];
 
-                  // Crear la tabla simplificada
+                  // Crear la tabla
                   let tablaHTML = `
                     <div style="margin-top: 20px; padding: 20px; background-color: white; border-radius: 10px; border: 1px solid #e6e2c3;">
                       <h4 style="color: #4d6a3a; margin-bottom: 20px; font-family: 'Montserrat', sans-serif;">
-                        📊 Predicción de Rendimiento Futuro
+                        📊 Resultados de la Predicción
                       </h4>
                       <div class="table-responsive">
-                        <table class="table table-hover" style="background-color: white; border-radius: 8px; overflow: hidden;">
-                          <thead style="background-color: #f4f7eb;">
+                        <table class="table" style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #ddd;">
+                          <thead>
                             <tr>
-                              <th style="color: #4d6a3a; font-weight: 600; padding: 15px; border-bottom: 2px solid #e6e2c3;">Nombre</th>
-                              <th style="color: #4d6a3a; font-weight: 600; padding: 15px; border-bottom: 2px solid #e6e2c3;">Área</th>
-                              <th style="color: #4d6a3a; font-weight: 600; padding: 15px; border-bottom: 2px solid #e6e2c3;">Jerarquía</th>
-                              <th style="color: #4d6a3a; font-weight: 600; padding: 15px; border-bottom: 2px solid #e6e2c3;">Rendimiento Futuro</th>
+                              <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Nombre</th>
+                              <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Área</th>
+                              <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Jerarquía</th>
+                              <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Asistencia</th>
+                              <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Proyectos</th>
+                              <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Desempeño</th>
+                              <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Horas Extra</th>
+                              <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Equipo</th>
+                              <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Puntaje</th>
+                              <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Rendimiento Futuro</th>
                             </tr>
                           </thead>
                           <tbody>
                   `;
 
                   if (empleados.length > 0) {
-                    empleados.forEach(empleado => {
-                      // Extraer los valores necesarios del empleado
-                      const nombre = empleado.nombre || empleado.name || 'N/A';
-                      const area = empleado.area || empleado.department || 'N/A';
-                      const jerarquia = empleado.jerarquia || empleado.hierarchy || empleado.position || 'N/A';
-                      
-                      // Obtener el rendimiento futuro
-                      let rendimientoValue = empleado.rendimiento_futuro || 
-                                           empleado.desempenio_futuro || 
-                                           empleado.predicted_performance || 
-                                           empleado.predicted_value ||
-                                           empleado.prediction;
-
-                      // Formatear el rendimiento
-                      let rendimientoFormateado;
-                      if (typeof rendimientoValue === 'number') {
-                        if (rendimientoValue >= 0 && rendimientoValue <= 1) {
-                          rendimientoFormateado = (rendimientoValue * 100).toFixed(2) + '%';
-                        } else {
-                          rendimientoFormateado = rendimientoValue.toFixed(2);
-                        }
-                      } else {
-                        rendimientoFormateado = rendimientoValue || 'N/A';
-                      }
-
-                      // Determinar el color del rendimiento
-                      let rendimientoColor = '#4d6a3a'; // Color por defecto
-                      const rendimientoNum = parseFloat(rendimientoFormateado);
-                      if (!isNaN(rendimientoNum)) {
-                        if (rendimientoNum >= 90) rendimientoColor = '#2e7d32'; // Verde oscuro
-                        else if (rendimientoNum >= 80) rendimientoColor = '#558b2f'; // Verde
-                        else if (rendimientoNum >= 70) rendimientoColor = '#f9a825'; // Amarillo
-                        else rendimientoColor = '#c62828'; // Rojo
-                      }
-
+                    empleados.forEach((empleado, index) => {
+                      const rowColor = index % 2 === 0 ? '#fff' : '#f9f9f9';
                       tablaHTML += `
-                        <tr style="border-bottom: 1px solid #e6e2c3;">
-                          <td style="padding: 15px; color: #4d6a3a;">${nombre}</td>
-                          <td style="padding: 15px; color: #4d6a3a;">${area}</td>
-                          <td style="padding: 15px; color: #4d6a3a;">${jerarquia}</td>
-                          <td style="padding: 15px; font-weight: 600; color: ${rendimientoColor};">
-                            ${rendimientoFormateado}
-                          </td>
+                        <tr style="background-color: ${rowColor};">
+                          <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${empleado.nombre || 'N/A'}</td>
+                          <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a; text-transform: capitalize;">${empleado.area || 'N/A'}</td>
+                          <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a; text-transform: capitalize;">${empleado.jerarquia || 'N/A'}</td>
+                          <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${empleado.asistencia_puntualidad || 0}%</td>
+                          <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${empleado.cantidad_proyectos || 0}</td>
+                          <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a; text-transform: capitalize;">${empleado.desempenio || 'N/A'}</td>
+                          <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${empleado.horas_extra || 0}</td>
+                          <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${empleado.personas_equipo || 0}</td>
+                          <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${empleado.puntaje || 0}</td>
+                          <td style="padding: 12px; border: 1px solid #e6e2c3; font-weight: 600; color: ${
+                            typeof empleado.rendimiento_futuro === 'number' 
+                              ? empleado.rendimiento_futuro >= 90 
+                                ? '#2e7d32' 
+                                : empleado.rendimiento_futuro >= 75 
+                                  ? '#558b2f' 
+                                  : empleado.rendimiento_futuro >= 60 
+                                    ? '#f9a825' 
+                                    : '#c62828'
+                              : '#4d6a3a'
+                          };">${typeof empleado.rendimiento_futuro === 'number' ? empleado.rendimiento_futuro.toFixed(1) + '%' : 'N/A'}</td>
                         </tr>
                       `;
                     });
                   } else {
                     tablaHTML += `
                       <tr>
-                        <td colspan="4" style="text-align: center; padding: 20px; color: #8b7e55;">
+                        <td colspan="10" style="text-align: center; padding: 20px; color: #8b7e55;">
                           <i class="fas fa-info-circle"></i> No se encontraron datos para mostrar
                         </td>
                       </tr>
@@ -1167,21 +1138,9 @@
                         <i class="fas fa-info-circle"></i> Total de empleados analizados: ${empleados.length}
                       </div>
                     </div>
-
-                    <!-- Botón para ver todos los datos -->
-                    <div class="mt-3">
-                      <button class="btn btn-sm" 
-                              style="background-color: #f4f7eb; color: #4d6a3a; border: 1px solid #e6e2c3;" 
-                              type="button" 
-                              onclick="document.getElementById('rawData').style.display = document.getElementById('rawData').style.display === 'none' ? 'block' : 'none'">
-                        <i class="fas fa-code"></i> Ver datos completos
-                      </button>
-                      <pre id="rawData" style="display: none; margin-top: 10px; padding: 15px; background-color: #f4f7eb; border-radius: 8px; color: #4d6a3a; overflow-x: auto;">
-${JSON.stringify(data, null, 2)}
-                      </pre>
-                    </div>
                   `;
 
+                  // Mostrar la tabla en el div de resultados
                   resultadosDiv.innerHTML = tablaHTML;
 
                   Swal.fire({
