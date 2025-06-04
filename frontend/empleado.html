@@ -61,6 +61,193 @@
         left: 50% !important; /* Reset en móvil donde el sidebar no ocupa espacio */
       }
     }
+
+    /* Estilos para el contenedor de ayuda */
+    .help-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #fdfbe8;
+      border-radius: 20px;
+      padding: 15px 25px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border: 2px solid #e6e2c3;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .help-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(77, 106, 58, 0.2);
+      border-color: #4d6a3a;
+    }
+
+    .help-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #4d6a3a;
+      font-weight: 600;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .help-label img {
+      width: 25px;
+      height: auto;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .help-container:hover .help-label img {
+      transform: rotate(10deg) scale(1.2);
+    }
+
+    /* Estilos para el modal del video */
+    .video-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(77, 106, 58, 0.2);
+      backdrop-filter: blur(5px);
+      z-index: 1001;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .video-modal.active {
+      opacity: 1;
+    }
+
+    .video-modal .video-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: #fdfbe8;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(77, 106, 58, 0.15);
+      border: 2px solid #e6e2c3;
+      width: 90%;
+      max-width: 800px;
+      height: 600px;
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .video-modal.active .video-container {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    .video-modal .help-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e6e2c3;
+      width: 100%;
+      text-align: center;
+    }
+
+    .video-modal .help-icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      background: #e6e2c3;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-modal .help-icon img {
+      width: 25px;
+      height: 25px;
+      transition: transform 0.3s ease;
+    }
+
+    .video-modal .help-title {
+      color: #4d6a3a;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      height: calc(100% - 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(77, 106, 58, 0.1);
+      overflow: hidden;
+    }
+
+    .video-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 16px;
+      max-width: 560px;
+      max-height: 315px;
+    }
+
+    .close-video {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background: #4d6a3a;
+      color: #fdfbe8;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 2px solid #fdfbe8;
+      z-index: 2;
+    }
+
+    .close-video:hover {
+      background: #779c5c;
+      transform: scale(1.1) rotate(90deg);
+    }
+
+    .close-video i {
+      font-size: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .video-modal .video-container {
+        width: 95%;
+        padding: 20px;
+        height: 500px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .video-modal .video-container {
+        padding: 15px;
+        height: 400px;
+      }
+    }
   </style>
 
   <!-- Firebase -->
@@ -169,12 +356,28 @@
     </div>
 
     <!-- Video container moved outside inicio-section -->
-    <div id="video-container" class="video-container">
-      <div class="help-label" style="text-align: center; font-weight: bold; color: #4d6a3a; margin-bottom: 10px;">
-        ¿Necesitas ayuda? <br> 
-        El <img src="./assets/capyclipper.png" alt="Capybara helper" style="width:25px;height:auto;"> te da una mano
+    <div class="help-container" id="help-trigger">
+      <div class="help-label">
+        ¿Necesitas ayuda? El <img src="./assets/capyclipper.png" alt="Carpincho helper"> te da una patita
       </div>
-      <iframe src="https://www.youtube.com/embed/your-video-id" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <!-- Modal del video -->
+    <div class="video-modal" id="video-modal">
+      <div class="video-container">
+        <div class="help-header">
+          <div class="help-icon">
+            <img src="./assets/capyclipper.png" alt="Carpincho helper">
+          </div>
+          <h3 class="help-title">¡El carpincho te ayuda a aprender! 🌿</h3>
+        </div>
+        <button class="close-video" aria-label="Cerrar video">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="video-wrapper">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/5paLp9ns7lc?si=oQLwV94JUfvsXJmL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
     </div>
 
     <div id="autoevaluacion-section" style="display:none;">
@@ -367,12 +570,12 @@
       // Mostrar la sección seleccionada
       document.getElementById(seccionId).style.display = 'block';
       
-      // Controlar la visibilidad del video
-      const videoContainer = document.getElementById('video-container');
+      // Controlar la visibilidad del botón de ayuda
+      const helpContainer = document.getElementById('help-trigger');
       if (seccionId === 'inicio-section') {
-        videoContainer.style.display = 'block';
+        helpContainer.style.display = 'block';
       } else {
-        videoContainer.style.display = 'none';
+        helpContainer.style.display = 'none';
       }
     }
 
@@ -681,16 +884,21 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    z-index: 1050 !important;
   }
 
   .modal-centered .btn-close:hover {
     color: #b88b66 !important;
-    transform: scale(1.1) !important;
+    transform: scale(1.1) rotate(90deg) !important;
   }
 
   .modal-centered .btn-close:focus {
     box-shadow: none !important;
     outline: none !important;
+  }
+
+  .modal-centered .btn-close i {
+    pointer-events: none;
   }
 
   @media (max-width: 768px) {
@@ -767,12 +975,14 @@
   }
 </style>
 
-<div class="modal fade" id="modalCambioDatos" tabindex="-1" aria-labelledby="modalCambioDatosLabel" aria-hidden="true" data-bs-backdrop="static">
+<div class="modal fade" id="modalCambioDatos" tabindex="-1" aria-labelledby="modalCambioDatosLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-centered">
     <div class="modal-content" style="background: #fdfbe8; border: 2px solid #e6e2c3; border-radius: 24px;">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">
-        <i class="fas fa-times"></i>
-      </button>
+      <div class="modal-header border-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px; top: 20px; z-index: 1000;">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
       <div class="modal-body">
         <div style="text-align: center;">
           <h5 class="modal-title" id="modalCambioDatosLabel" style="color: #4d6a3a; font-weight: 700; font-family: 'Poppins', sans-serif; margin: 20px 0 30px; font-size: 1.5rem;">
@@ -848,13 +1058,36 @@
 </div>
 
 <script>
-// Inicializar el modal con las opciones correctas
+// Inicializar el modal y manejar eventos
 document.addEventListener('DOMContentLoaded', function() {
+  const btnCambio = document.getElementById('btn-solicitar-cambio');
   const modalCambioDatos = document.getElementById('modalCambioDatos');
+  let modal;
+
   if (modalCambioDatos) {
-    const modal = new bootstrap.Modal(modalCambioDatos, {
-      backdrop: true,
-      keyboard: true
+    modal = new bootstrap.Modal(modalCambioDatos);
+    
+    // Agregar manejador para el botón de cierre
+    const closeButton = modalCambioDatos.querySelector('.btn-close');
+    if (closeButton) {
+      closeButton.addEventListener('click', function() {
+        modal.hide();
+      });
+    }
+
+    // Agregar manejador para cerrar con Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modalCambioDatos.classList.contains('show')) {
+        modal.hide();
+      }
+    });
+  }
+
+  if (btnCambio) {
+    btnCambio.addEventListener('click', function() {
+      if (modal) {
+        modal.show();
+      }
     });
   }
 });
@@ -981,8 +1214,9 @@ document.addEventListener('DOMContentLoaded', function() {
                       </p>
                     </div>
                   </div>`,
-            showConfirmButton: true,
-            confirmButtonText: 'Entendido',
+            showCloseButton: true,
+            allowOutsideClick: true,
+            allowEscapeKey: true,
             confirmButtonColor: '#4d6a3a',
             background: '#fdfbe8',
             customClass: {
@@ -1010,14 +1244,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     </p>
                   </div>
                 </div>`,
-          showConfirmButton: true,
-          confirmButtonText: 'Entendido',
+          showCloseButton: true,
+          allowOutsideClick: true,
+          allowEscapeKey: true,
           confirmButtonColor: '#4d6a3a',
           background: '#fdfbe8',
           customClass: {
             popup: 'custom-popup-class',
             title: 'custom-title-class',
-            confirmButton: 'custom-confirm-button'
+            confirmButton: 'custom-confirm-button',
+            closeButton: 'custom-close-button'
           }
         });
       }
@@ -1174,6 +1410,43 @@ function validarEmail(input) {
         };
         fechaInput.value = formatearFecha(hoy);
       }
+    });
+  </script>
+  <script>
+    // Funcionalidad para el modal del video
+    document.addEventListener('DOMContentLoaded', function() {
+      const helpTrigger = document.getElementById('help-trigger');
+      const videoModal = document.getElementById('video-modal');
+      const closeVideo = document.querySelector('.close-video');
+
+      helpTrigger.addEventListener('click', function() {
+        videoModal.style.display = 'block';
+        // Forzar reflow
+        void videoModal.offsetWidth;
+        videoModal.classList.add('active');
+      });
+
+      function closeVideoModal() {
+        videoModal.classList.remove('active');
+        setTimeout(() => {
+          videoModal.style.display = 'none';
+        }, 300);
+      }
+
+      closeVideo.addEventListener('click', closeVideoModal);
+
+      videoModal.addEventListener('click', function(e) {
+        if (e.target === videoModal) {
+          closeVideoModal();
+        }
+      });
+
+      // Cerrar con la tecla Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && videoModal.style.display === 'block') {
+          closeVideoModal();
+        }
+      });
     });
   </script>
 </body>

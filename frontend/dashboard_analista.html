@@ -484,15 +484,40 @@
                 <select class="form-select" style="background-color: #eaf8e6; border: 1px solid #e6e2c3; border-radius: 10px; padding: 10px; color: #527a5a; transition: all 0.3s ease; font-family: 'Poppins', sans-serif;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
                   <option value="">Cargando modelos disponibles...</option>
                 </select>
-                <small style="display: block; color: #8b7e55; margin-top: 5px; font-style: italic;">
-                  <i class="fas fa-info-circle me-1"></i>
-                  Seleccione el archivo CSV de entrenamiento que desea utilizar como modelo
-                </small>
               </div>
               
               <button id="btnPredecir" style="background-color: #eaf8e6; border: none; border-radius: 10px; color: #527a5a; font-weight: 600; padding: 12px; cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';this.style.backgroundColor='#d9f0d0';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.backgroundColor='#eaf8e6';">
                 Realizar predicción
               </button>
+
+              <!-- Contenedor para mostrar los datos cargados -->
+              <div id="datos-cargados" style="display: none; margin-top: 30px;">
+                <div style="background-color: white; border-radius: 10px; border: 1px solid #e6e2c3; padding: 20px;">
+                  <h4 style="color: #4d6a3a; margin-bottom: 20px; font-family: 'Montserrat', sans-serif;">
+                    📋 Datos Cargados para Predicción
+                  </h4>
+                  <div class="table-responsive">
+                    <table class="table" style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #ddd;">
+                      <thead>
+                        <tr>
+                          <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Nombre</th>
+                          <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Área</th>
+                          <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Jerarquía</th>
+                          <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Asistencia</th>
+                          <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Proyectos</th>
+                          <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Desempeño</th>
+                          <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Horas Extra</th>
+                          <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Equipo</th>
+                          <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Puntaje</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tabla-datos-cargados">
+                        <!-- Los datos se cargarán dinámicamente aquí -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
 
               <!-- Contenedor para el historial de CSV -->
               <div id="csv-history-container" class="mt-4" style="background-color: #fff; border-radius: 15px; border: 1px solid #e6e2c3; padding: 20px; margin-top: 30px;">
@@ -832,8 +857,59 @@
       if (csvFilePredecirInput) {
         csvFilePredecirInput.addEventListener('change', async function(e) {
           if (e.target.files.length > 0) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+              const text = e.target.result;
+              const lines = text.split('\n');
+              const headers = lines[0].split(',');
+              const data = [];
+              
+              // Procesar las líneas del CSV
+              for(let i = 1; i < lines.length; i++) {
+                if (lines[i].trim() === '') continue;
+                
+                const values = lines[i].split(',');
+                const row = {};
+                
+                headers.forEach((header, index) => {
+                  row[header.trim()] = values[index] ? values[index].trim() : '';
+                });
+                
+                data.push(row);
+              }
+              
+              // Mostrar los datos en la tabla
+              const tbody = document.getElementById('tabla-datos-cargados');
+              const datosContainer = document.getElementById('datos-cargados');
+              
+              let tableContent = '';
+              data.forEach((row, index) => {
+                const rowColor = index % 2 === 0 ? '#fff' : '#f9f9f9';
+                tableContent += `
+                  <tr style="background-color: ${rowColor};">
+                    <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${row.nombre || 'N/A'}</td>
+                    <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a; text-transform: capitalize;">${row.area || 'N/A'}</td>
+                    <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a; text-transform: capitalize;">${row.jerarquia || 'N/A'}</td>
+                    <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${row.asistencia_puntualidad || 0}%</td>
+                    <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${row.cantidad_proyectos || 0}</td>
+                    <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a; text-transform: capitalize;">${row.desempenio || 'N/A'}</td>
+                    <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${row.horas_extra || 0}</td>
+                    <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${row.personas_equipo || 0}</td>
+                    <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${row.puntaje || 0}</td>
+                  </tr>
+                `;
+              });
+              
+              tbody.innerHTML = tableContent;
+              datosContainer.style.display = 'block';
+            };
+            
+            reader.readAsText(file);
+            
             try {
-              await saveCSVToFirebase(e.target.files[0], 'prediction');
+              await saveCSVToFirebase(file, 'prediction');
               await updateCSVHistoryUI('prediction');
               Swal.fire({
                 title: 'Archivo cargado',
