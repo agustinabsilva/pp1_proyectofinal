@@ -10,24 +10,41 @@ async function login() {
   const email = document.getElementById("email").value;
   const pass = document.getElementById("password").value;
 
+  if (!email || !pass) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Por favor ingresa tu email y contraseña",
+      confirmButtonColor: "#b88b66"
+    });
+    return;
+  }
+
   try {
+    console.log("Intentando iniciar sesión...");
     const cred = await auth.signInWithEmailAndPassword(email, pass);
     const uid = cred.user.uid;
 
+    console.log("Usuario autenticado:", cred.user.email);
+
     const doc = await db.collection("users").doc(uid).get();
     if (!doc.exists) {
+      console.log("No se encontraron datos del usuario");
       Swal.fire({
         icon: "error",
         title: "Usuario no encontrado",
         text: "No se encontraron datos registrados para este usuario.",
         confirmButtonColor: "#b88b66"
       });
+      await auth.signOut();
       return;
     }
 
     const datos = doc.data();
+    console.log("Datos del usuario:", datos);
 
     if (datos.activo === false) {
+      console.log("Cuenta desactivada");
       Swal.fire({
         icon: "warning",
         title: "Cuenta desactivada",
@@ -35,11 +52,12 @@ async function login() {
         confirmButtonColor: "#b88b66"
       });
 
-      auth.signOut();
+      await auth.signOut();
       return;
     }
 
     const rol = datos.role;
+    console.log("Rol del usuario:", rol);
     
     Swal.fire({
       icon: "success",
@@ -50,22 +68,32 @@ async function login() {
       showConfirmButton: false
     }).then(() => {
       // Redirigir según el rol
+      let redirectUrl;
       switch(rol) {
         case 'Admin':
-          window.location.href = './dashboard_admin.html';
+          redirectUrl = './dashboard_admin.html';
           break;
         case 'Analista':
-          window.location.href = './dashboard_analista.html';
+          redirectUrl = './dashboard_analista.html';
           break;
         case 'Supervisor':
-          window.location.href = './supervisor.html';
+          redirectUrl = './supervisor.html';
           break;
         case 'Empleado':
-          window.location.href = './empleado.html';
+          redirectUrl = './empleado.html';
           break;
         default:
           console.error('Rol no reconocido:', rol);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Rol no reconocido. Contacta al administrador.",
+            confirmButtonColor: "#b88b66"
+          });
+          return;
       }
+      console.log("Redirigiendo a:", redirectUrl);
+      window.location.href = redirectUrl;
     });
 
   } catch (error) {

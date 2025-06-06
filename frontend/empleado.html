@@ -884,21 +884,16 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    z-index: 1050 !important;
   }
 
   .modal-centered .btn-close:hover {
     color: #b88b66 !important;
-    transform: scale(1.1) rotate(90deg) !important;
+    transform: scale(1.1) !important;
   }
 
   .modal-centered .btn-close:focus {
     box-shadow: none !important;
     outline: none !important;
-  }
-
-  .modal-centered .btn-close i {
-    pointer-events: none;
   }
 
   @media (max-width: 768px) {
@@ -975,14 +970,12 @@
   }
 </style>
 
-<div class="modal fade" id="modalCambioDatos" tabindex="-1" aria-labelledby="modalCambioDatosLabel" aria-hidden="true">
+<div class="modal fade" id="modalCambioDatos" tabindex="-1" aria-labelledby="modalCambioDatosLabel" aria-hidden="true" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered modal-centered">
     <div class="modal-content" style="background: #fdfbe8; border: 2px solid #e6e2c3; border-radius: 24px;">
-      <div class="modal-header border-0">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px; top: 20px; z-index: 1000;">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">
+        <i class="fas fa-times"></i>
+      </button>
       <div class="modal-body">
         <div style="text-align: center;">
           <h5 class="modal-title" id="modalCambioDatosLabel" style="color: #4d6a3a; font-weight: 700; font-family: 'Poppins', sans-serif; margin: 20px 0 30px; font-size: 1.5rem;">
@@ -1058,36 +1051,13 @@
 </div>
 
 <script>
-// Inicializar el modal y manejar eventos
+// Inicializar el modal con las opciones correctas
 document.addEventListener('DOMContentLoaded', function() {
-  const btnCambio = document.getElementById('btn-solicitar-cambio');
   const modalCambioDatos = document.getElementById('modalCambioDatos');
-  let modal;
-
   if (modalCambioDatos) {
-    modal = new bootstrap.Modal(modalCambioDatos);
-    
-    // Agregar manejador para el botón de cierre
-    const closeButton = modalCambioDatos.querySelector('.btn-close');
-    if (closeButton) {
-      closeButton.addEventListener('click', function() {
-        modal.hide();
-      });
-    }
-
-    // Agregar manejador para cerrar con Escape
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && modalCambioDatos.classList.contains('show')) {
-        modal.hide();
-      }
-    });
-  }
-
-  if (btnCambio) {
-    btnCambio.addEventListener('click', function() {
-      if (modal) {
-        modal.show();
-      }
+    const modal = new bootstrap.Modal(modalCambioDatos, {
+      backdrop: true,
+      keyboard: true
     });
   }
 });

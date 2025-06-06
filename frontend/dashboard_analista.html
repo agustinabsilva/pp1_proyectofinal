@@ -341,6 +341,414 @@
       width: 100%;
       margin: 0 auto;
     }
+
+    /* Estilos adicionales para las nuevas secciones */
+    .intro-section {
+      background: linear-gradient(135deg, #f4f7eb 0%, #e6e2c3 100%);
+      border-radius: 24px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .intro-title {
+      color: #4d6a3a;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .intro-subtitle {
+      color: #8b7e55;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .process-step {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e6e2c3;
+      transition: all 0.3s ease;
+    }
+
+    .process-step:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .step-number {
+      background: #4d6a3a;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .step-title {
+      color: #4d6a3a;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-description {
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .info-tooltip {
+      color: #4d6a3a;
+      margin-left: 0.5rem;
+      cursor: help;
+    }
+
+    .accuracy-indicator {
+      background: #e6f5d0;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 1rem;
+      border: 1px solid #4d6a3a;
+    }
+
+    .accuracy-title {
+      color: #4d6a3a;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .accuracy-value {
+      font-size: 1.2rem;
+      color: #4d6a3a;
+      font-weight: 700;
+    }
+
+    .faq-section {
+      margin-top: 2rem;
+      padding: 2rem;
+      background: #fdfbe8;
+      border-radius: 24px;
+      border: 2px solid #e6e2c3;
+    }
+
+    .faq-item {
+      margin-bottom: 1.5rem;
+    }
+
+    .faq-question {
+      color: #4d6a3a;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .faq-answer {
+      color: #666;
+      font-size: 0.95rem;
+      padding-left: 1.5rem;
+      border-left: 3px solid #e6e2c3;
+      margin-left: 0.5rem;
+      display: none;
+    }
+
+    .faq-answer.show {
+      display: block;
+    }
+
+    .welcome-section {
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .welcome-section .display-4 {
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 1rem;
+    }
+
+    .welcome-section .lead {
+      font-family: 'Poppins', sans-serif;
+      color: #666;
+      margin-bottom: 3rem;
+    }
+
+    .welcome-section .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .welcome-section .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .welcome-section .card-body {
+      padding: 2rem;
+    }
+
+    .welcome-section .fa-3x {
+      margin-bottom: 1.5rem;
+    }
+
+    .welcome-section .h4 {
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 1rem;
+    }
+
+    .welcome-section .card-text {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .welcome-section .tools-section {
+      margin-top: 3rem;
+    }
+
+    .welcome-section .tools-section .h4 {
+      margin-bottom: 2rem;
+    }
+
+    .welcome-section .tools-section .fa-2x {
+      color: #4d6a3a;
+      margin-right: 1rem;
+    }
+
+    .welcome-section .tools-section h5 {
+      color: #527a5a;
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-section .tools-section p {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .welcome-section {
+        padding: 1rem;
+      }
+
+      .welcome-section .display-4 {
+        font-size: 2rem;
+      }
+
+      .welcome-section .card-body {
+        padding: 1.5rem;
+      }
+    }
+
+    .tools-horizontal {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 1rem 0;
+    }
+
+    .tool-item {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .tool-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #4d6a3a;
+    }
+
+    .tool-info h4 {
+      color: #527a5a;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .tool-info p {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    @media (max-width: 992px) {
+      .tools-horizontal {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .tool-item {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+
+      .tool-icon {
+        margin-right: 1rem;
+      }
+    }
+
+    .tools-container {
+      background-color: #faf6e9;
+      border-radius: 20px;
+      padding: 2rem;
+    }
+
+    .tools-container h3 {
+      color: #527a5a;
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+    }
+
+    .tools-row {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .tools-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .tool-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .tool-icon {
+      font-size: 1.5rem;
+      color: #4d6a3a;
+      min-width: 30px;
+    }
+
+    .tool-content h4 {
+      color: #527a5a;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .tool-content p {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .tools-row {
+        flex-direction: column;
+      }
+
+      .tools-column {
+        gap: 1.5rem;
+      }
+
+      .tool-box {
+        padding: 0.5rem;
+      }
+    }
+
+    .tools-section {
+      background-color: #faf6e9;
+      border-radius: 20px;
+      padding: 2rem;
+    }
+
+    .tools-section h3 {
+      color: #527a5a;
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .tools-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .tool-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .tool-pair {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .tool {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .tool-icon {
+      font-size: 1.5rem;
+      color: #4d6a3a;
+      min-width: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tool-content h4 {
+      color: #527a5a;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .tool-content p {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .tool-pair {
+        flex-direction: column;
+      }
+
+      .tool {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+  <!-- Firebase y lógica de app -->
+  </style>
+  <!-- Firebase y lógica de app -->
+  </style>
+  <!-- Firebase y lógica de app -->
   </style>
   <!-- Firebase y lógica de app -->
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
@@ -355,7 +763,10 @@
       <div>
         <h2 class="logo mb-4">🌿 AINABI</h2>
         <nav class="nav flex-column">
-          <a href="#" class="nav-link nav-activa" id="nav-entrenamiento-ia">
+          <a href="#" class="nav-link nav-activa" id="nav-bienvenida">
+            <i class="fas fa-home me-2"></i>Bienvenida
+          </a>
+          <a href="#" class="nav-link" id="nav-entrenamiento-ia">
             <i class="fas fa-robot me-2"></i>Entrenamiento IA
           </a>
           <a href="#" class="nav-link" id="nav-predecir-rendimiento">
@@ -378,75 +789,539 @@
 
     <!-- Sección principal -->
     <main class="flex-grow-1 p-4">
-      <div id="entrenamiento-ia-section">
-        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-          <div class="main-container" style="max-width: 1400px; width: 95%; background-color: #faf6e9; border-radius: 20px; border: 1px solid #e6e2c3; padding: 30px;">
-            <!-- Encabezado -->
-            <div class="text-center mb-4">
-              <h1 style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 2.5rem; color: #527a5a; margin-bottom: 15px; letter-spacing: 1px;">✨ Entrenamiento de Modelos IA ✨</h1>
-              <p style="font-family: 'Poppins', sans-serif; color: #4d6a3a; font-size: 1.1rem; margin-bottom: 25px;">
-                Entrená un modelo de inteligencia artificial para predecir el rendimiento de los empleados.
-              </p>
-            </div>
-            
-            <!-- Contenedor principal -->
-            <div style="background-color: #fff; border-radius: 15px; border: 1px solid #e6e2c3; padding: 25px; margin-bottom: 20px; overflow-x: visible; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)';" onmouseout="this.style.boxShadow='';">
-              <!-- Sección de carga de dataset -->
-              <h3 style="color: #527a5a; font-size: 1.3rem; margin-bottom: 20px; font-family: 'Montserrat', sans-serif; font-weight: 600; border-bottom: 1px solid #e6e2c3; padding-bottom: 8px;">Cargar Dataset de Entrenamiento</h3>
-              
-              <div class="mb-4">
-                <input type="file" id="csvFile" accept=".csv" class="hidden-file-input">
-                <label for="csvFile" style="background-color: #eaf8e6; border: 1px solid #e6e2c3; border-radius: 10px; padding: 12px 20px; color: #527a5a; display: block; cursor: pointer; text-align: center; width: 100%; transition: all 0.3s ease; font-family: 'Poppins', sans-serif;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';this.style.backgroundColor='#d9f0d0';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.backgroundColor='#eaf8e6';">
-                  <i class="fas fa-check-circle me-2"></i> Seleccionar archivo
-                </label>
-              </div>
-              
-              <!-- Formato esperado del dataset -->
-              <div style="background-color: #f8f4e5; border: 1px solid #e6e2c3; border-radius: 10px; padding: 12px 15px; margin-bottom: 25px; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 4px 8px rgba(0,0,0,0.05)';" onmouseout="this.style.boxShadow='';">
-                <p style="color: #6b5b3d; font-size: 0.9rem; margin-bottom: 8px; font-weight: 500; font-family: 'Poppins', sans-serif;">
-                  <i class="fas fa-info-circle me-2"></i> Formato esperado del dataset:
-                </p>
-                <div style="overflow-x: auto; max-width: 100%;">
-                  <table style="width: 100%; min-width: 900px; table-layout: fixed; border-collapse: separate; border-spacing: 0; border: 1px solid #e6e2c3; border-radius: 6px; overflow: hidden; background-color: #fff;">
-                    <thead>
-                      <tr style="background-color: #f0e6c7;">
-                        <th style="width: 9%; padding: 10px 4px; text-align: center; color: #6b5b3d; border-right: 1px solid #e6e2c3; font-size: 0.8rem; font-weight: 600; white-space: nowrap;">nombre</th>
-                        <th style="width: 7%; padding: 10px 4px; text-align: center; color: #6b5b3d; border-right: 1px solid #e6e2c3; font-size: 0.8rem; font-weight: 600; white-space: nowrap;">area</th>
-                        <th style="width: 8%; padding: 10px 4px; text-align: center; color: #6b5b3d; border-right: 1px solid #e6e2c3; font-size: 0.8rem; font-weight: 600; white-space: nowrap;">jerarquia</th>
-                        <th style="width: 7%; padding: 10px 4px; text-align: center; color: #6b5b3d; border-right: 1px solid #e6e2c3; font-size: 0.8rem; font-weight: 600; white-space: nowrap;">puntaje</th>
-                        <th style="width: 12%; padding: 10px 4px; text-align: center; color: #6b5b3d; border-right: 1px solid #e6e2c3; font-size: 0.8rem; font-weight: 600; white-space: nowrap;">cantidad_proyectos</th>
-                        <th style="width: 9%; padding: 10px 4px; text-align: center; color: #6b5b3d; border-right: 1px solid #e6e2c3; font-size: 0.8rem; font-weight: 600; white-space: nowrap;">desempenio</th>
-                        <th style="width: 12%; padding: 10px 4px; text-align: center; color: #6b5b3d; border-right: 1px solid #e6e2c3; font-size: 0.8rem; font-weight: 600; white-space: nowrap;">personas_equipo</th>
-                        <th style="width: 10%; padding: 10px 4px; text-align: center; color: #6b5b3d; border-right: 1px solid #e6e2c3; font-size: 0.8rem; font-weight: 600; white-space: nowrap;">horas_extra</th>
-                        <th style="width: 14%; padding: 10px 4px; text-align: center; color: #6b5b3d; border-right: 1px solid #e6e2c3; font-size: 0.8rem; font-weight: 600; white-space: nowrap;">asistencia_puntualidad</th>
-                        <th style="width: 12%; padding: 10px 4px; text-align: center; color: #6b5b3d; font-size: 0.8rem; font-weight: 600; white-space: nowrap;">desempenio_futuro</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td style="padding: 8px; text-align: center; color: #8b7e55; font-size: 0.8rem; border-right: 1px solid #e6e2c3;">texto</td>
-                        <td style="padding: 8px; text-align: center; color: #8b7e55; font-size: 0.8rem; border-right: 1px solid #e6e2c3;">texto</td>
-                        <td style="padding: 8px; text-align: center; color: #8b7e55; font-size: 0.8rem; border-right: 1px solid #e6e2c3;">texto</td>
-                        <td style="padding: 8px; text-align: center; color: #8b7e55; font-size: 0.8rem; border-right: 1px solid #e6e2c3;">número</td>
-                        <td style="padding: 8px; text-align: center; color: #8b7e55; font-size: 0.8rem; border-right: 1px solid #e6e2c3;">número</td>
-                        <td style="padding: 8px; text-align: center; color: #8b7e55; font-size: 0.8rem; border-right: 1px solid #e6e2c3;">texto</td>
-                        <td style="padding: 8px; text-align: center; color: #8b7e55; font-size: 0.8rem; border-right: 1px solid #e6e2c3;">número</td>
-                        <td style="padding: 8px; text-align: center; color: #8b7e55; font-size: 0.8rem; border-right: 1px solid #e6e2c3;">número</td>
-                        <td style="padding: 8px; text-align: center; color: #8b7e55; font-size: 0.8rem; border-right: 1px solid #e6e2c3;">número</td>
-                        <td style="padding: 8px; text-align: center; color: #8b7e55; font-size: 0.8rem;">número</td>
-                      </tr>
-                    </tbody>
-                  </table>
+      <!-- Sección de Bienvenida -->
+      <div id="bienvenida-section" class="welcome-section">
+        <div class="text-center mb-5">
+          <h1 class="display-4 fw-bold" style="color: #527a5a;">Bienvenido, Analista de Datos</h1>
+          <p class="lead text-muted">Tu rol es fundamental para el éxito de nuestra organización</p>
+        </div>
+
+        <div class="row g-4 mb-5">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body text-center">
+                <div class="mb-3">
+                  <i class="fas fa-brain fa-3x" style="color: #4d6a3a;"></i>
                 </div>
-                <p style="color: #8b7e55; font-size: 0.85rem; margin-top: 8px; margin-bottom: 0; font-family: 'Poppins', sans-serif; font-style: italic;">
-                  El archivo CSV debe incluir todas estas columnas para que el modelo funcione correctamente.
+                <h3 class="h4 mb-3" style="color: #527a5a;">Análisis Predictivo</h3>
+                <p class="card-text">Utiliza modelos de IA para predecir el rendimiento y la rotación de empleados con alta precisión.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body text-center">
+                <div class="mb-3">
+                  <i class="fas fa-chart-bar fa-3x" style="color: #4d6a3a;"></i>
+                </div>
+                <h3 class="h4 mb-3" style="color: #527a5a;">Gestión de Datos</h3>
+                <p class="card-text">Procesa y analiza datos históricos para obtener insights valiosos sobre el desempeño laboral.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body text-center">
+                <div class="mb-3">
+                  <i class="fas fa-lightbulb fa-3x" style="color: #4d6a3a;"></i>
+                </div>
+                <h3 class="h4 mb-3" style="color: #527a5a;">Toma de Decisiones</h3>
+                <p class="card-text">Genera recomendaciones basadas en datos para mejorar la gestión del talento humano.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="tools-section">
+              <h3>Tus Herramientas Principales</h3>
+              <div class="tools-grid">
+                <div class="tool-group">
+                  <div class="tool-pair">
+                    <div class="tool">
+                      <div class="tool-icon">
+                        <i class="fas fa-robot"></i>
+                      </div>
+                      <div class="tool-content">
+                        <h4>Entrenamiento IA</h4>
+                        <p>Entrena y ajusta modelos de machine learning para predecir el rendimiento de los empleados.</p>
+                      </div>
+                    </div>
+                    <div class="tool">
+                      <div class="tool-icon">
+                        <i class="fas fa-chart-line"></i>
+                      </div>
+                      <div class="tool-content">
+                        <h4>Predicción de Rendimiento</h4>
+                        <p>Utiliza los modelos entrenados para realizar predicciones precisas sobre el desempeño futuro.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tool-pair">
+                    <div class="tool">
+                      <div class="tool-icon">
+                        <i class="fas fa-user-slash"></i>
+                      </div>
+                      <div class="tool-content">
+                        <h4>Detección de Rotación</h4>
+                        <p>Identifica patrones y factores que pueden llevar a la rotación de personal.</p>
+                      </div>
+                    </div>
+                    <div class="tool">
+                      <div class="tool-icon">
+                        <i class="fas fa-cogs"></i>
+                      </div>
+                      <div class="tool-content">
+                        <h4>Configuración de Modelos</h4>
+                        <p>Personaliza y optimiza los parámetros de los modelos según las necesidades específicas.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido Original -->
+      <div class="container py-4">
+        <div id="entrenamiento-ia-section">
+          <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+            <div class="main-container" style="max-width: 1400px; width: 95%; background-color: #faf6e9; border-radius: 20px; border: 1px solid #e6e2c3; padding: 30px;">
+              <!-- Encabezado -->
+              <div class="text-center mb-4">
+                <h1 style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 2.5rem; color: #527a5a; margin-bottom: 15px; letter-spacing: 1px;">✨ Entrenamiento de Modelos IA ✨</h1>
+                <p style="font-family: 'Poppins', sans-serif; color: #4d6a3a; font-size: 1.1rem; margin-bottom: 25px;">
+                  Entrená un modelo de inteligencia artificial para predecir el rendimiento de los empleados.
                 </p>
               </div>
-              
-              <!-- Botón de entrenamiento -->
-              <button id="btnTrainModel" style="background-color: #eaf8e6; border: none; border-radius: 10px; color: #527a5a; font-weight: 600; padding: 12px; cursor: pointer; width: 100%; margin-top: 20px; transition: all 0.3s ease; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';this.style.backgroundColor='#d9f0d0';" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.backgroundColor='#eaf8e6';">
-                Entrenar modelo
-              </button>
+
+              <!-- Sección de carga de datos -->
+              <div class="section-card">
+                <div class="d-flex align-items-center mb-3">
+                  <h2 class="section-title mb-0">Carga de Datos</h2>
+                  <i class="fas fa-info-circle info-tooltip ms-2" 
+                     data-bs-toggle="tooltip" 
+                     data-bs-placement="right" 
+                     title="Los datos deben estar en formato CSV con las columnas específicas requeridas para el análisis"></i>
+                </div>
+
+                <!-- Explicación de los campos requeridos -->
+                <div class="mb-4 p-3" style="background: rgba(230, 226, 195, 0.3); border-radius: 12px;">
+                  <h3 class="h6 mb-3" style="color: #4d6a3a;">Campos Requeridos en el CSV:</h3>
+                  <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                      <i class="fas fa-check-circle text-success me-2"></i>
+                      <strong>ID Empleado</strong>
+                      <span class="ms-2 text-muted">- Identificador único del empleado</span>
+                    </li>
+                    <li class="mb-2">
+                      <i class="fas fa-check-circle text-success me-2"></i>
+                      <strong>Antigüedad</strong>
+                      <span class="ms-2 text-muted">- Tiempo en la empresa (en meses)</span>
+                    </li>
+                    <li class="mb-2">
+                      <i class="fas fa-check-circle text-success me-2"></i>
+                      <strong>Evaluaciones Previas</strong>
+                      <span class="ms-2 text-muted">- Resultados de evaluaciones anteriores</span>
+                    </li>
+                    <li class="mb-2">
+                      <i class="fas fa-check-circle text-success me-2"></i>
+                      <strong>Feedback Recibido</strong>
+                      <span class="ms-2 text-muted">- Comentarios y retroalimentación</span>
+                    </li>
+                    <li>
+                      <i class="fas fa-check-circle text-success me-2"></i>
+                      <strong>Métricas de Desempeño</strong>
+                      <span class="ms-2 text-muted">- Indicadores clave de rendimiento</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div class="mb-4">
+                  <label class="form-label d-flex align-items-center">
+                    Archivo CSV de Entrenamiento
+                    <i class="fas fa-info-circle info-tooltip ms-2" 
+                       data-bs-toggle="tooltip" 
+                       data-bs-placement="right" 
+                       title="Asegúrate de que el archivo contenga todos los campos requeridos y esté correctamente formateado"></i>
+                  </label>
+                  <div class="file-upload-container">
+                    <label class="file-upload-btn" for="csvFile">
+                      <i class="fas fa-upload me-2"></i>
+                      Seleccionar Archivo CSV
+                    </label>
+                    <input type="file" id="csvFile" accept=".csv" style="display: none;">
+                  </div>
+                  <div class="warning-text mt-2">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <small>El archivo debe estar en formato CSV y contener todos los campos necesarios</small>
+                  </div>
+                </div>
+
+                <!-- Métricas de Calidad -->
+                <div class="mb-4">
+                  <h3 class="section-title h5 d-flex align-items-center">
+                    Métricas de Calidad de Datos
+                    <i class="fas fa-info-circle info-tooltip ms-2" 
+                       data-bs-toggle="tooltip" 
+                       data-bs-placement="right" 
+                       title="Estas métricas indican la calidad y completitud de los datos cargados"></i>
+                  </h3>
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <div class="accuracy-indicator">
+                        <div class="accuracy-title">
+                          <i class="fas fa-check-circle me-2"></i>
+                          Completitud
+                          <i class="fas fa-info-circle info-tooltip ms-2" 
+                             data-bs-toggle="tooltip" 
+                             data-bs-placement="right" 
+                             title="Porcentaje de datos completos sin valores faltantes"></i>
+                        </div>
+                        <div class="accuracy-value">98%</div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="accuracy-indicator">
+                        <div class="accuracy-title">
+                          <i class="fas fa-chart-line me-2"></i>
+                          Consistencia
+                          <i class="fas fa-info-circle info-tooltip ms-2" 
+                             data-bs-toggle="tooltip" 
+                             data-bs-placement="right" 
+                             title="Porcentaje de datos que siguen el formato y rango esperado"></i>
+                        </div>
+                        <div class="accuracy-value">95%</div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="accuracy-indicator">
+                        <div class="accuracy-title">
+                          <i class="fas fa-balance-scale me-2"></i>
+                          Balance
+                          <i class="fas fa-info-circle info-tooltip ms-2" 
+                             data-bs-toggle="tooltip" 
+                             data-bs-placement="right" 
+                             title="Distribución equilibrada de las clases en los datos"></i>
+                        </div>
+                        <div class="accuracy-value">92%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Validación del Modelo -->
+                <div class="mb-4">
+                  <h3 class="section-title h5 d-flex align-items-center">
+                    Validación del Modelo
+                    <i class="fas fa-info-circle info-tooltip ms-2" 
+                       data-bs-toggle="tooltip" 
+                       data-bs-placement="right" 
+                       title="Métricas que demuestran la precisión y confiabilidad del modelo"></i>
+                  </h3>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <div class="accuracy-indicator">
+                        <div class="accuracy-title">
+                          <i class="fas fa-bullseye me-2"></i>
+                          Precisión en Validación Cruzada
+                          <i class="fas fa-info-circle info-tooltip ms-2" 
+                             data-bs-toggle="tooltip" 
+                             data-bs-placement="right" 
+                             title="Precisión promedio obtenida en múltiples conjuntos de validación"></i>
+                        </div>
+                        <div class="accuracy-value">94%</div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="accuracy-indicator">
+                        <div class="accuracy-title">
+                          <i class="fas fa-chart-bar me-2"></i>
+                          Confiabilidad de Predicciones
+                          <i class="fas fa-info-circle info-tooltip ms-2" 
+                             data-bs-toggle="tooltip" 
+                             data-bs-placement="right" 
+                             title="Nivel de confianza en las predicciones del modelo"></i>
+                        </div>
+                        <div class="accuracy-value">91%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Proceso de Entrenamiento -->
+              <div class="section-card mt-4">
+                <div class="d-flex align-items-center mb-3">
+                  <h2 class="section-title mb-0">Proceso de Entrenamiento</h2>
+                  <i class="fas fa-info-circle info-tooltip ms-2" 
+                     data-bs-toggle="tooltip" 
+                     data-bs-placement="right" 
+                     title="Entendé cómo funciona el proceso de entrenamiento del modelo"></i>
+                </div>
+
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <div class="process-step">
+                      <h4 class="step-title">
+                        <i class="fas fa-cogs me-2"></i>
+                        Preparación de Datos
+                      </h4>
+                      <p class="step-description">
+                        Los datos se dividen automáticamente en:
+                        <ul class="mt-2">
+                          <li>80% para entrenamiento</li>
+                          <li>20% para validación</li>
+                        </ul>
+                        Esto asegura que el modelo pueda generalizar bien a nuevos datos.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="process-step">
+                      <h4 class="step-title">
+                        <i class="fas fa-brain me-2"></i>
+                        Algoritmo de Aprendizaje
+                      </h4>
+                      <p class="step-description">
+                        Utilizamos un modelo de Random Forest que:
+                        <ul class="mt-2">
+                          <li>Analiza múltiples árboles de decisión</li>
+                          <li>Identifica patrones complejos</li>
+                          <li>Reduce el sobreajuste</li>
+                        </ul>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="process-step">
+                      <h4 class="step-title">
+                        <i class="fas fa-chart-line me-2"></i>
+                        Validación Cruzada
+                      </h4>
+                      <p class="step-description">
+                        El modelo se valida mediante:
+                        <ul class="mt-2">
+                          <li>5 iteraciones de entrenamiento</li>
+                          <li>Diferentes conjuntos de datos</li>
+                          <li>Métricas de precisión promedio</li>
+                        </ul>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="process-step">
+                      <h4 class="step-title">
+                        <i class="fas fa-check-double me-2"></i>
+                        Garantía de Calidad
+                      </h4>
+                      <p class="step-description">
+                        Aseguramos la calidad mediante:
+                        <ul class="mt-2">
+                          <li>Detección de valores atípicos</li>
+                          <li>Balanceo de clases</li>
+                          <li>Validación de resultados</li>
+                        </ul>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Botón de entrenamiento con explicación -->
+                <div class="mt-4">
+                  <div class="d-flex align-items-center mb-3">
+                    <h3 class="section-title h5 mb-0">Iniciar Entrenamiento</h3>
+                    <i class="fas fa-info-circle info-tooltip ms-2" 
+                       data-bs-toggle="tooltip" 
+                       data-bs-placement="right" 
+                       title="Al hacer clic, comenzará el proceso de entrenamiento del modelo con los datos cargados"></i>
+                  </div>
+                  <button id="btnTrainModel" class="btn btn-ainabi w-100">
+                    <i class="fas fa-play me-2"></i>
+                    Entrenar Modelo
+                  </button>
+                  <div class="warning-text mt-2">
+                    <i class="fas fa-info-circle"></i>
+                    <small>El proceso puede tomar varios minutos dependiendo del tamaño del dataset</small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Personalización del Modelo -->
+              <div class="section-card mt-4">
+                <div class="d-flex align-items-center mb-3">
+                  <h2 class="section-title mb-0">Personalización del Modelo</h2>
+                  <i class="fas fa-info-circle info-tooltip ms-2" 
+                     data-bs-toggle="tooltip" 
+                     data-bs-placement="right" 
+                     title="Aprende cómo adaptar el modelo a tus necesidades específicas"></i>
+                </div>
+
+                <!-- Explicación de Personalización -->
+                <div class="alert alert-info border-0" style="background: rgba(77, 106, 58, 0.1); color: #4d6a3a;">
+                  <i class="fas fa-lightbulb me-2"></i>
+                  ¿Querés usar diferentes criterios o datos para el entrenamiento? ¡Es posible! Seguí estos pasos:
+                </div>
+
+                <div class="row g-4">
+                  <div class="col-md-6">
+                    <div class="process-step">
+                      <h4 class="step-title">
+                        <i class="fas fa-columns me-2"></i>
+                        Columnas Personalizadas
+                      </h4>
+                      <p class="step-description">
+                        Para usar diferentes columnas:
+                        <ol class="mt-2">
+                          <li>Contacta al equipo técnico</li>
+                          <li>Proporciona el nuevo esquema de datos</li>
+                          <li>Espera la adaptación del modelo</li>
+                        </ol>
+                      </p>
+                      <div class="mt-3">
+                        <button class="btn btn-outline-success btn-sm" onclick="mostrarFormularioPersonalizacion()">
+                          <i class="fas fa-plus me-2"></i>Solicitar Nuevas Columnas
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="process-step">
+                      <h4 class="step-title">
+                        <i class="fas fa-sliders-h me-2"></i>
+                        Criterios de Evaluación
+                      </h4>
+                      <p class="step-description">
+                        Podés modificar:
+                        <ul class="mt-2">
+                          <li>Pesos de las variables</li>
+                          <li>Umbrales de clasificación</li>
+                          <li>Métricas de rendimiento</li>
+                        </ul>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="process-step">
+                      <h4 class="step-title">
+                        <i class="fas fa-file-csv me-2"></i>
+                        Formato Alternativo de CSV
+                      </h4>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <p class="step-description mb-3">
+                            Si tu CSV tiene un formato diferente, tenés dos opciones:
+                          </p>
+                          <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-outline-success btn-sm flex-grow-1" onclick="descargarPlantilla()">
+                              <i class="fas fa-download me-2"></i>Descargar Plantilla
+                            </button>
+                            <button class="btn btn-outline-success btn-sm flex-grow-1" onclick="mostrarMapeoColumnas()">
+                              <i class="fas fa-exchange-alt me-2"></i>Mapear Columnas
+                            </button>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="alert alert-warning border-0 mb-0" style="background: rgba(230, 226, 195, 0.3);">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <small>El mapeo de columnas te permite relacionar tus datos con el formato requerido por el modelo.</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal para Mapeo de Columnas -->
+                <div class="modal fade" id="modalMapeoColumnas" tabindex="-1">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Mapeo de Columnas</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <p>Relacioná las columnas de tu CSV con las columnas requeridas por el modelo:</p>
+                          <div id="mapeoColumnasContainer">
+                            <!-- Se llenará dinámicamente -->
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-ainabi" onclick="guardarMapeoColumnas()">Guardar Mapeo</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal para Solicitud de Nuevas Columnas -->
+                <div class="modal fade" id="modalNuevasColumnas" tabindex="-1">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Solicitar Nuevas Columnas</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form id="formNuevasColumnas">
+                          <div class="mb-3">
+                            <label class="form-label">Descripción de las Nuevas Columnas</label>
+                            <textarea class="form-control" rows="4" placeholder="Describe las columnas que necesitás y por qué son importantes..."></textarea>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Adjuntar Ejemplo de CSV</label>
+                            <input type="file" class="form-control" accept=".csv">
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-ainabi" onclick="enviarSolicitudColumnas()">Enviar Solicitud</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <script>
+                  // Funciones para manejar la personalización
+                  function mostrarMapeoColumnas() {
+                    const modal = new bootstrap.Modal(document.getElementById('modalMapeoColumnas'));
+                    modal.show();
+                  }
+
+                  function mostrarFormularioPersonalizacion() {
+                    const modal = new bootstrap.Modal(document.getElementById('modalNuevasColumnas'));
+                    modal.show();
+                  }
+
+                  function descargarPlantilla() {
+                    // Implementar la descarga de la plantilla CSV
+                    alert('Descargando plantilla...');
+                  }
+
+                  function guardarMapeoColumnas() {
+                    // Implementar el guardado del mapeo
+                    alert('Guardando mapeo de columnas...');
+                  }
+
+                  function enviarSolicitudColumnas() {
+                    // Implementar el envío de la solicitud
+                    alert('Enviando solicitud...');
+                  }
+                </script>
+              </div>
             </div>
           </div>
         </div>
@@ -586,7 +1461,7 @@
                               height: 120px; 
                               border-radius: 50%; 
                               object-fit: cover;
-                              transition: all 0.3s ease;
+      transition: all 0.3s ease;
                               transform-origin: center;
                               cursor: pointer;"
                        class="profile-hover"
@@ -739,6 +1614,7 @@
       // Función para mostrar solo la sección seleccionada
       function mostrarSeccion(seccionId) {
         // Ocultar todas las secciones
+        document.getElementById('bienvenida-section').style.display = 'none';
         document.getElementById('entrenamiento-ia-section').style.display = 'none';
         document.getElementById('perfil-section').style.display = 'none';
         document.getElementById('predecir-rendimiento-section').style.display = 'none';
@@ -750,6 +1626,7 @@
 
       // Cambia la clase activa en la barra lateral
       function setActiveNav(navId) {
+        document.getElementById('nav-bienvenida').classList.remove('nav-activa');
         document.getElementById('nav-entrenamiento-ia').classList.remove('nav-activa');
         document.getElementById('nav-predecir-rendimiento').classList.remove('nav-activa');
         document.getElementById('nav-deteccion-rotacion').classList.remove('nav-activa');
@@ -757,11 +1634,17 @@
         document.getElementById(navId).classList.add('nav-activa');
       }
 
-      // Por defecto, mostrar la sección de entrenamiento IA
-      mostrarSeccion('entrenamiento-ia-section');
-      setActiveNav('nav-entrenamiento-ia');
+      // Por defecto, mostrar la sección de bienvenida
+      mostrarSeccion('bienvenida-section');
+      setActiveNav('nav-bienvenida');
 
       // Navegación entre secciones
+      document.getElementById('nav-bienvenida').addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarSeccion('bienvenida-section');
+        setActiveNav('nav-bienvenida');
+      });
+
       document.getElementById('nav-entrenamiento-ia').addEventListener('click', function(e) {
         e.preventDefault();
         mostrarSeccion('entrenamiento-ia-section');
@@ -1162,7 +2045,6 @@
                               <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Horas Extra</th>
                               <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Equipo</th>
                               <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Puntaje</th>
-                              <th style="padding: 12px; background-color: #f4f7eb; color: #4d6a3a; font-weight: 600; border: 1px solid #e6e2c3;">Rendimiento Futuro</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1182,17 +2064,6 @@
                           <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${empleado.horas_extra || 0}</td>
                           <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${empleado.personas_equipo || 0}</td>
                           <td style="padding: 12px; border: 1px solid #e6e2c3; color: #4d6a3a;">${empleado.puntaje || 0}</td>
-                          <td style="padding: 12px; border: 1px solid #e6e2c3; font-weight: 600; color: ${
-                            typeof empleado.rendimiento_futuro === 'number' 
-                              ? empleado.rendimiento_futuro >= 90 
-                                ? '#2e7d32' 
-                                : empleado.rendimiento_futuro >= 75 
-                                  ? '#558b2f' 
-                                  : empleado.rendimiento_futuro >= 60 
-                                    ? '#f9a825' 
-                                    : '#c62828'
-                              : '#4d6a3a'
-                          };">${typeof empleado.rendimiento_futuro === 'number' ? empleado.rendimiento_futuro.toFixed(1) + '%' : 'N/A'}</td>
                         </tr>
                       `;
                     });
@@ -1537,5 +2408,45 @@
       }
     });
   </script>
+  <script>
+    // Inicializar tooltips de Bootstrap
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Funcionalidad para las FAQ
+    document.addEventListener('DOMContentLoaded', function() {
+      const faqQuestions = document.querySelectorAll('.faq-question');
+      
+      faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+          const answer = this.nextElementSibling;
+          const icon = this.querySelector('i');
+          
+          // Toggle la respuesta
+          answer.classList.toggle('show');
+          
+          // Rotar el ícono
+          if (answer.classList.contains('show')) {
+            icon.style.transform = 'rotate(180deg)';
+          } else {
+            icon.style.transform = 'rotate(0deg)';
+          }
+          
+          // Cerrar otras respuestas
+          faqQuestions.forEach(q => {
+            if (q !== question) {
+              const otherAnswer = q.nextElementSibling;
+              const otherIcon = q.querySelector('i');
+              otherAnswer.classList.remove('show');
+              otherIcon.style.transform = 'rotate(0deg)';
+            }
+          });
+        });
+      });
+    });
+  </script>
 </body>
+</html></body>
 </html>
